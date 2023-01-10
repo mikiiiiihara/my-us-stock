@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Asset {
+  id      Int    @id @default(autoincrement())
+  asset   Float
+  year    String
+  month   String
+  date    String
+  addDate String
+  updDate String
+  user    String
+  cashUSD Float
+  cashJPY Int
+}
+
+model Setting {
+  id    Int    @id @default(autoincrement())
+  theme String
+  user  String
+}
+
+model Strategy {
+  id      Int    @id @default(autoincrement())
+  text    String
+  user    String
+  addDate String
+  updDate String
+}
+
+model Ticker {
+  id                Int    @id @default(autoincrement())
+  ticker            String
+  getPrice          Float
+  quantity          Int
+  user              String
+  dividend          Float
+  dividendTime      Int
+  dividendFirstTime Int
+  sector            String
+  usdjpy            Float
+}
+
+model Watchlist {
+  id     Int    @id @default(autoincrement())
+  ticker String
+  user   String
+}
