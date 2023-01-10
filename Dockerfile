@@ -5,9 +5,9 @@ ENV NODE_ENV=development
 WORKDIR /app
 COPY package.json ./
 COPY yarn.lock ./
-COPY prisma ./prisma
+COPY prisma ./prisma/ 
 RUN yarn install
-RUN npx prisma generate
+RUN yarn run prisma generate
 COPY . .
 RUN yarn build
 
@@ -18,9 +18,8 @@ ENV NODE_ENV=${NODE_ENV}
 WORKDIR /app
 COPY package.json ./
 COPY yarn.lock ./
-COPY prisma ./prisma
+COPY prisma ./prisma/ 
 # NODE_ENV=productionにしてyarn install(npm install)するとdevDependenciesがインストールされません
 RUN yarn install
-RUN npx prisma generate
 COPY --from=builder /app/dist ./dist
 CMD ["yarn", "start:prod"]
