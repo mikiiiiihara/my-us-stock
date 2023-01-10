@@ -21,5 +21,6 @@ COPY yarn.lock ./
 COPY prisma ./prisma
 # NODE_ENV=productionにしてyarn install(npm install)するとdevDependenciesがインストールされません
 RUN yarn install
+RUN npx prisma generate
 COPY --from=builder /app/dist ./dist
 CMD ["yarn", "start:prod"]
