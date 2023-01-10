@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 FROM node:16 AS builder
-# ビルドには devDependencies もインストールする必要があるため
+# ビルドには devDependencies もインストールする必要があるため..
 ENV NODE_ENV=development
 WORKDIR /app
 COPY package.json ./
