@@ -7,7 +7,7 @@ COPY package.json ./
 COPY yarn.lock ./
 COPY prisma ./prisma
 RUN yarn install
-RUN yarn run prisma generate
+RUN npx prisma generate
 COPY . .
 RUN yarn build
 
