@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { StrategyRepository } from 'src/repositories/strategy/strategy.repository';
+import { UpdateStrategyInput } from './dto/input/update-strategy.input';
 import { Strategy } from './dto/types/strategy.type';
-import { UpdateStrategyDto } from './dto/update-strategy.dto';
 @Injectable()
 export class StrategyService {
   constructor(private readonly strategyRepository: StrategyRepository) {}
@@ -12,9 +12,9 @@ export class StrategyService {
 
   // 保有株式情報を更新(既存データない場合、新規作成)
   async updateStrategy(
-    updateStrategyDto: UpdateStrategyDto,
+    updateStrategyInput: UpdateStrategyInput,
   ): Promise<Strategy> {
-    const { user, text } = updateStrategyDto;
+    const { user, text } = updateStrategyInput;
     const existStrategy = await this.strategyRepository.fetchStrategy(user);
     if (existStrategy !== null) {
       // update
