@@ -1,60 +1,54 @@
 import { Injectable } from '@nestjs/common';
+import { format } from 'date-fns';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { Strategy } from 'src/schema/strategy/dto/types/strategy.type';
+import { CreateStrategyDto } from './dto/create-strategy.dto';
+import { UpdateStrategyDto } from './dto/update-strategy.dto';
 
 @Injectable()
 export class StrategyRepository {
   constructor(private prisma: PrismaService) {}
   //   // select
-  //   async fetchStrategy(user: string): Promise<Asset[]> {
-  //     return await this.prisma.asset.findMany({
-  //       where: {
-  //         user: user,
-  //       },
-  //       orderBy: {
-  //         addDate: 'asc',
-  //       },
-  //     });
-  //   }
+  async fetchStrategy(user: string): Promise<Strategy> {
+    return await this.prisma.strategy.findFirst({
+      where: {
+        user: user,
+      },
+    });
+  }
 
-  //   // create
-  //   async createStrategy(createAssetDto: CreateAssetDto): Promise<Asset> {
-  //     const { asset, user, cashUSD, cashJPY } = createAssetDto;
-  //     // 現在日時取得
-  //     const year = format(new Date(), 'yyyy');
-  //     const month = format(new Date(), 'MM');
-  //     const date = format(new Date(), 'dd');
-  //     // 作成・更新日時取得
-  //     const nowDate = format(new Date(), 'yyyyMMddHHmmss');
-  //     return await this.prisma.asset.create({
-  //       data: {
-  //         asset,
-  //         year,
-  //         month,
-  //         date,
-  //         addDate: nowDate,
-  //         updDate: nowDate,
-  //         user,
-  //         cashUSD,
-  //         cashJPY,
-  //       },
-  //     });
-  //   }
+  // create
+  async createStrategy(
+    createStrategyDto: CreateStrategyDto,
+  ): Promise<Strategy> {
+    const { text, user } = createStrategyDto;
+    // 作成・更新日時取得
+    const nowDate = format(new Date(), 'yyyyMMdd');
+    return await this.prisma.strategy.create({
+      data: {
+        user,
+        text,
+        addDate: nowDate,
+        updDate: nowDate,
+      },
+    });
+  }
 
-  //   // update
-  //   async updateStrategy(updateAssetDto: UpdateAssetDto): Promise<Asset> {
-  //     const { id, asset, cashUSD, cashJPY } = updateAssetDto;
-  //     // 作成・更新日時取得
-  //     const nowDate = format(new Date(), 'yyyyMMddHHmmss');
-  //     return await this.prisma.asset.update({
-  //       where: {
-  //         id,
-  //       },
-  //       data: {
-  //         asset,
-  //         updDate: nowDate,
-  //         cashUSD: cashUSD ?? undefined,
-  //         cashJPY: cashJPY ?? undefined,
-  //       },
-  //     });
-  //   }
+  // update
+  async updateStrategy(
+    updateStrategyDto: UpdateStrategyDto,
+  ): Promise<Strategy> {
+    const { text, id } = updateStrategyDto;
+    // 作成・更新日時取得
+    const nowDate = format(new Date(), 'yyyyMMdd');
+    return await this.prisma.strategy.update({
+      where: {
+        id,
+      },
+      data: {
+        text,
+        updDate: nowDate,
+      },
+    });
+  }
 }

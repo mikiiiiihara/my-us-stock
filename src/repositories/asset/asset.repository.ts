@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { format } from 'date-fns';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Asset } from 'src/schema/asset/dto/asset.type';
+import { Asset } from 'src/schema/asset/dto/types/asset.type';
 import { CreateAssetDto } from './dto/create-asset.dto';
 import { UpdateAssetDto } from './dto/update-asset.dto';
 
@@ -56,8 +56,8 @@ export class AssetRepository {
       data: {
         asset,
         updDate: nowDate,
-        cashUSD: cashUSD ?? undefined,
-        cashJPY: cashJPY ?? undefined,
+        cashUSD,
+        cashJPY,
       },
     });
   }

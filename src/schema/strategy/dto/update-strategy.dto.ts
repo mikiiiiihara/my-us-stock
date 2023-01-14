@@ -1,5 +1,5 @@
 export class UpdateStrategyDto {
-  id: number;
-
   text: string;
+
+  user: string;
 }

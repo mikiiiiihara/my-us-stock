@@ -47,6 +47,22 @@ type MarketPrice {
   currentRate: Float!
 }
 
+type Strategy {
+  id: ID!
+
+  """ユーザー名"""
+  user: String!
+
+  """文章"""
+  text: String!
+
+  """作成日時"""
+  addDate: String!
+
+  """更新日時"""
+  updDate: String!
+}
+
 type Ticker {
   id: ID!
 
@@ -82,28 +98,24 @@ type Query {
   getAssets(user: String!): [Asset!]
   getCurrentUsdJpy: Float!
   getMarketPrices(tickerList: [String]!): [MarketPrice!]!
+  getStrategy(user: String!): Strategy
   getTickers(user: String!): [Ticker!]
 }
 
 type Mutation {
-  createAsset(input: CreateAssetInput!): Asset!
+  updateOrCreateAsset(input: UpdateOrCreateAssetInput!): Asset!
   updateAsset(input: UpdateAssetInput!): Asset!
+  updateStrategy(input: UpdateStrategyInput!): Strategy!
   createTicker(input: CreateTickerInput!): Ticker!
   updateTicker(input: UpdateTickerInput!): Ticker!
 }
 
-input CreateAssetInput {
+input UpdateOrCreateAssetInput {
   """株式総額"""
   asset: Float!
 
   """ユーザー名"""
   user: String!
-
-  """現金(ドル)"""
-  cashUSD: Float!
-
-  """現金(円)"""
-  cashJPY: Int!
 }
 
 input UpdateAssetInput {
@@ -113,11 +125,19 @@ input UpdateAssetInput {
   """株式総額"""
   asset: Float!
 
-  """株式総額"""
-  cashUSD: Float
+  """現金(ドル)"""
+  cashUSD: Float!
 
-  """株式総額"""
-  cashJPY: Float
+  """現金(円)"""
+  cashJPY: Int!
+}
+
+input UpdateStrategyInput {
+  """ユーザー名"""
+  user: String!
+
+  """文章"""
+  text: String!
 }
 
 input CreateTickerInput {
