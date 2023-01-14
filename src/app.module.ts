@@ -6,7 +6,8 @@ import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PrismaService } from './prisma/prisma.service';
-import { TickerModule } from './schema/ticker/ticker.module';
+import { RepositoriesModule } from './repositories/repositories.module';
+import { SchemaModule } from './schema/schema.module';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { TickerModule } from './schema/ticker/ticker.module';
     ConfigModule.forRoot({
       envFilePath: ['.env.development.local'],
     }),
-    TickerModule,
+    SchemaModule,
+    RepositoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
