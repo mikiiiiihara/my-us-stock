@@ -19,6 +19,20 @@ export class AssetRepository {
       },
     });
   }
+  async fetchTodayAsset(user: string): Promise<Asset> {
+    // 現在日時取得
+    const year = format(new Date(), 'yyyy');
+    const month = format(new Date(), 'MM');
+    const date = format(new Date(), 'dd');
+    return await this.prisma.asset.findFirst({
+      where: {
+        user: user,
+        year: year,
+        month: month,
+        date: date,
+      },
+    });
+  }
 
   // create
   async createAsset(createAssetDto: CreateAssetDto): Promise<Asset> {

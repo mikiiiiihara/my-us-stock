@@ -2,7 +2,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AssetService } from './asset.service';
 import { Asset } from './dto/types/asset.type';
 import { UpdateOrCreateAssetInput } from './dto/input/update-or-create-asset.input';
-import { UpdateAssetInput } from './dto/input/update-asset.input';
+import { UpdateCashInput } from './dto/input/update-cash.input';
 
 @Resolver(() => Asset)
 export class AssetResolver {
@@ -21,7 +21,7 @@ export class AssetResolver {
   }
 
   @Mutation(() => Asset)
-  async updateAsset(@Args('input') updateAssetInput: UpdateAssetInput) {
-    return this.assetService.updateAsset(updateAssetInput);
+  async updateCash(@Args('input') updateCashInput: UpdateCashInput) {
+    return this.assetService.updateCash(updateCashInput);
   }
 }

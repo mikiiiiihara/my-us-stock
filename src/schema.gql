@@ -104,7 +104,7 @@ type Query {
 
 type Mutation {
   updateOrCreateAsset(input: UpdateOrCreateAssetInput!): Asset!
-  updateAsset(input: UpdateAssetInput!): Asset!
+  updateCash(input: UpdateCashInput!): Asset!
   updateStrategy(input: UpdateStrategyInput!): Strategy!
   createTicker(input: CreateTickerInput!): Ticker!
   updateTicker(input: UpdateTickerInput!): Ticker!
@@ -118,9 +118,9 @@ input UpdateOrCreateAssetInput {
   user: String!
 }
 
-input UpdateAssetInput {
-  """ID"""
-  id: Int!
+input UpdateCashInput {
+  """ユーザー名"""
+  user: String!
 
   """株式総額"""
   asset: Float!

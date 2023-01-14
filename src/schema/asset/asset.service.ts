@@ -4,7 +4,7 @@ import { CreateAssetDto } from 'src/repositories/asset/dto/create-asset.dto';
 import { UpdateAssetDto } from 'src/repositories/asset/dto/update-asset.dto';
 import { Asset } from './dto/types/asset.type';
 import { UpdateOrCreateAssetInput } from './dto/input/update-or-create-asset.input';
-import { UpdateAssetInput } from './dto/input/update-asset.input';
+import { UpdateCashInput } from './dto/input/update-cash.input';
 import { format } from 'date-fns';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class AssetService {
   constructor(private readonly assetRepository: AssetRepository) {}
 
   async fetchAssetList(user: string): Promise<Asset[]> {
-    return this.assetRepository.fetchAssetList(user);
+    return await this.assetRepository.fetchAssetList(user);
   }
 
   async updateOrCreateAsset(
@@ -86,11 +86,29 @@ export class AssetService {
       return await this.assetRepository.updateAsset(updateAssetDto);
     }
   }
-  async updateAsset(updateAssetInput: UpdateAssetInput): Promise<Asset> {
-    const { asset, id, cashUSD, cashJPY } = updateAssetInput;
+  async updateCash(updateCashInput: UpdateCashInput): Promise<Asset> {
+    const { asset, user, cashUSD, cashJPY } = updateCashInput;
+
+    //本日分のデータが既に存在するか？
+    const existAsset = await this.assetRepository.fetchTodayAsset(user);
+    // 処理実行
+    if (existAsset == null) {
+      // create
+      // create
+      const createAssetDto: CreateAssetDto = {
+        asset,
+        user,
+        cashUSD,
+        cashJPY,
+      };
+      return await this.assetRepository.createAsset(createAssetDto);
+    } else {
+      // update
+    }
+    // update
     const updateAssetDto: UpdateAssetDto = {
+      id: existAsset.id,
       asset,
-      id,
       cashUSD,
       cashJPY,
     };

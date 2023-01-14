@@ -1,13 +1,12 @@
 import { Field, InputType, Int } from '@nestjs/graphql';
-import { IsOptional, Min } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, Min } from 'class-validator';
 
 @InputType()
-export class UpdateAssetInput {
-  @Field(() => Int, {
-    description: 'ID',
-  })
-  @Min(0)
-  id: number;
+export class UpdateCashInput {
+  @Field({ description: 'ユーザー名' })
+  @IsNotEmpty()
+  @IsString()
+  user: string;
 
   @Field({ description: '株式総額' })
   @Min(0)
