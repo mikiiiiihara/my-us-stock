@@ -6,6 +6,7 @@ import { Asset } from './dto/types/asset.type';
 import { UpdateOrCreateAssetInput } from './dto/input/update-or-create-asset.input';
 import { UpdateCashInput } from './dto/input/update-cash.input';
 import { format } from 'date-fns';
+import { getNowDate } from 'src/util/getNowDate';
 
 @Injectable()
 export class AssetService {
@@ -20,9 +21,10 @@ export class AssetService {
   ): Promise<Asset> {
     const { asset, user } = updateOrCreateAssetInput;
     // 現在日時取得
-    const year = format(new Date(), 'yyyy');
-    const month = format(new Date(), 'MM');
-    const date = format(new Date(), 'dd');
+    const now = getNowDate();
+    const year = format(now, 'yyyy');
+    const month = format(now, 'MM');
+    const date = format(now, 'dd');
     //本日分のデータが既に存在するか？
     const existAssets: Asset[] = await this.assetRepository.fetchAssetList(
       user,

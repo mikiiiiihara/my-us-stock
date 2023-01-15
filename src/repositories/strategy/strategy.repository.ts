@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { format } from 'date-fns';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Strategy } from 'src/schema/strategy/dto/types/strategy.type';
+import { getNowDate } from 'src/util/getNowDate';
 import { CreateStrategyDto } from './dto/create-strategy.dto';
 import { UpdateStrategyDto } from './dto/update-strategy.dto';
 
@@ -23,7 +24,8 @@ export class StrategyRepository {
   ): Promise<Strategy> {
     const { text, user } = createStrategyDto;
     // 作成・更新日時取得
-    const nowDate = format(new Date(), 'yyyyMMdd');
+    const now = getNowDate();
+    const nowDate = format(now, 'yyyyMMdd');
     return await this.prisma.strategy.create({
       data: {
         user,
@@ -40,7 +42,8 @@ export class StrategyRepository {
   ): Promise<Strategy> {
     const { text, id } = updateStrategyDto;
     // 作成・更新日時取得
-    const nowDate = format(new Date(), 'yyyyMMdd');
+    const now = getNowDate();
+    const nowDate = format(now, 'yyyyMMdd');
     return await this.prisma.strategy.update({
       where: {
         id,
