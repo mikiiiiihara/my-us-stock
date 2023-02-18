@@ -63,73 +63,71 @@ export class TickerService {
     };
   }
 
-  // 保有株式情報を更新（株数が0の場合は削除）
+  // 保有株式情報を更新
   async updateTicker(updateTickerInput: UpdateTickerInput): Promise<Ticker> {
-    const { quantity, id } = updateTickerInput;
-    if (quantity != 0) {
-      // 所有株情報の現在価格を更新
-      const newTicker = await this.tickerRepository.updateTicker(
-        updateTickerInput,
-      );
-      const {
-        ticker,
-        getPrice,
-        quantity,
-        user,
-        dividend,
-        dividendTime,
-        dividendFirstTime,
-        sector,
-        usdjpy,
-      } = newTicker;
-      // 引数で受け取った現在のマーケットデータも同時に返却する
-      const { currentPrice, priceGets, currentRate } = updateTickerInput;
-      return {
-        id,
-        ticker,
-        getPrice,
-        quantity,
-        user,
-        dividend,
-        dividendTime,
-        dividendFirstTime,
-        sector,
-        usdjpy,
-        currentPrice,
-        priceGets,
-        currentRate,
-      };
-    } else {
-      //レコード削除
-      const newTicker = await this.tickerRepository.deleteTicker(id);
-      const {
-        ticker,
-        getPrice,
-        quantity,
-        user,
-        dividend,
-        dividendTime,
-        dividendFirstTime,
-        sector,
-        usdjpy,
-      } = newTicker;
-      // 引数で受け取った現在のマーケットデータも同時に返却する
-      const { currentPrice, priceGets, currentRate } = updateTickerInput;
-      return {
-        id,
-        ticker,
-        getPrice,
-        quantity,
-        user,
-        dividend,
-        dividendTime,
-        dividendFirstTime,
-        sector,
-        usdjpy,
-        currentPrice,
-        priceGets,
-        currentRate,
-      };
-    }
+    const { id, currentPrice, priceGets, currentRate } = updateTickerInput;
+    // 所有株情報の現在価格を更新
+    const newTicker = await this.tickerRepository.updateTicker(
+      updateTickerInput,
+    );
+    const {
+      ticker,
+      getPrice,
+      quantity,
+      user,
+      dividend,
+      dividendTime,
+      dividendFirstTime,
+      sector,
+      usdjpy,
+    } = newTicker;
+    return {
+      id,
+      ticker,
+      getPrice,
+      quantity,
+      user,
+      dividend,
+      dividendTime,
+      dividendFirstTime,
+      sector,
+      usdjpy,
+      currentPrice,
+      priceGets,
+      currentRate,
+    };
+  }
+
+  // 保有株式情報を更新
+  async deleteTicker(updateTickerInput: UpdateTickerInput): Promise<Ticker> {
+    const { id, currentPrice, priceGets, currentRate } = updateTickerInput;
+    //レコード削除
+    const selectedTicker = await this.tickerRepository.deleteTicker(id);
+    const {
+      ticker,
+      getPrice,
+      quantity,
+      user,
+      dividend,
+      dividendTime,
+      dividendFirstTime,
+      sector,
+      usdjpy,
+    } = selectedTicker;
+    return {
+      id,
+      ticker,
+      getPrice,
+      quantity,
+      user,
+      dividend,
+      dividendTime,
+      dividendFirstTime,
+      sector,
+      usdjpy,
+      currentPrice,
+      priceGets,
+      currentRate,
+    };
   }
 }

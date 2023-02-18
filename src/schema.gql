@@ -117,6 +117,7 @@ type Mutation {
   updateStrategy(input: UpdateStrategyInput!): Strategy!
   createTicker(input: CreateTickerInput!): Ticker!
   updateTicker(input: UpdateTickerInput!): Ticker!
+  deleteTicker(input: UpdateTickerInput!): Ticker!
 }
 
 input UpdateOrCreateAssetInput {

@@ -21,4 +21,8 @@ export class TickerResolver {
   async updateTicker(@Args('input') updateTickerInput: UpdateTickerInput) {
     return this.tickerService.updateTicker(updateTickerInput);
   }
+  @Mutation(() => Ticker)
+  async deleteTicker(@Args('input') updateTickerInput: UpdateTickerInput) {
+    return this.tickerService.deleteTicker(updateTickerInput);
+  }
 }
