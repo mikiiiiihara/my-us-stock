@@ -10,14 +10,13 @@ export class MarketPriceService {
   async fetchMarketPriceList(tickerList: string[]): Promise<MarketPrice[]> {
     const marketPriceList: MarketPrice[] = [];
     for (const ticker of tickerList) {
-      const { c, d, dp } = await this.marketPriceRepository.fetchMarketPrice(
-        ticker,
-      );
+      const { currentPrice, priceGets, currentRate } =
+        await this.marketPriceRepository.fetchMarketPrice(ticker);
       const marketPrice: MarketPrice = {
         ticker,
-        currentPrice: c,
-        priceGets: d,
-        currentRate: dp,
+        currentPrice,
+        priceGets,
+        currentRate,
       };
       marketPriceList.push(marketPrice);
     }

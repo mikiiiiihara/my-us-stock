@@ -92,6 +92,15 @@ type Ticker {
 
   """購入時為替"""
   usdjpy: Float!
+
+  """現在価格"""
+  currentPrice: Float!
+
+  """変化額"""
+  priceGets: Float!
+
+  """変化率"""
+  currentRate: Float!
 }
 
 type Query {
@@ -167,6 +176,15 @@ input CreateTickerInput {
 
   """購入時為替"""
   usdjpy: Float!
+
+  """現在価格"""
+  currentPrice: Float!
+
+  """変化額"""
+  priceGets: Float!
+
+  """変化率"""
+  currentRate: Float!
 }
 
 input UpdateTickerInput {
@@ -183,4 +201,13 @@ input UpdateTickerInput {
 
   """購入時為替"""
   usdjpy: Float
+
+  """現在価格"""
+  currentPrice: Float!
+
+  """変化額"""
+  priceGets: Float!
+
+  """変化率"""
+  currentRate: Float!
 }

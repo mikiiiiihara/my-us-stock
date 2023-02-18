@@ -1,5 +1,5 @@
 export class MarketPriceDto {
-  c: number;
-  d: number;
-  dp: number;
+  currentPrice: number;
+  priceGets: number;
+  currentRate: number;
 }

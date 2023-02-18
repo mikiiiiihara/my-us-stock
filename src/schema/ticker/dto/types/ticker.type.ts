@@ -31,4 +31,13 @@ export class Ticker {
 
   @Field({ description: '購入時為替' })
   usdjpy: number;
+
+  @Field({ description: '現在価格' })
+  currentPrice: number;
+
+  @Field({ description: '変化額' })
+  priceGets: number;
+
+  @Field({ description: '変化率' })
+  currentRate: number;
 }
