@@ -3,9 +3,9 @@ import { AssetRepository } from 'src/repositories/asset/asset.repository';
 import { CreateAssetDto } from 'src/repositories/asset/dto/create-asset.dto';
 import { UpdateAssetDto } from 'src/repositories/asset/dto/update-asset.dto';
 import { Asset } from './dto/types/asset.type';
-import { UpdateOrCreateAssetInput } from './dto/input/update-or-create-asset.input';
+import { CreateTodayAssetInput } from './dto/input/create-today-asset.input';
 import { UpdateCashInput } from './dto/input/update-cash.input';
-import { format } from 'date-fns';
+import { UpdateTodayAssetInput } from './dto/input/update-today-asset.input';
 
 @Injectable()
 export class AssetService {
@@ -15,77 +15,59 @@ export class AssetService {
     return await this.assetRepository.fetchAssetList(user);
   }
 
-  async updateOrCreateAsset(
-    updateOrCreateAssetInput: UpdateOrCreateAssetInput,
+  // 当日の資産総額を更新する(画面側で当日データのidを指定する)
+  async createTodayAsset(
+    createTodayAssetInput: CreateTodayAssetInput,
   ): Promise<Asset> {
-    const { asset, user } = updateOrCreateAssetInput;
-    // 現在日時取得
-    const year = format(new Date(), 'yyyy');
-    const month = format(new Date(), 'MM');
-    const date = format(new Date(), 'dd');
-    //本日分のデータが既に存在するか？
+    const { asset, user } = createTodayAssetInput;
+    // 過去の中の最新データを取得
     const existAssets: Asset[] = await this.assetRepository.fetchAssetList(
       user,
     );
-
-    let existAsset: Asset;
-    for (const value of existAssets) {
-      if (value != undefined) {
-        if (value.year == year && value.month == month && value.date == date) {
-          existAsset = value;
-        }
-      }
-    }
-
-    //本日分のデータがない場合、過去の中の最新データを取得
     // 日付比較用
     let latestAsset: Asset;
     let keepDate: Date;
-    if (existAsset == null) {
-      for (const value of existAssets) {
-        const yyyyMMddStr = value.year + '/' + value.month + '/' + value.date;
-        const yyyyMMdd = new Date(yyyyMMddStr);
-        // latestAsset = 空の場合、現在のvalueを代入・keepDateに代入
-        if (latestAsset == null) {
+    for (const value of existAssets) {
+      const yyyyMMddStr = value.year + '/' + value.month + '/' + value.date;
+      const yyyyMMdd = new Date(yyyyMMddStr);
+      // latestAsset = 空の場合、現在のvalueを代入・keepDateに代入
+      if (latestAsset == null) {
+        latestAsset = value;
+        keepDate = yyyyMMdd;
+      } else {
+        // latestAssetが空でなくて、現在のvalueのyyyyMMddがkeepDateより最新の場合
+        if (keepDate != null && yyyyMMdd.getTime() > keepDate.getTime()) {
           latestAsset = value;
           keepDate = yyyyMMdd;
-        } else {
-          // latestAssetが空でなくて、現在のvalueのyyyyMMddがkeepDateより最新の場合
-          if (keepDate != null && yyyyMMdd.getTime() > keepDate.getTime()) {
-            latestAsset = value;
-            keepDate = yyyyMMdd;
-          }
         }
       }
     }
-    // 更新処理実行（本日分のデータがない場合、新規作成）
-    if (existAsset == null) {
-      let cashUSD: number;
-      let cashJPY: number;
-      if (latestAsset == null) {
-        cashUSD = 0;
-        cashJPY = 0;
-      } else {
-        cashUSD = latestAsset.cashUSD;
-        cashJPY = latestAsset.cashJPY;
-      }
-      // create
-      const createAssetDto: CreateAssetDto = {
-        asset,
-        user,
-        cashUSD,
-        cashJPY,
-      };
-      return await this.assetRepository.createAsset(createAssetDto);
-    } else {
-      // update
-      const updateAssetDto: UpdateAssetDto = {
-        id: existAsset.id,
-        asset,
-      };
-      return await this.assetRepository.updateAsset(updateAssetDto);
-    }
+    // 直近の資産データの現金額を登録
+    const cashUSD = latestAsset == null ? 0 : latestAsset.cashUSD;
+    const cashJPY = latestAsset == null ? 0 : latestAsset.cashJPY;
+    // create
+    const createAssetDto: CreateAssetDto = {
+      asset,
+      user,
+      cashUSD,
+      cashJPY,
+    };
+    return await this.assetRepository.createAsset(createAssetDto);
   }
+
+  // 当日の資産総額を更新する(画面側で当日データのidを指定する)
+  async updateTodayAsset(
+    updateTodayAssetInput: UpdateTodayAssetInput,
+  ): Promise<Asset> {
+    const { id, asset } = updateTodayAssetInput;
+    // update
+    const updateAssetDto: UpdateAssetDto = {
+      id,
+      asset,
+    };
+    return await this.assetRepository.updateAsset(updateAssetDto);
+  }
+
   async updateCash(updateCashInput: UpdateCashInput): Promise<Asset> {
     const { asset, user, cashUSD, cashJPY } = updateCashInput;
 

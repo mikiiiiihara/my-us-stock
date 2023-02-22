@@ -2,7 +2,7 @@ import { Field, InputType } from '@nestjs/graphql';
 import { IsNotEmpty, IsString, Min } from 'class-validator';
 
 @InputType()
-export class UpdateOrCreateAssetInput {
+export class CreateTodayAssetInput {
   @Field({ description: '株式総額' })
   @Min(0)
   asset: number;

@@ -112,7 +112,8 @@ type Query {
 }
 
 type Mutation {
-  updateOrCreateAsset(input: UpdateOrCreateAssetInput!): Asset!
+  createTodayAsset(input: CreateTodayAssetInput!): Asset!
+  updateTodayAsset(input: UpdateTodayAssetInput!): Asset!
   updateCash(input: UpdateCashInput!): Asset!
   updateStrategy(input: UpdateStrategyInput!): Strategy!
   createTicker(input: CreateTickerInput!): Ticker!
@@ -120,12 +121,20 @@ type Mutation {
   deleteTicker(input: UpdateTickerInput!): Ticker!
 }
 
-input UpdateOrCreateAssetInput {
+input CreateTodayAssetInput {
   """株式総額"""
   asset: Float!
 
   """ユーザー名"""
   user: String!
+}
+
+input UpdateTodayAssetInput {
+  """id"""
+  id: Int!
+
+  """株式総額"""
+  asset: Float!
 }
 
 input UpdateCashInput {
