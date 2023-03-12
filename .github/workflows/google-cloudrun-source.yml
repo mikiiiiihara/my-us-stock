@@ -70,11 +70,11 @@ jobs:
       - name: setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 18
           cache: npm
 
-      - name: install npm packagegs
-        run: npm ci
+      - name: yarn install
+        run: yarn install
 
       - name: generate prisma client to use prisma
         run: npx prisma generate
