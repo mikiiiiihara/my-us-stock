@@ -85,10 +85,7 @@ jobs:
       - name: execute unit test
         env:
           DATABASE_URL: postgresql://root:admin@localhost:5434/stock?schema=public
-        uses: ArtiomTr/jest-coverage-report-action@v2.0-rc.6
-        with:
-          working-directory: ./
-          test-script: npm run test
+        run: npm run test
 
       - name: Google Auth
         id: auth
