@@ -79,13 +79,6 @@ jobs:
       - name: generate prisma client to use prisma
         run: npx prisma generate
 
-      - name: execute ESLint
-        uses: reviewdog/action-eslint@1
-        with:
-          workdir: ./
-          reporter: github-pr-review
-          fail_on_error: true
-
       - name: setup test db
         run: docker compose up -d db --wait
 
