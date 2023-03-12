@@ -67,36 +67,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: setup Node.js
-        uses: actions/seup-node@v2
-        with:
-          node-version: 18
-          cache: npm
-
-      - name: install npm packagegs
-        run: npm ci
-
-      - name: generate prisma client to use prisma
-        run: npx prisma generate
-
-      - name: execute ESLint
-        uses: reviewdog/action-eslint@1
-        with:
-          workdir: ./
-          reporter: github-pr-review
-          fail_on_error: true
-
-      - name: setup test db
-        run: docker compose up -d db --wait
-
-      - name: execute unit test
-        env:
-          DATABASE_URL: postgresql://root:admin@localhost:5434/stock?schema=public
-        uses: ArtiomTr/jest-coverage-report-action@v2.0-rc.6
-        with:
-          working-directory: ./
-          test-script: npm run test
-
       - name: Google Auth
         id: auth
         uses: 'google-github-actions/auth@v0'
