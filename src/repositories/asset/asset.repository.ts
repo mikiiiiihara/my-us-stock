@@ -1,6 +1,6 @@
+import { PrismaService } from '@/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { format } from 'date-fns';
-import { PrismaService } from 'src/prisma/prisma.service';
 import { Asset } from 'src/schema/asset/dto/types/asset.type';
 import { CreateAssetDto } from './dto/create-asset.dto';
 import { UpdateAssetDto } from './dto/update-asset.dto';

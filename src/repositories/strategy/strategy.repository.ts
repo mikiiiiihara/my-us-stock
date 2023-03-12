@@ -1,6 +1,6 @@
+import { PrismaService } from '@/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { format } from 'date-fns';
-import { PrismaService } from 'src/prisma/prisma.service';
 import { Strategy } from 'src/schema/strategy/dto/types/strategy.type';
 import { CreateStrategyDto } from './dto/create-strategy.dto';
 import { UpdateStrategyDto } from './dto/update-strategy.dto';

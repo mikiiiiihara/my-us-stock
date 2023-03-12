@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { MarketPriceRepository } from 'src/repositories/market-price/market-price.repository';
+import { MarketPriceRepository } from '@/repositories/market-price/market-price.repository';
 import { MarketPrice } from './dto/types/market-price.type';
 
 @Injectable()

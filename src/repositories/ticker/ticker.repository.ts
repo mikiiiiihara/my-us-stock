@@ -1,5 +1,5 @@
+import { PrismaService } from '@/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateTickerDto } from './dto/create-ticker.dto';
 import { UpdateTickerDto } from './dto/update-ticker.dto';
 import { Ticker } from './entity/tiker.entity';

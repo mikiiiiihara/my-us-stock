@@ -1,6 +1,6 @@
+import { MarketPriceRepository } from '@/repositories/market-price/market-price.repository';
+import { TickerRepository } from '@/repositories/ticker/ticker.repository';
 import { Injectable } from '@nestjs/common';
-import { MarketPriceRepository } from 'src/repositories/market-price/market-price.repository';
-import { TickerRepository } from 'src/repositories/ticker/ticker.repository';
 import { CreateTickerInput } from './dto/input/create-ticker.input';
 import { UpdateTickerInput } from './dto/input/update-ticker.input';
 import { Ticker } from './dto/types/ticker.type';

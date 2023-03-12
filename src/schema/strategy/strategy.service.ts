@@ -1,5 +1,5 @@
+import { StrategyRepository } from '@/repositories/strategy/strategy.repository';
 import { Injectable } from '@nestjs/common';
-import { StrategyRepository } from 'src/repositories/strategy/strategy.repository';
 import { UpdateStrategyInput } from './dto/input/update-strategy.input';
 import { Strategy } from './dto/types/strategy.type';
 @Injectable()

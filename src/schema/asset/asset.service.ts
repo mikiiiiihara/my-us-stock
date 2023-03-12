@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { AssetRepository } from 'src/repositories/asset/asset.repository';
+import { AssetRepository } from '@/repositories/asset/asset.repository';
 import { CreateAssetDto } from 'src/repositories/asset/dto/create-asset.dto';
 import { UpdateAssetDto } from 'src/repositories/asset/dto/update-asset.dto';
 import { Asset } from './dto/types/asset.type';
