@@ -5,6 +5,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { ControllerModule } from './controllers/controller.module';
 import { PrismaService } from './prisma/prisma.service';
 import { RepositoriesModule } from './repositories/repositories.module';
 import { SchemaModule } from './schema/schema.module';
@@ -20,6 +21,7 @@ import { SchemaModule } from './schema/schema.module';
     }),
     SchemaModule,
     RepositoriesModule,
+    ControllerModule,
   ],
   controllers: [AppController],
   providers: [AppService, PrismaService],
