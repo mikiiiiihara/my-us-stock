@@ -14,7 +14,7 @@ export class AssetRepository {
       where: {
         user: user,
       },
-      take: day == null ? day : undefined,
+      take: day != null ? day : undefined,
       orderBy: {
         addDate: 'asc',
       },

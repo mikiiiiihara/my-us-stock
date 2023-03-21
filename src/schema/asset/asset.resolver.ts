@@ -1,4 +1,4 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AssetService } from './asset.service';
 import { Asset } from './dto/types/asset.type';
 import { CreateTodayAssetInput } from './dto/input/create-today-asset.input';
@@ -10,7 +10,10 @@ export class AssetResolver {
   constructor(private readonly assetService: AssetService) {}
 
   @Query(() => [Asset], { nullable: true })
-  async getAssets(@Args('user') user: string, @Args('day') day: number) {
+  async getAssets(
+    @Args('user') user: string,
+    @Args('day', { type: () => Int }) day: number,
+  ) {
     return this.assetService.fetchAssetList(user, day);
   }
 
