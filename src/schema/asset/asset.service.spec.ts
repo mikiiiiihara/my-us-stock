@@ -1,5 +1,6 @@
 import { Asset } from '@/@generated/asset/asset.model';
 import { GetTotalModule } from '@/common/get-total/get-total.module';
+import { GetTotalService } from '@/common/get-total/get-total.service';
 import { AssetRepository } from '@/repositories/asset/asset.repository';
 import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -14,9 +15,14 @@ const mockStrategyRepository = () => ({
   createAsset: jest.fn(),
   updateAsset: jest.fn(),
 });
+const mockGetTotalService = () => ({
+  getTotal: jest.fn(),
+});
+
 describe('AssetService', () => {
   let assetService: AssetService;
   let assetRepository: any;
+  let getTotalService: any;
 
   // ユーザー
   const USER = 'test@test.com';
@@ -37,6 +43,10 @@ describe('AssetService', () => {
           provide: AssetRepository,
           useFactory: mockStrategyRepository,
         },
+        {
+          provide: GetTotalService,
+          useFactory: mockGetTotalService,
+        },
         AssetService,
       ],
     }).compile();
@@ -44,6 +54,7 @@ describe('AssetService', () => {
     assetService = module.get<AssetService>(AssetService);
     // モック
     assetRepository = module.get<AssetRepository>(AssetRepository);
+    getTotalService = module.get<GetTotalService>(GetTotalService);
   });
   describe('fetchAssetList', () => {
     describe('正常系', () => {
@@ -138,6 +149,7 @@ describe('AssetService', () => {
           cashLTC: 1,
         };
         assetRepository.createAsset.mockResolvedValue(newAsset);
+        getTotalService.getTotal.mockResolvedValue(628766.537);
         // リクエストパラメータ
         const createTodayAssetInput: CreateTodayAssetInput = {
           asset: 173743.9,
@@ -171,6 +183,7 @@ describe('AssetService', () => {
           cashLTC: 1,
         };
         assetRepository.createAsset.mockResolvedValue(newAsset);
+        getTotalService.getTotal.mockResolvedValue(628766.537);
         // リクエストパラメータ
         const createTodayAssetInput: CreateTodayAssetInput = {
           asset: 200000,
@@ -207,6 +220,7 @@ describe('AssetService', () => {
           cashLTC: 1,
         };
         assetRepository.updateAsset.mockResolvedValue(newAsset);
+        getTotalService.getTotal.mockResolvedValue(628766.537);
         // リクエストパラメータ
         const updateTodayAssetInput: UpdateTodayAssetInput = {
           id: 6,
@@ -263,6 +277,7 @@ describe('AssetService', () => {
         };
         assetRepository.fetchTodayAsset.mockResolvedValue(newAsset);
         assetRepository.updateAsset.mockResolvedValue(newAsset);
+        getTotalService.getTotal.mockResolvedValue(628766.537);
         // テスト実行
         const result = await assetService.updateCash(updateCashInput);
         expect(result).toEqual(newAsset);
@@ -289,6 +304,7 @@ describe('AssetService', () => {
         };
         assetRepository.fetchTodayAsset.mockResolvedValue(null);
         assetRepository.createAsset.mockResolvedValue(newAsset);
+        getTotalService.getTotal.mockResolvedValue(628766.537);
         // テスト実行
         const result = await assetService.updateCash(updateCashInput);
         expect(result).toEqual(newAsset);
