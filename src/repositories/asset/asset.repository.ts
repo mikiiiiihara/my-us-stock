@@ -1,7 +1,7 @@
+import { Asset } from '@/@generated/asset/asset.model';
 import { PrismaService } from '@/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { format } from 'date-fns';
-import { Asset } from 'src/schema/asset/dto/types/asset.type';
 import { CreateAssetDto } from './dto/create-asset.dto';
 import { UpdateAssetDto } from './dto/update-asset.dto';
 
@@ -37,7 +37,6 @@ export class AssetRepository {
 
   // create
   async createAsset(createAssetDto: CreateAssetDto): Promise<Asset> {
-    const { asset, user, cashUSD, cashJPY } = createAssetDto;
     // 現在日時取得
     const year = format(new Date(), 'yyyy');
     const month = format(new Date(), 'MM');
@@ -46,22 +45,19 @@ export class AssetRepository {
     const nowDate = format(new Date(), 'yyyyMMddHHmmss');
     return await this.prisma.asset.create({
       data: {
-        asset,
+        ...createAssetDto,
         year,
         month,
         date,
         addDate: nowDate,
         updDate: nowDate,
-        user,
-        cashUSD,
-        cashJPY,
       },
     });
   }
 
   // update
   async updateAsset(updateAssetDto: UpdateAssetDto): Promise<Asset> {
-    const { id, asset, cashUSD, cashJPY } = updateAssetDto;
+    const { id } = updateAssetDto;
     // 作成・更新日時取得
     const nowDate = format(new Date(), 'yyyyMMddHHmmss');
     return await this.prisma.asset.update({
@@ -69,10 +65,8 @@ export class AssetRepository {
         id,
       },
       data: {
-        asset,
+        ...updateAssetDto,
         updDate: nowDate,
-        cashUSD,
-        cashJPY,
       },
     });
   }

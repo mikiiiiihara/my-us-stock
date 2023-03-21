@@ -1,11 +1,15 @@
+import { Asset } from '@/@generated/asset/asset.model';
+import { GetTotalService } from '@/common/get-total/get-total.service';
 import { AssetRepository } from '@/repositories/asset/asset.repository';
 import { CreateAssetDto } from '@/repositories/asset/dto/create-asset.dto';
-import { Asset } from '@/schema/asset/dto/types/asset.type';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AssetService {
-  constructor(private readonly assetRepository: AssetRepository) {}
+  constructor(
+    private readonly assetRepository: AssetRepository,
+    private readonly getTotalService: GetTotalService,
+  ) {}
   async createTodayAsset(user: string): Promise<string> {
     // 過去の中の最新データを取得
     const existAssets: Asset[] = await this.assetRepository.fetchAssetList(
@@ -32,11 +36,37 @@ export class AssetService {
         }
       }
     }
+    // 直近の資産データの現金額を登録
+    const asset = latestAsset == null ? 0 : latestAsset.asset;
+    const cashUSD = latestAsset == null ? 0 : latestAsset.cashUSD;
+    const cashJPY = latestAsset == null ? 0 : latestAsset.cashJPY;
+    const cashBTC = latestAsset == null ? 0 : latestAsset.cashBTC;
+    const cashETH = latestAsset == null ? 0 : latestAsset.cashETH;
+    const cashRIPPLE = latestAsset == null ? 0 : latestAsset.cashRIPPLE;
+    const cashBAT = latestAsset == null ? 0 : latestAsset.cashBAT;
+    const cashLTC = latestAsset == null ? 0 : latestAsset.cashLTC;
+    // 合計金額
+    const total = await this.getTotalService.getTotal(
+      asset,
+      cashUSD,
+      cashJPY,
+      cashBTC,
+      cashETH,
+      cashRIPPLE,
+      cashBAT,
+      cashLTC,
+    );
     const createAssetDto: CreateAssetDto = {
-      asset: latestAsset != null ? latestAsset.asset : 0,
+      asset,
       user,
-      cashUSD: latestAsset != null ? latestAsset.cashUSD : 0,
-      cashJPY: latestAsset != null ? latestAsset.cashJPY : 0,
+      cashUSD,
+      cashJPY,
+      total,
+      cashBTC,
+      cashETH,
+      cashRIPPLE,
+      cashBAT,
+      cashLTC,
     };
     await this.assetRepository.createAsset(createAssetDto);
     return `【${new Date()}】Created Todays Asset of ${user}!`;

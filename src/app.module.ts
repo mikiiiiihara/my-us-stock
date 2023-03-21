@@ -5,6 +5,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { CommonModule } from './common/common.module';
 import { ControllerModule } from './controllers/controller.module';
 import { PrismaService } from './prisma/prisma.service';
 import { RepositoriesModule } from './repositories/repositories.module';
@@ -19,6 +20,7 @@ import { SchemaModule } from './schema/schema.module';
     ConfigModule.forRoot({
       envFilePath: ['.env.development.local'],
     }),
+    CommonModule,
     SchemaModule,
     RepositoriesModule,
     ControllerModule,

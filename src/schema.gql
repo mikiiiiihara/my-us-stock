@@ -4,33 +4,29 @@
 
 type Asset {
   id: ID!
-
-  """株式総額"""
   asset: Float!
-
-  """対象年"""
   year: String!
-
-  """対象月"""
   month: String!
-
-  """対象日"""
   date: String!
-
-  """作成日時"""
   addDate: String!
-
-  """更新日時"""
   updDate: String!
-
-  """ユーザー名"""
   user: String!
-
-  """現金(ドル)"""
   cashUSD: Float!
-
-  """現金(円)"""
   cashJPY: Int!
+  cashBTC: Float!
+  cashETH: Float!
+  cashRIPPLE: Float!
+  cashBAT: Float!
+  cashLTC: Float!
+  total: Float!
+}
+
+type CryptoCurrency {
+  """ティッカーシンボル"""
+  name: String!
+
+  """現在価格"""
+  price: Float!
 }
 
 type MarketPrice {
@@ -109,6 +105,7 @@ type Query {
   getMarketPrices(tickerList: [String]!): [MarketPrice!]!
   getStrategy(user: String!): Strategy
   getTickers(user: String!): [Ticker!]
+  getCryptoPriceList(cryptoList: [String]!): [CryptoCurrency!]!
 }
 
 type Mutation {
@@ -135,6 +132,27 @@ input UpdateTodayAssetInput {
 
   """株式総額"""
   asset: Float!
+
+  """現金(ドル)"""
+  cashUSD: Float!
+
+  """現金(円)"""
+  cashJPY: Int!
+
+  """BTC"""
+  cashBTC: Float!
+
+  """ETH"""
+  cashETH: Float!
+
+  """RIPPLE"""
+  cashRIPPLE: Float!
+
+  """BAT"""
+  cashBAT: Float!
+
+  """LTC"""
+  cashLTC: Float!
 }
 
 input UpdateCashInput {
@@ -149,6 +167,21 @@ input UpdateCashInput {
 
   """現金(円)"""
   cashJPY: Int!
+
+  """BTC"""
+  cashBTC: Float!
+
+  """ETH"""
+  cashETH: Float!
+
+  """RIPPLE"""
+  cashRIPPLE: Float!
+
+  """BAT"""
+  cashBAT: Float!
+
+  """LTC"""
+  cashLTC: Float!
 }
 
 input UpdateStrategyInput {

@@ -1,3 +1,4 @@
+import { Asset } from '@/@generated/asset/asset.model';
 import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AssetResolver } from './asset.resolver';
@@ -5,7 +6,6 @@ import { AssetService } from './asset.service';
 import { CreateTodayAssetInput } from './dto/input/create-today-asset.input';
 import { UpdateCashInput } from './dto/input/update-cash.input';
 import { UpdateTodayAssetInput } from './dto/input/update-today-asset.input';
-import { Asset } from './dto/types/asset.type';
 
 const mockAssetService = () => ({
   fetchAssetList: jest.fn(),
@@ -50,15 +50,21 @@ describe('AssetResolver', () => {
         const mockAssetList: Readonly<Asset[]> = [
           {
             id: 6,
-            asset: 173743.9,
+            total: 628766.537,
+            asset: 200000,
             year: '2023',
-            month: '02',
-            date: '22',
-            addDate: '20230222233928',
-            updDate: '20230222234031',
+            month: '03',
+            date: '21',
+            addDate: '20230321184922',
+            updDate: '20230321184950',
             user: USER,
             cashUSD: 100,
             cashJPY: 10000,
+            cashBTC: 0.1,
+            cashETH: 0.1,
+            cashRIPPLE: 1,
+            cashBAT: 1,
+            cashLTC: 1,
           },
         ];
         assetService.fetchAssetList.mockResolvedValue(mockAssetList);
@@ -74,15 +80,21 @@ describe('AssetResolver', () => {
         // サービスのモック化
         const mockAsset: Readonly<Asset> = {
           id: 6,
-          asset: 173743.9,
+          total: 628766.537,
+          asset: 200000,
           year: '2023',
-          month: '02',
-          date: '22',
-          addDate: '20230222233928',
-          updDate: '20230222234031',
+          month: '03',
+          date: '21',
+          addDate: '20230321184922',
+          updDate: '20230321184950',
           user: USER,
           cashUSD: 100,
           cashJPY: 10000,
+          cashBTC: 0.1,
+          cashETH: 0.1,
+          cashRIPPLE: 1,
+          cashBAT: 1,
+          cashLTC: 1,
         };
         assetService.createTodayAsset.mockResolvedValue(mockAsset);
         // リクエストパラメータ
@@ -104,7 +116,8 @@ describe('AssetResolver', () => {
       it('当日の資産総額を更新し、更新後の内容を取得する', async () => {
         // サービスのモック化
         const mockAsset: Readonly<Asset> = {
-          id: 6,
+          id: 3,
+          total: 200000,
           asset: 173743.9,
           year: '2023',
           month: '02',
@@ -114,12 +127,24 @@ describe('AssetResolver', () => {
           user: USER,
           cashUSD: 100,
           cashJPY: 10000,
+          cashBTC: 0,
+          cashETH: 0,
+          cashRIPPLE: 0,
+          cashBAT: 0,
+          cashLTC: 0,
         };
         assetService.updateTodayAsset.mockResolvedValue(mockAsset);
         // リクエストパラメータ
         const updateTodayAssetInput: UpdateTodayAssetInput = {
-          id: 6,
-          asset: 173743.9,
+          id: 3,
+          asset: 200000,
+          cashUSD: 100,
+          cashJPY: 10000,
+          cashBTC: 0.1,
+          cashETH: 0.1,
+          cashRIPPLE: 1,
+          cashBAT: 1,
+          cashLTC: 1,
         };
         // テスト実行
         const result = await assetResolver.updateTodayAsset(
@@ -136,23 +161,34 @@ describe('AssetResolver', () => {
         // サービスのモック化
         const mockAsset: Readonly<Asset> = {
           id: 6,
-          asset: 173743.9,
+          total: 628766.537,
+          asset: 200000,
           year: '2023',
-          month: '02',
-          date: '22',
-          addDate: '20230222233928',
-          updDate: '20230222234031',
+          month: '03',
+          date: '21',
+          addDate: '20230321184922',
+          updDate: '20230321184950',
           user: USER,
           cashUSD: 100,
           cashJPY: 10000,
+          cashBTC: 0.1,
+          cashETH: 0.1,
+          cashRIPPLE: 1,
+          cashBAT: 1,
+          cashLTC: 1,
         };
         assetService.updateCash.mockResolvedValue(mockAsset);
         // リクエストパラメータ
         const updateCashInput: UpdateCashInput = {
           user: USER,
-          asset: 173743.9,
+          asset: 200000,
           cashUSD: 100,
           cashJPY: 10000,
+          cashBTC: 0.1,
+          cashETH: 0.1,
+          cashRIPPLE: 1,
+          cashBAT: 1,
+          cashLTC: 1,
         };
         // テスト実行
         const result = await assetResolver.updateCash(updateCashInput);

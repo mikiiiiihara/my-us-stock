@@ -18,12 +18,12 @@ model Asset {
   user    String
   cashUSD Float
   cashJPY Int
-}
-
-model Setting {
-  id    Int    @id @default(autoincrement())
-  theme String
-  user  String
+  cashBTC Float
+  cashETH Float
+  cashRIPPLE Float
+  cashBAT Float
+  cashLTC Float
+  total Float
 }
 
 model Strategy {
@@ -47,8 +47,9 @@ model Ticker {
   usdjpy            Float
 }
 
-model Watchlist {
-  id     Int    @id @default(autoincrement())
-  ticker String
-  user   String
+generator nestgraphql {
+    provider = "node node_modules/prisma-nestjs-graphql"
+    // for yarn monorepos
+    // provider = "prisma-nestjs-graphql"
+    output = "../src/@generated"
 }

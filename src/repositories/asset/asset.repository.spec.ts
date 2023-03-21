@@ -2,11 +2,11 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AssetRepository } from './asset.repository';
-import { Asset } from '@/schema/asset/dto/types/asset.type';
 import { format } from 'date-fns';
-import { CreateAssetDto } from './dto/create-asset.dto';
-import { UpdateAssetDto } from './dto/update-asset.dto';
 import { migrateResetTest } from '@/prisma/prisma.util';
+import { AssetCreateInput } from '@/@generated/asset/asset-create.input';
+import { UpdateAssetDto } from './dto/update-asset.dto';
+import { Asset } from '@/@generated/asset/asset.model';
 
 describe('AssetRepository', () => {
   let assetRepository: AssetRepository;
@@ -33,8 +33,9 @@ describe('AssetRepository', () => {
     // DBリセット
     await migrateResetTest();
     // DB登録
-    const assets = [
+    const assets: AssetCreateInput[] = [
       {
+        total: 200000,
         asset: 173743.9,
         year: '2023',
         month: '02',
@@ -44,8 +45,14 @@ describe('AssetRepository', () => {
         user: USER,
         cashUSD: 100,
         cashJPY: 10000,
+        cashBTC: 0.1,
+        cashETH: 0.1,
+        cashRIPPLE: 1,
+        cashBAT: 1,
+        cashLTC: 1,
       },
       {
+        total: 210000,
         asset: 292471.3,
         year: '2023',
         month: '02',
@@ -55,6 +62,11 @@ describe('AssetRepository', () => {
         user: USER,
         cashUSD: 100,
         cashJPY: 10000,
+        cashBTC: 0.1,
+        cashETH: 0.1,
+        cashRIPPLE: 1,
+        cashBAT: 1,
+        cashLTC: 1,
       },
     ];
     await prismaService.asset.createMany({ data: assets });
@@ -66,6 +78,7 @@ describe('AssetRepository', () => {
         const expected: Asset[] = [
           {
             id: 1,
+            total: 200000,
             asset: 173743.9,
             year: '2023',
             month: '02',
@@ -75,9 +88,15 @@ describe('AssetRepository', () => {
             user: USER,
             cashUSD: 100,
             cashJPY: 10000,
+            cashBTC: 0.1,
+            cashETH: 0.1,
+            cashRIPPLE: 1,
+            cashBAT: 1,
+            cashLTC: 1,
           },
           {
             id: 2,
+            total: 210000,
             asset: 292471.3,
             year: '2023',
             month: '02',
@@ -87,6 +106,11 @@ describe('AssetRepository', () => {
             user: USER,
             cashUSD: 100,
             cashJPY: 10000,
+            cashBTC: 0.1,
+            cashETH: 0.1,
+            cashRIPPLE: 1,
+            cashBAT: 1,
+            cashLTC: 1,
           },
         ];
         // テスト実行
@@ -105,7 +129,8 @@ describe('AssetRepository', () => {
         const date = format(new Date(), 'dd');
         // 作成・更新日時取得
         const nowDate = format(new Date(), 'yyyyMMddHHmmss');
-        const asset = {
+        const asset: AssetCreateInput = {
+          total: 210000,
           asset: 173743.9,
           year,
           month,
@@ -115,11 +140,17 @@ describe('AssetRepository', () => {
           user: USER,
           cashUSD: 100,
           cashJPY: 10000,
+          cashBTC: 0.1,
+          cashETH: 0.1,
+          cashRIPPLE: 1,
+          cashBAT: 1,
+          cashLTC: 1,
         };
         await prismaService.asset.create({ data: asset });
         // 期待値
         const expected: Asset = {
           id: 3,
+          total: 210000,
           asset: 173743.9,
           year,
           month,
@@ -129,6 +160,11 @@ describe('AssetRepository', () => {
           user: USER,
           cashUSD: 100,
           cashJPY: 10000,
+          cashBTC: 0.1,
+          cashETH: 0.1,
+          cashRIPPLE: 1,
+          cashBAT: 1,
+          cashLTC: 1,
         };
         // テスト実行
         const result = await assetRepository.fetchTodayAsset(USER);
@@ -156,6 +192,7 @@ describe('AssetRepository', () => {
         // 期待値
         const expected: Asset = {
           id: 3,
+          total: 210000,
           asset: 173743.9,
           year,
           month,
@@ -165,16 +202,32 @@ describe('AssetRepository', () => {
           user: USER,
           cashUSD: 100,
           cashJPY: 10000,
+          cashBTC: 0.1,
+          cashETH: 0.1,
+          cashRIPPLE: 1,
+          cashBAT: 1,
+          cashLTC: 1,
         };
         // リクエストパラメータ
-        const createAssetDto: CreateAssetDto = {
+        const assetCreateInput: AssetCreateInput = {
+          total: 210000,
           asset: 173743.9,
+          year,
+          month,
+          date,
+          addDate: nowDate,
+          updDate: nowDate,
           user: USER,
           cashUSD: 100,
           cashJPY: 10000,
+          cashBTC: 0.1,
+          cashETH: 0.1,
+          cashRIPPLE: 1,
+          cashBAT: 1,
+          cashLTC: 1,
         };
         // テスト実行
-        const result = await assetRepository.createAsset(createAssetDto);
+        const result = await assetRepository.createAsset(assetCreateInput);
         expect(result).toEqual(expected);
         // 登録したデータを削除する
         await prismaService.asset.delete({
@@ -193,20 +246,34 @@ describe('AssetRepository', () => {
         // 期待値
         const expected: Asset = {
           id: 1,
-          asset: 200000,
+          total: 220000,
+          asset: 193743.9,
           year: '2023',
           month: '02',
           date: '22',
           addDate: '20230222233928',
-          updDate,
+          updDate: updDate,
           user: USER,
           cashUSD: 100,
           cashJPY: 10000,
+          cashBTC: 0.1,
+          cashETH: 0.1,
+          cashRIPPLE: 1,
+          cashBAT: 1,
+          cashLTC: 1,
         };
         // リクエストパラメータ
         const updateAssetDto: UpdateAssetDto = {
           id: 1,
-          asset: 200000,
+          total: 220000,
+          asset: 193743.9,
+          cashUSD: 100,
+          cashJPY: 10000,
+          cashBTC: 0.1,
+          cashETH: 0.1,
+          cashRIPPLE: 1,
+          cashBAT: 1,
+          cashLTC: 1,
         };
         // テスト実行
         const result = await assetRepository.updateAsset(updateAssetDto);
@@ -218,6 +285,7 @@ describe('AssetRepository', () => {
         // 期待値
         const expected: Asset = {
           id: 1,
+          total: 220000,
           asset: 200000,
           year: '2023',
           month: '02',
@@ -227,13 +295,24 @@ describe('AssetRepository', () => {
           user: USER,
           cashUSD: 500,
           cashJPY: 5000,
+          cashBTC: 0.1,
+          cashETH: 0.1,
+          cashRIPPLE: 1,
+          cashBAT: 1,
+          cashLTC: 1,
         };
         // リクエストパラメータ
         const updateAssetDto: UpdateAssetDto = {
           id: 1,
+          total: 220000,
           asset: 200000,
           cashUSD: 500,
           cashJPY: 5000,
+          cashBTC: 0.1,
+          cashETH: 0.1,
+          cashRIPPLE: 1,
+          cashBAT: 1,
+          cashLTC: 1,
         };
         // テスト実行
         const result = await assetRepository.updateAsset(updateAssetDto);

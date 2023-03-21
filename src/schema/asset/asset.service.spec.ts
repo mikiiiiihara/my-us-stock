@@ -1,3 +1,5 @@
+import { Asset } from '@/@generated/asset/asset.model';
+import { GetTotalModule } from '@/common/get-total/get-total.module';
 import { AssetRepository } from '@/repositories/asset/asset.repository';
 import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -5,7 +7,6 @@ import { AssetService } from './asset.service';
 import { CreateTodayAssetInput } from './dto/input/create-today-asset.input';
 import { UpdateCashInput } from './dto/input/update-cash.input';
 import { UpdateTodayAssetInput } from './dto/input/update-today-asset.input';
-import { Asset } from './dto/types/asset.type';
 
 const mockStrategyRepository = () => ({
   fetchAssetList: jest.fn(),
@@ -13,7 +14,7 @@ const mockStrategyRepository = () => ({
   createAsset: jest.fn(),
   updateAsset: jest.fn(),
 });
-describe('StrategyService', () => {
+describe('AssetService', () => {
   let assetService: AssetService;
   let assetRepository: any;
 
@@ -29,6 +30,7 @@ describe('StrategyService', () => {
           isGlobal: true,
           envFilePath: ['.env.example'],
         }),
+        GetTotalModule,
       ],
       providers: [
         {
@@ -50,15 +52,21 @@ describe('StrategyService', () => {
         const mockAssetList: Readonly<Asset[]> = [
           {
             id: 6,
-            asset: 173743.9,
+            total: 628766.537,
+            asset: 200000,
             year: '2023',
-            month: '02',
-            date: '22',
-            addDate: '20230222233928',
-            updDate: '20230222234031',
+            month: '03',
+            date: '21',
+            addDate: '20230321184922',
+            updDate: '20230321184950',
             user: USER,
             cashUSD: 100,
             cashJPY: 10000,
+            cashBTC: 0.1,
+            cashETH: 0.1,
+            cashRIPPLE: 1,
+            cashBAT: 1,
+            cashLTC: 1,
           },
         ];
         assetRepository.fetchAssetList.mockResolvedValue(mockAssetList);
@@ -75,41 +83,59 @@ describe('StrategyService', () => {
         const mockAssetList: Readonly<Asset[]> = [
           {
             id: 6,
-            asset: 173743.9,
+            total: 628766.537,
+            asset: 200000,
             year: '2023',
-            month: '02',
-            date: '22',
-            addDate: '20230222233928',
-            updDate: '20230222234031',
+            month: '03',
+            date: '20',
+            addDate: '20230321184922',
+            updDate: '20230321184950',
             user: USER,
             cashUSD: 100,
             cashJPY: 10000,
+            cashBTC: 0.1,
+            cashETH: 0.1,
+            cashRIPPLE: 1,
+            cashBAT: 1,
+            cashLTC: 1,
           },
           {
             id: 8,
-            asset: 292471.3,
+            total: 628766.537,
+            asset: 200000,
             year: '2023',
-            month: '02',
-            date: '23',
-            addDate: '20230223003003',
-            updDate: '20230223003025',
+            month: '03',
+            date: '21',
+            addDate: '20230321184922',
+            updDate: '20230321184950',
             user: USER,
             cashUSD: 100,
             cashJPY: 10000,
+            cashBTC: 0.1,
+            cashETH: 0.1,
+            cashRIPPLE: 1,
+            cashBAT: 1,
+            cashLTC: 1,
           },
         ];
         assetRepository.fetchAssetList.mockResolvedValue(mockAssetList);
         const newAsset: Readonly<Asset> = {
           id: 8,
-          asset: 292471.3,
+          total: 628766.537,
+          asset: 200000,
           year: '2023',
-          month: '02',
-          date: '23',
-          addDate: '20230223003003',
-          updDate: '20230223003025',
+          month: '03',
+          date: '21',
+          addDate: '20230321184922',
+          updDate: '20230321184950',
           user: USER,
           cashUSD: 100,
           cashJPY: 10000,
+          cashBTC: 0.1,
+          cashETH: 0.1,
+          cashRIPPLE: 1,
+          cashBAT: 1,
+          cashLTC: 1,
         };
         assetRepository.createAsset.mockResolvedValue(newAsset);
         // リクエストパラメータ
@@ -128,20 +154,26 @@ describe('StrategyService', () => {
         assetRepository.fetchAssetList.mockResolvedValue([]);
         const newAsset: Readonly<Asset> = {
           id: 6,
-          asset: 173743.9,
+          total: 628766.537,
+          asset: 200000,
           year: '2023',
-          month: '02',
-          date: '22',
-          addDate: '20230222233928',
-          updDate: '20230222234031',
+          month: '03',
+          date: '21',
+          addDate: '20230321184922',
+          updDate: '20230321184950',
           user: USER,
           cashUSD: 100,
           cashJPY: 10000,
+          cashBTC: 0.1,
+          cashETH: 0.1,
+          cashRIPPLE: 1,
+          cashBAT: 1,
+          cashLTC: 1,
         };
         assetRepository.createAsset.mockResolvedValue(newAsset);
         // リクエストパラメータ
         const createTodayAssetInput: CreateTodayAssetInput = {
-          asset: 173743.9,
+          asset: 200000,
           user: USER,
         };
         // テスト実行
@@ -158,21 +190,34 @@ describe('StrategyService', () => {
         // repositoryのモック化
         const newAsset: Readonly<Asset> = {
           id: 6,
-          asset: 173743.9,
+          total: 628766.537,
+          asset: 200000,
           year: '2023',
-          month: '02',
-          date: '22',
-          addDate: '20230222233928',
-          updDate: '20230222234031',
+          month: '03',
+          date: '21',
+          addDate: '20230321184922',
+          updDate: '20230321184950',
           user: USER,
           cashUSD: 100,
           cashJPY: 10000,
+          cashBTC: 0.1,
+          cashETH: 0.1,
+          cashRIPPLE: 1,
+          cashBAT: 1,
+          cashLTC: 1,
         };
         assetRepository.updateAsset.mockResolvedValue(newAsset);
         // リクエストパラメータ
         const updateTodayAssetInput: UpdateTodayAssetInput = {
           id: 6,
-          asset: 173743.9,
+          asset: 200000,
+          cashUSD: 100,
+          cashJPY: 10000,
+          cashBTC: 0.1,
+          cashETH: 0.1,
+          cashRIPPLE: 1,
+          cashBAT: 1,
+          cashLTC: 1,
         };
         // テスト実行
         const result = await assetService.updateTodayAsset(
@@ -184,29 +229,40 @@ describe('StrategyService', () => {
   });
   describe('updateCash', () => {
     describe('正常系', () => {
+      // リクエストパラメータ
+      const updateCashInput: UpdateCashInput = {
+        user: USER,
+        asset: 200000,
+        cashUSD: 100,
+        cashJPY: 10000,
+        cashBTC: 0.1,
+        cashETH: 0.1,
+        cashRIPPLE: 1,
+        cashBAT: 1,
+        cashLTC: 1,
+      };
       it('既存データが存在する場合、保有現金情報を更新し、更新した内容を取得する', async () => {
         // repositoryのモック化
         const newAsset: Readonly<Asset> = {
-          id: 8,
-          asset: 292471.3,
+          id: 6,
+          total: 628766.537,
+          asset: 200000,
           year: '2023',
-          month: '02',
-          date: '23',
-          addDate: '20230223003003',
-          updDate: '20230223003025',
+          month: '03',
+          date: '21',
+          addDate: '20230321184922',
+          updDate: '20230321184950',
           user: USER,
           cashUSD: 100,
           cashJPY: 10000,
+          cashBTC: 0.1,
+          cashETH: 0.1,
+          cashRIPPLE: 1,
+          cashBAT: 1,
+          cashLTC: 1,
         };
         assetRepository.fetchTodayAsset.mockResolvedValue(newAsset);
         assetRepository.updateAsset.mockResolvedValue(newAsset);
-        // リクエストパラメータ
-        const updateCashInput: UpdateCashInput = {
-          asset: 173743.9,
-          user: USER,
-          cashUSD: 100,
-          cashJPY: 10000,
-        };
         // テスト実行
         const result = await assetService.updateCash(updateCashInput);
         expect(result).toEqual(newAsset);
@@ -214,26 +270,25 @@ describe('StrategyService', () => {
       it('既存データが存在しない場合、保有現金情報を追加し、追加した内容を取得する', async () => {
         // repositoryのモック化
         const newAsset: Readonly<Asset> = {
-          id: 8,
-          asset: 292471.3,
+          id: 6,
+          total: 628766.537,
+          asset: 200000,
           year: '2023',
-          month: '02',
-          date: '23',
-          addDate: '20230223003003',
-          updDate: '20230223003025',
+          month: '03',
+          date: '21',
+          addDate: '20230321184922',
+          updDate: '20230321184950',
           user: USER,
           cashUSD: 100,
           cashJPY: 10000,
+          cashBTC: 0.1,
+          cashETH: 0.1,
+          cashRIPPLE: 1,
+          cashBAT: 1,
+          cashLTC: 1,
         };
         assetRepository.fetchTodayAsset.mockResolvedValue(null);
         assetRepository.createAsset.mockResolvedValue(newAsset);
-        // リクエストパラメータ
-        const updateCashInput: UpdateCashInput = {
-          asset: 173743.9,
-          user: USER,
-          cashUSD: 100,
-          cashJPY: 10000,
-        };
         // テスト実行
         const result = await assetService.updateCash(updateCashInput);
         expect(result).toEqual(newAsset);
