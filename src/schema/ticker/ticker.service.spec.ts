@@ -132,6 +132,14 @@ describe('TickerService', () => {
           usdjpy: 133.9,
         };
         tickerRepository.createTicker.mockResolvedValue(mockTicker);
+        const mockMarketPrice: Readonly<MarketPriceDto> = {
+          currentPrice: 148.5,
+          priceGets: -2.09,
+          currentRate: -1.3879,
+        };
+        marketPriceRepository.fetchMarketPrice.mockResolvedValue(
+          mockMarketPrice,
+        );
         // 期待値
         const expected: Readonly<Ticker> = {
           currentPrice: 148.5,
