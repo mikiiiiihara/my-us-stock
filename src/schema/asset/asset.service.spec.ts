@@ -19,6 +19,8 @@ describe('StrategyService', () => {
 
   // ユーザー
   const USER = 'test@test.com';
+  // 取得日数
+  const DAY = 7;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -61,7 +63,7 @@ describe('StrategyService', () => {
         ];
         assetRepository.fetchAssetList.mockResolvedValue(mockAssetList);
         // テスト実行
-        const result = await assetService.fetchAssetList(USER);
+        const result = await assetService.fetchAssetList(USER, DAY);
         expect(result).toEqual(mockAssetList);
       });
     });

@@ -19,6 +19,8 @@ describe('AssetResolver', () => {
 
   // ユーザー
   const USER = 'test@test.com';
+  // 取得日数
+  const DAY = 7;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -61,7 +63,7 @@ describe('AssetResolver', () => {
         ];
         assetService.fetchAssetList.mockResolvedValue(mockAssetList);
         // テスト実行
-        const result = await assetResolver.getAssets(USER);
+        const result = await assetResolver.getAssets(USER, DAY);
         expect(result).toEqual(mockAssetList);
       });
     });

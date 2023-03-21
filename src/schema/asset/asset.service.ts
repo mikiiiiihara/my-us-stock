@@ -11,8 +11,8 @@ import { UpdateTodayAssetInput } from './dto/input/update-today-asset.input';
 export class AssetService {
   constructor(private readonly assetRepository: AssetRepository) {}
 
-  async fetchAssetList(user: string): Promise<Asset[]> {
-    return await this.assetRepository.fetchAssetList(user);
+  async fetchAssetList(user: string, day: number): Promise<Asset[]> {
+    return await this.assetRepository.fetchAssetList(user, day);
   }
 
   // 当日の資産総額を更新する(画面側で当日データのidを指定する)

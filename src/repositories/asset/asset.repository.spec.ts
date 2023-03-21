@@ -14,6 +14,8 @@ describe('AssetRepository', () => {
 
   // ユーザー
   const USER = 'test@test.com';
+  // 取得日数
+  const DAY = 7;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -88,7 +90,7 @@ describe('AssetRepository', () => {
           },
         ];
         // テスト実行
-        const result = await assetRepository.fetchAssetList(USER);
+        const result = await assetRepository.fetchAssetList(USER, DAY);
         expect(result).toEqual(expected);
       });
     });

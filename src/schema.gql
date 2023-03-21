@@ -104,7 +104,7 @@ type Ticker {
 }
 
 type Query {
-  getAssets(user: String!): [Asset!]
+  getAssets(user: String!, day: Float!): [Asset!]
   getCurrentUsdJpy: Float!
   getMarketPrices(tickerList: [String]!): [MarketPrice!]!
   getStrategy(user: String!): Strategy

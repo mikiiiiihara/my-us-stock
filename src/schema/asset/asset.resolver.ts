@@ -10,8 +10,8 @@ export class AssetResolver {
   constructor(private readonly assetService: AssetService) {}
 
   @Query(() => [Asset], { nullable: true })
-  async getAssets(@Args('user') user: string) {
-    return this.assetService.fetchAssetList(user);
+  async getAssets(@Args('user') user: string, @Args('day') day: number) {
+    return this.assetService.fetchAssetList(user, day);
   }
 
   @Mutation(() => Asset)

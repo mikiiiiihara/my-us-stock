@@ -9,11 +9,12 @@ import { UpdateAssetDto } from './dto/update-asset.dto';
 export class AssetRepository {
   constructor(private prisma: PrismaService) {}
   // select
-  async fetchAssetList(user: string): Promise<Asset[]> {
+  async fetchAssetList(user: string, day?: number): Promise<Asset[]> {
     return await this.prisma.asset.findMany({
       where: {
         user: user,
       },
+      take: day == null ? day : undefined,
       orderBy: {
         addDate: 'asc',
       },
