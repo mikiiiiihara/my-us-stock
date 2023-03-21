@@ -14,9 +14,10 @@ export class AssetRepository {
       where: {
         user: user,
       },
+      // 指定した日数分の直近の値をとる
       take: day != null ? day : undefined,
       orderBy: {
-        addDate: 'asc',
+        addDate: 'desc',
       },
     });
   }

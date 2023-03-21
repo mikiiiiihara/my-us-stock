@@ -16,7 +16,13 @@ export class AssetService {
   ) {}
 
   async fetchAssetList(user: string, day: number): Promise<Asset[]> {
-    return await this.assetRepository.fetchAssetList(user, day);
+    // 画面では昇順で扱いたいため直す
+    const assetList = await this.assetRepository.fetchAssetList(user, day);
+    return assetList.sort(function (a, b) {
+      if (a.addDate < b.addDate) return -1;
+      if (a.addDate > b.addDate) return 1;
+      return 0;
+    });
   }
 
   // 当日の資産総額を更新する(画面側で当日データのidを指定する)
