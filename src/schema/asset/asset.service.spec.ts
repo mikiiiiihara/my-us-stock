@@ -1,5 +1,4 @@
 import { Asset } from '@/@generated/asset/asset.model';
-import { GetTotalModule } from '@/common/get-total/get-total.module';
 import { GetTotalService } from '@/common/get-total/get-total.service';
 import { AssetRepository } from '@/repositories/asset/asset.repository';
 import { ConfigModule } from '@nestjs/config';
@@ -36,7 +35,6 @@ describe('AssetService', () => {
           isGlobal: true,
           envFilePath: ['.env.example'],
         }),
-        GetTotalModule,
       ],
       providers: [
         {
