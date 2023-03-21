@@ -17,16 +17,17 @@ export class TickerService {
     const tickers = await this.tickerRepository.fetchTickerList(user);
     if (tickers.length === 0) return [];
     // 現在のマーケットデータを取得して返却する
-    const result: Ticker[] = [];
-    for (const tickerItem of tickers) {
-      // 現在のマーケットデータを取得
-      const marketData = await this.marketPriceRepository.fetchMarketPrice(
-        tickerItem.ticker,
-      );
-      const ticker: Ticker = Object.assign(tickerItem, marketData);
-      result.push(ticker);
-    }
-    return result;
+    const tickerList = Promise.all(
+      tickers.map(async (tickerItem) => {
+        // 現在のマーケットデータを取得
+        const marketData = await this.marketPriceRepository.fetchMarketPrice(
+          tickerItem.ticker,
+        );
+        const ticker: Ticker = Object.assign(tickerItem, marketData);
+        return ticker;
+      }),
+    );
+    return tickerList;
   }
   async createTicker(createTickerInput: CreateTickerInput): Promise<Ticker> {
     const newTicker = await this.tickerRepository.createTicker(
