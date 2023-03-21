@@ -45,8 +45,9 @@ export class TickerService {
       sector,
       usdjpy,
     } = newTicker;
-    // 引数で受け取った現在のマーケットデータも同時に返却する
-    const { currentPrice, priceGets, currentRate } = createTickerInput;
+    // 現在のマーケットデータも同時に返却する
+    const { currentPrice, priceGets, currentRate } =
+      await this.marketPriceRepository.fetchMarketPrice(ticker);
     return {
       id,
       ticker,
