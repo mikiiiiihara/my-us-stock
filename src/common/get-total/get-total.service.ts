@@ -21,10 +21,7 @@ export class GetTotalService {
     cashLTC: number,
   ): Promise<number> {
     // 現在のドル円を取得
-    const currencyPair = await this.currencyRepository.fetchCurrencyPair();
-    const currentUsdJpy = Number(
-      currencyPair.find((e) => e.currencyPairCode == 'USDJPY').bid,
-    );
+    const currentUsdJpy = await this.currencyRepository.fetchCurrentUsdJpy();
     // ドル建てのものを円に直す
     const cashUSDbyJPY = cashUSD * currentUsdJpy;
     // 現在の仮想通貨情報取得する
