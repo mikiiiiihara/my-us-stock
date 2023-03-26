@@ -1,4 +1,4 @@
-import { Asset } from '@/@generated/asset/asset.model';
+import { Asset } from '@/common/types/asset/asset.model';
 import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AssetResolver } from './asset.resolver';

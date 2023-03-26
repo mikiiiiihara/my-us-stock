@@ -1,5 +1,5 @@
-import { Asset } from '@/@generated/asset/asset.model';
 import { GetTotalService } from '@/common/get-total/get-total.service';
+import { Asset } from '@/common/types/asset/asset.model';
 import { AssetRepository } from '@/repositories/asset/asset.repository';
 import { CreateAssetDto } from '@/repositories/asset/dto/create-asset.dto';
 import { Injectable } from '@nestjs/common';
@@ -11,13 +11,13 @@ export class AssetService {
     private readonly getTotalService: GetTotalService,
   ) {}
   async createTodayAsset(user: string): Promise<string> {
+    // 本日の資産が登録されていた場合、登録は行わず処理終了
+    const existAsset = await this.assetRepository.fetchTodayAsset(user);
+    if (existAsset != null) return 'Already created';
     // 過去の中の最新データを取得
     const existAssets: Asset[] = await this.assetRepository.fetchAssetList(
       user,
     );
-    // 本日の資産が登録されていた場合、登録は行わず処理終了
-    const existAsset = await this.assetRepository.fetchTodayAsset(user);
-    if (existAsset != null) return 'Already created';
     // 日付比較用
     let latestAsset: Asset;
     let keepDate: Date;

@@ -1,5 +1,5 @@
-import { Asset } from '@/@generated/asset/asset.model';
 import { GetTotalService } from '@/common/get-total/get-total.service';
+import { Asset } from '@/common/types/asset/asset.model';
 import { AssetRepository } from '@/repositories/asset/asset.repository';
 import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
@@ -8,7 +8,7 @@ import { CreateTodayAssetInput } from './dto/input/create-today-asset.input';
 import { UpdateCashInput } from './dto/input/update-cash.input';
 import { UpdateTodayAssetInput } from './dto/input/update-today-asset.input';
 
-const mockStrategyRepository = () => ({
+const mockAssetRepository = () => ({
   fetchAssetList: jest.fn(),
   fetchTodayAsset: jest.fn(),
   createAsset: jest.fn(),
@@ -39,7 +39,7 @@ describe('AssetService', () => {
       providers: [
         {
           provide: AssetRepository,
-          useFactory: mockStrategyRepository,
+          useFactory: mockAssetRepository,
         },
         {
           provide: GetTotalService,

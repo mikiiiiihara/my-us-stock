@@ -1,4 +1,4 @@
-import { Asset } from '@/@generated/asset/asset.model';
+import { Asset } from '@/common/types/asset/asset.model';
 import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AssetService } from './asset.service';
 import { CreateTodayAssetInput } from './dto/input/create-today-asset.input';

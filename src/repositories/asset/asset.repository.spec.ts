@@ -4,9 +4,9 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AssetRepository } from './asset.repository';
 import { format } from 'date-fns';
 import { migrateResetTest } from '@/prisma/prisma.util';
-import { AssetCreateInput } from '@/@generated/asset/asset-create.input';
 import { UpdateAssetDto } from './dto/update-asset.dto';
-import { Asset } from '@/@generated/asset/asset.model';
+import { Asset } from '@/common/types/asset/asset.model';
+import { AssetCreateInput } from '@/common/types/asset/asset-create-input';
 
 describe('AssetRepository', () => {
   let assetRepository: AssetRepository;

@@ -1,4 +1,4 @@
-import { Asset } from '@/@generated/asset/asset.model';
+import { Asset } from '@/common/types/asset/asset.model';
 import { PrismaService } from '@/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { format } from 'date-fns';

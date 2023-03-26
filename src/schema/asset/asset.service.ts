@@ -5,8 +5,8 @@ import { UpdateAssetDto } from 'src/repositories/asset/dto/update-asset.dto';
 import { CreateTodayAssetInput } from './dto/input/create-today-asset.input';
 import { UpdateCashInput } from './dto/input/update-cash.input';
 import { UpdateTodayAssetInput } from './dto/input/update-today-asset.input';
-import { Asset } from '@/@generated/asset/asset.model';
 import { GetTotalService } from '@/common/get-total/get-total.service';
+import { Asset } from '@/common/types/asset/asset.model';
 
 @Injectable()
 export class AssetService {

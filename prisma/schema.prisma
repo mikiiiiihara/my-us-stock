@@ -46,10 +46,3 @@ model Ticker {
   sector            String
   usdjpy            Float
 }
-
-generator nestgraphql {
-    provider = "node node_modules/prisma-nestjs-graphql"
-    // for yarn monorepos
-    // provider = "prisma-nestjs-graphql"
-    output = "../src/@generated"
-}

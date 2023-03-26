@@ -21,14 +21,6 @@ type Asset {
   total: Float!
 }
 
-type CryptoCurrency {
-  """ティッカーシンボル"""
-  name: String!
-
-  """現在価格"""
-  price: Float!
-}
-
 type MarketPrice {
   """ティッカーシンボル"""
   ticker: String!
@@ -105,7 +97,6 @@ type Query {
   getMarketPrices(tickerList: [String]!): [MarketPrice!]!
   getStrategy(user: String!): Strategy
   getTickers(user: String!): [Ticker!]
-  getCryptoPriceList(cryptoList: [String]!): [CryptoCurrency!]!
 }
 
 type Mutation {
