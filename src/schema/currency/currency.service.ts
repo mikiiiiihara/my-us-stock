@@ -7,10 +7,6 @@ export class CurrencyService {
 
   // 現在のドル円を取得する
   async fetchCurrentUsdJpy(): Promise<number> {
-    const currencyPair = await this.currencyRepository.fetchCurrencyPair();
-    const currentUsdJpy = currencyPair.find(
-      (e) => e.currencyPairCode == 'USDJPY',
-    ).bid;
-    return Number(currentUsdJpy);
+    return await this.currencyRepository.fetchCurrentUsdJpy();
   }
 }

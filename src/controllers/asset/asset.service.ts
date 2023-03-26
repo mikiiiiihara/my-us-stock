@@ -37,6 +37,27 @@ export class AssetService {
       }
     }
     // 直近の資産データの現金額を登録
+    // TODO: 保有株式情報の最新情報を取得する処理を入れる
+    // tickerRepository,marketPriceRepositoryをimport
+    // ユーザーに紐付く保有株式情報を取得
+    // const tickers = await this.tickerRepository.fetchTickerList(user);
+    // 関数名：getCurrentTickerPriceSum
+    // if (tickers.length === 0) return [];
+    // // 現在のマーケットデータを取得して返却する
+    // const tickerList = Promise.all(
+    //   tickers.map(async (tickerItem) => {
+    //     // 現在のマーケットデータを取得
+    //     const marketData = await this.marketPriceRepository.fetchMarketPrice(
+    //       tickerItem.ticker,
+    //     );
+    //     const ticker: Ticker = Object.assign(tickerItem, marketData);
+    //     return ticker;
+    //   }),
+    // );
+    // return tickerList;
+    // currencyRepositoryをimport
+    // ticker.currentPrice * ticker.quantity * ドル円
+    // この総和をassetに設定する
     const asset = latestAsset == null ? 0 : latestAsset.asset;
     const cashUSD = latestAsset == null ? 0 : latestAsset.cashUSD;
     const cashJPY = latestAsset == null ? 0 : latestAsset.cashJPY;
