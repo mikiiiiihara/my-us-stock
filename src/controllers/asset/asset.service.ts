@@ -2,15 +2,19 @@ import { GetTotalService } from '@/common/get-total/get-total.service';
 import { Asset } from '@/common/types/asset/asset.model';
 import { AssetRepository } from '@/repositories/asset/asset.repository';
 import { CreateAssetDto } from '@/repositories/asset/dto/create-asset.dto';
-import { Ticker as TickerWithoutCurrentPrice } from '@/repositories/ticker/entity/tiker.entity';
+import { CurrencyRepository } from '@/repositories/currency/currency.repository';
+import { MarketPriceRepository } from '@/repositories/market-price/market-price.repository';
+import { Ticker as TickerOfRepository } from '@/repositories/ticker/entity/tiker.entity';
+import { TickerRepository } from '@/repositories/ticker/ticker.repository';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AssetService {
   constructor(
     private readonly assetRepository: AssetRepository,
-    // private readonly tickerRepository: TickerRepository,
-    // private readonly marketPriceRepository: MarketPriceRepository,
+    private readonly tickerRepository: TickerRepository,
+    private readonly marketPriceRepository: MarketPriceRepository,
+    private readonly currencyRepository: CurrencyRepository,
     private readonly getTotalService: GetTotalService,
   ) {}
   async createTodayAsset(user: string): Promise<string> {
@@ -41,10 +45,10 @@ export class AssetService {
     }
     // 直近の資産データの現金額を登録
     // TODO: 保有株式情報の最新情報を取得する処理を入れる
-    // tickerRepository,marketPriceRepositoryをimport
     // ユーザーに紐付く保有株式情報を取得
-    // const tickers = await this.tickerRepository.fetchTickerList(user);
-    const asset = latestAsset == null ? 0 : latestAsset.asset;
+    const tickers = await this.tickerRepository.fetchTickerList(user);
+    const currentTickerPriceSum = await this.getCurrentTickerPriceSum(tickers);
+    const asset = currentTickerPriceSum;
     const cashUSD = latestAsset == null ? 0 : latestAsset.cashUSD;
     const cashJPY = latestAsset == null ? 0 : latestAsset.cashJPY;
     const cashBTC = latestAsset == null ? 0 : latestAsset.cashBTC;
@@ -79,26 +83,28 @@ export class AssetService {
     return `【${new Date()}】Created Todays Asset of ${user}!`;
   }
 
-  // private async getCurrentTickerPriceSum(
-  //   tickerList: TickerWithoutCurrentPrice[],
-  // ): Promise<number> {
-  //   // 関数名：getCurrentTickerPriceSum
-  //   // if (tickers.length === 0) return [];
-  //   // // 現在のマーケットデータを取得して返却する
-  //   // const tickerList = Promise.all(
-  //   //   tickers.map(async (tickerItem) => {
-  //   //     // 現在のマーケットデータを取得
-  //   //     const marketData = await this.marketPriceRepository.fetchMarketPrice(
-  //   //       tickerItem.ticker,
-  //   //     );
-  //   //     const ticker: Ticker = Object.assign(tickerItem, marketData);
-  //   //     return ticker;
-  //   //   }),
-  //   // );
-  //   // return tickerList;
-  //   // currencyRepositoryをimport
-  //   // ticker.currentPrice * ticker.quantity * ドル円
-  //   // この総和をassetに設定する
-  //   return 1;
-  // }
+  private async getCurrentTickerPriceSum(
+    tickerList: TickerOfRepository[],
+  ): Promise<number> {
+    // 保有株がなければ、0を返す
+    if (tickerList.length === 0) return 0;
+    // 現在の保有株の総額リストを計算し返却する
+    const currentTickerPriceListByUsd = await Promise.all(
+      tickerList.map(async (tickerItem) => {
+        // 現在のマーケットデータを取得
+        const marketData = await this.marketPriceRepository.fetchMarketPrice(
+          tickerItem.ticker,
+        );
+        // 現在価格 * 保有株数の値を返却する
+        return marketData.currentPrice * tickerItem.quantity;
+      }),
+    );
+    // currencyRepositoryをimport
+    // 現在のドル円を取得する
+    const currentUsdJpy = await this.currencyRepository.fetchCurrentUsdJpy();
+    return (
+      currentTickerPriceListByUsd.reduce((sum, element) => sum + element, 0) *
+      currentUsdJpy
+    );
+  }
 }
