@@ -19,7 +19,7 @@ const mockTickerRepository = () => ({
   fetchTickerList: jest.fn(),
 });
 const mockMarketPriceRepository = () => ({
-  fetchMarketPrice: jest.fn(),
+  fetchMarketPriceList: jest.fn(),
 });
 const mockCurrencyRepository = () => ({
   fetchCurrentUsdJpy: jest.fn(),
@@ -163,12 +163,15 @@ describe('AssetService', () => {
         ];
         tickerRepository.fetchTickerList.mockResolvedValue(mockTickerList);
         // マーケット情報
-        const mockMarketPrice: Readonly<MarketPriceDto> = {
-          currentPrice: 148.5,
-          priceGets: -2.09,
-          currentRate: -1.3879,
-        };
-        marketPriceRepository.fetchMarketPrice.mockResolvedValue(
+        const mockMarketPrice: Readonly<MarketPriceDto[]> = [
+          {
+            ticker: 'AAPL',
+            currentPrice: 148.5,
+            priceGets: -2.09,
+            currentRate: -1.3879,
+          },
+        ];
+        marketPriceRepository.fetchMarketPriceList.mockResolvedValue(
           mockMarketPrice,
         );
         // 現在のドル円

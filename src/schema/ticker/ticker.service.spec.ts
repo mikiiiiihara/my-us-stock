@@ -16,7 +16,7 @@ const mockTickerRepository = () => ({
   deleteTicker: jest.fn(),
 });
 const mockMarketPriceRepository = () => ({
-  fetchMarketPrice: jest.fn(),
+  fetchMarketPriceList: jest.fn(),
 });
 
 describe('TickerService', () => {
@@ -74,13 +74,16 @@ describe('TickerService', () => {
           },
         ];
         tickerRepository.fetchTickerList.mockResolvedValue(mockTickerList);
-        const mockMarketPrice: Readonly<MarketPriceDto> = {
-          currentPrice: 148.5,
-          priceGets: -2.09,
-          currentRate: -1.3879,
-        };
-        marketPriceRepository.fetchMarketPrice.mockResolvedValue(
-          mockMarketPrice,
+        const mockMarketPriceList: Readonly<MarketPriceDto[]> = [
+          {
+            ticker: 'AAPL',
+            currentPrice: 148.5,
+            currentRate: -1.3879,
+            priceGets: -2.09,
+          },
+        ];
+        marketPriceRepository.fetchMarketPriceList.mockResolvedValue(
+          mockMarketPriceList,
         );
         // 期待値
         const expected: Readonly<Ticker[]> = [
@@ -132,13 +135,16 @@ describe('TickerService', () => {
           usdjpy: 133.9,
         };
         tickerRepository.createTicker.mockResolvedValue(mockTicker);
-        const mockMarketPrice: Readonly<MarketPriceDto> = {
-          currentPrice: 148.5,
-          priceGets: -2.09,
-          currentRate: -1.3879,
-        };
-        marketPriceRepository.fetchMarketPrice.mockResolvedValue(
-          mockMarketPrice,
+        const mockMarketPriceList: Readonly<MarketPriceDto[]> = [
+          {
+            ticker: 'AAPL',
+            currentPrice: 148.5,
+            currentRate: -1.3879,
+            priceGets: -2.09,
+          },
+        ];
+        marketPriceRepository.fetchMarketPriceList.mockResolvedValue(
+          mockMarketPriceList,
         );
         // 期待値
         const expected: Readonly<Ticker> = {

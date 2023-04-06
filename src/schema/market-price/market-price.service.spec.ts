@@ -5,7 +5,7 @@ import { MarketPrice } from './dto/types/market-price.type';
 import { MarketPriceService } from './market-price.service';
 
 const mockMarketPriceRepository = () => ({
-  fetchMarketPrice: jest.fn(),
+  fetchMarketPriceList: jest.fn(),
 });
 describe('MarketPriceService', () => {
   let marketPriceService: MarketPriceService;
@@ -38,23 +38,22 @@ describe('MarketPriceService', () => {
     describe('正常系', () => {
       it('指定したティッカーの現在価格を取得する', async () => {
         // repositoryのモック化
-        const mockMarketAAPLPrice: Readonly<MarketPrice> = {
-          ticker: 'AAPl',
-          currentPrice: 148.5,
-          currentRate: -1.3879,
-          priceGets: -2.09,
-        };
-        marketPriceRepository.fetchMarketPrice.mockResolvedValueOnce(
-          mockMarketAAPLPrice,
-        );
-        const mockMarketKOPrice: Readonly<MarketPrice> = {
-          ticker: 'KO',
-          currentPrice: 59.21,
-          currentRate: -0.4205,
-          priceGets: -0.25,
-        };
-        marketPriceRepository.fetchMarketPrice.mockResolvedValueOnce(
-          mockMarketKOPrice,
+        const mockMarketPriceList: Readonly<MarketPrice[]> = [
+          {
+            ticker: 'AAPL',
+            currentPrice: 148.5,
+            currentRate: -1.3879,
+            priceGets: -2.09,
+          },
+          {
+            ticker: 'KO',
+            currentPrice: 59.21,
+            currentRate: -0.4205,
+            priceGets: -0.25,
+          },
+        ];
+        marketPriceRepository.fetchMarketPriceList.mockResolvedValueOnce(
+          mockMarketPriceList,
         );
         // リクエストパラメータ
         const tickerList = ['AAPL', 'KO'];

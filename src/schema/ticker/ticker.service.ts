@@ -16,18 +16,20 @@ export class TickerService {
     // ユーザーに紐付く保有株式情報を取得
     const tickers = await this.tickerRepository.fetchTickerList(user);
     if (tickers.length === 0) return [];
-    // 現在のマーケットデータを取得して返却する
-    const tickerList = Promise.all(
-      tickers.map(async (tickerItem) => {
-        // 現在のマーケットデータを取得
-        const marketData = await this.marketPriceRepository.fetchMarketPrice(
-          tickerItem.ticker,
-        );
-        const ticker: Ticker = Object.assign(tickerItem, marketData);
-        return ticker;
-      }),
-    );
-    return tickerList;
+    // 現在のマーケットデータを取得する
+    const tickerList = tickers.map((ticker) => ticker.ticker);
+    const marketPriceList =
+      await this.marketPriceRepository.fetchMarketPriceList(tickerList);
+    // 保有株式情報に現在のマーケットデータを付与して返却する
+    return tickers.map((ticker) => {
+      const marketPrice = marketPriceList.find(
+        (marketPrice) => marketPrice.ticker == ticker.ticker,
+      );
+      return {
+        ...ticker,
+        ...marketPrice,
+      };
+    });
   }
   async createTicker(createTickerInput: CreateTickerInput): Promise<Ticker> {
     const newTicker = await this.tickerRepository.createTicker(
@@ -46,8 +48,9 @@ export class TickerService {
       usdjpy,
     } = newTicker;
     // 現在のマーケットデータも同時に返却する
-    const { currentPrice, priceGets, currentRate } =
-      await this.marketPriceRepository.fetchMarketPrice(ticker);
+    const marketPriceList =
+      await this.marketPriceRepository.fetchMarketPriceList([ticker]);
+    const { currentPrice, priceGets, currentRate } = marketPriceList[0];
     return {
       id,
       ticker,

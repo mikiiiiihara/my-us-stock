@@ -88,18 +88,17 @@ export class AssetService {
   ): Promise<number> {
     // 保有株がなければ、0を返す
     if (tickerList.length === 0) return 0;
+    const tickerNameList = tickerList.map((ticker) => ticker.ticker);
+    const marketPriceList =
+      await this.marketPriceRepository.fetchMarketPriceList(tickerNameList);
     // 現在の保有株の総額リストを計算し返却する
-    const currentTickerPriceListByUsd = await Promise.all(
-      tickerList.map(async (tickerItem) => {
-        // 現在のマーケットデータを取得
-        const marketData = await this.marketPriceRepository.fetchMarketPrice(
-          tickerItem.ticker,
-        );
-        // 現在価格 * 保有株数の値を返却する
-        return marketData.currentPrice * tickerItem.quantity;
-      }),
-    );
-    // currencyRepositoryをimport
+    const currentTickerPriceListByUsd = tickerList.map((tickerItem) => {
+      const marketPrice = marketPriceList.find(
+        (marketPrice) => marketPrice.ticker == tickerItem.ticker,
+      );
+      // 現在価格 * 保有株数の値を返却する
+      return marketPrice.currentPrice * tickerItem.quantity;
+    });
     // 現在のドル円を取得する
     const currentUsdJpy = await this.currencyRepository.fetchCurrentUsdJpy();
     return (

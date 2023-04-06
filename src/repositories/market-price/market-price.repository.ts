@@ -11,17 +11,16 @@ export class MarketPriceRepository {
     private readonly axiosService: AxiosService,
   ) {}
 
-  async fetchMarketPrice(ticker: string): Promise<MarketPriceDto> {
+  async fetchMarketPriceList(tickerList: string[]): Promise<MarketPriceDto[]> {
     const baseUrl = this.configService.get<string>('MARKET_PRICE_URL');
-    const token = this.configService.get<string>('MARKET_PRICE_TOKEN');
-
-    const url = `${baseUrl}?symbol=${ticker}&token=${token}`;
+    const url = `${baseUrl}?symbols=${tickerList.toString()}`;
     const response = await this.axiosService.get<MarketPrice>(url);
-    const marketPrice: MarketPriceDto = {
-      currentPrice: response.c,
-      priceGets: response.d,
-      currentRate: response.dp,
-    };
-    return marketPrice;
+    const result = response.quoteResponse.result;
+    return result.map((item) => ({
+      ticker: item.symbol,
+      currentPrice: item.regularMarketPrice,
+      priceGets: item.regularMarketChange,
+      currentRate: item.regularMarketChangePercent,
+    }));
   }
 }

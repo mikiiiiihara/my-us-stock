@@ -8,18 +8,6 @@ export class MarketPriceService {
 
   // 保有株式の現在の価格を取得する
   async fetchMarketPriceList(tickerList: string[]): Promise<MarketPrice[]> {
-    const marketPriceList: MarketPrice[] = await Promise.all(
-      tickerList.map(async (ticker) => {
-        const { currentPrice, priceGets, currentRate } =
-          await this.marketPriceRepository.fetchMarketPrice(ticker);
-        return {
-          ticker,
-          currentPrice,
-          priceGets,
-          currentRate,
-        };
-      }),
-    );
-    return marketPriceList;
+    return await this.marketPriceRepository.fetchMarketPriceList(tickerList);
   }
 }
