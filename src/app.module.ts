@@ -1,5 +1,5 @@
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
@@ -10,6 +10,7 @@ import { ControllerModule } from './controllers/controller.module';
 import { PrismaService } from './prisma/prisma.service';
 import { RepositoriesModule } from './repositories/repositories.module';
 import { SchemaModule } from './schema/schema.module';
+import { LoggerMiddleware } from './logger/logger.middleware';
 
 @Module({
   imports: [
@@ -28,4 +29,8 @@ import { SchemaModule } from './schema/schema.module';
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer): void {
+    consumer.apply(LoggerMiddleware).forRoutes('');
+  }
+}
