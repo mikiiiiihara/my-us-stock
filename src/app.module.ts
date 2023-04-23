@@ -11,6 +11,7 @@ import { PrismaService } from './prisma/prisma.service';
 import { RepositoriesModule } from './repositories/repositories.module';
 import { SchemaModule } from './schema/schema.module';
 import { LoggerMiddleware } from './logger/logger.middleware';
+import configuration from './config/configuration';
 
 @Module({
   imports: [
@@ -20,6 +21,8 @@ import { LoggerMiddleware } from './logger/logger.middleware';
     }),
     ConfigModule.forRoot({
       envFilePath: ['.env.development.local'],
+      isGlobal: true,
+      load: [configuration],
     }),
     CommonModule,
     SchemaModule,
