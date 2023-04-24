@@ -16,6 +16,7 @@ const mockAssetRepository = () => ({
 });
 const mockGetTotalService = () => ({
   getTotal: jest.fn(),
+  getCurrentTickerPriceSum: jest.fn(),
 });
 
 const mockTickerRepository = () => ({
@@ -25,7 +26,6 @@ const mockTickerRepository = () => ({
 describe('AssetService', () => {
   let assetService: AssetService;
   let assetRepository: any;
-  let tickerRepository: any;
   let getTotalService: any;
 
   // ユーザー
@@ -61,7 +61,6 @@ describe('AssetService', () => {
     assetService = module.get<AssetService>(AssetService);
     // モック
     assetRepository = module.get<AssetRepository>(AssetRepository);
-    tickerRepository = module.get<TickerRepository>(TickerRepository);
     getTotalService = module.get<GetTotalService>(GetTotalService);
   });
   describe('fetchAssetList', () => {
@@ -158,6 +157,7 @@ describe('AssetService', () => {
         };
         assetRepository.createAsset.mockResolvedValue(newAsset);
         getTotalService.getTotal.mockResolvedValue(628766.537);
+        getTotalService.getCurrentTickerPriceSum.mockResolvedValue(200000);
         // テスト実行
         const result = await assetService.createTodayAsset(USER);
         expect(result).toEqual(newAsset);
@@ -185,6 +185,7 @@ describe('AssetService', () => {
         };
         assetRepository.createAsset.mockResolvedValue(newAsset);
         getTotalService.getTotal.mockResolvedValue(628766.537);
+        getTotalService.getCurrentTickerPriceSum.mockResolvedValue(200000);
         // テスト実行
         const result = await assetService.createTodayAsset(USER);
         expect(result).toEqual(newAsset);
@@ -215,6 +216,7 @@ describe('AssetService', () => {
         };
         assetRepository.updateAsset.mockResolvedValue(newAsset);
         getTotalService.getTotal.mockResolvedValue(628766.537);
+        getTotalService.getCurrentTickerPriceSum.mockResolvedValue(200000);
         // リクエストパラメータ
         const updateTodayAssetInput: UpdateTodayAssetInput = {
           id: 6,
@@ -271,6 +273,7 @@ describe('AssetService', () => {
         assetRepository.fetchTodayAsset.mockResolvedValue(newAsset);
         assetRepository.updateAsset.mockResolvedValue(newAsset);
         getTotalService.getTotal.mockResolvedValue(628766.537);
+        getTotalService.getCurrentTickerPriceSum.mockResolvedValue(200000);
         // テスト実行
         const result = await assetService.updateCash(updateCashInput);
         expect(result).toEqual(newAsset);
