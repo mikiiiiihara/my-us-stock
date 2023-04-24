@@ -7,9 +7,8 @@ export class UpdateTodayAssetInput {
   @Min(0)
   id: number;
 
-  @Field({ description: '株式総額' })
-  @Min(0)
-  asset: number;
+  @Field({ description: 'ユーザー名' })
+  user: string;
 
   @Field({ description: '現金(ドル)' })
   @Min(0)

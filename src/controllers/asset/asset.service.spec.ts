@@ -26,6 +26,7 @@ const mockCurrencyRepository = () => ({
 });
 const mockGetTotalService = () => ({
   getTotal: jest.fn(),
+  getCurrentTickerPriceSum: jest.fn(),
 });
 
 describe('AssetService', () => {

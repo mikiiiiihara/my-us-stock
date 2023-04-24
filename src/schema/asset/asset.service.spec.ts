@@ -4,9 +4,9 @@ import { AssetRepository } from '@/repositories/asset/asset.repository';
 import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AssetService } from './asset.service';
-import { CreateTodayAssetInput } from './dto/input/create-today-asset.input';
 import { UpdateCashInput } from './dto/input/update-cash.input';
 import { UpdateTodayAssetInput } from './dto/input/update-today-asset.input';
+import { TickerRepository } from '@/repositories/ticker/ticker.repository';
 
 const mockAssetRepository = () => ({
   fetchAssetList: jest.fn(),
@@ -18,9 +18,14 @@ const mockGetTotalService = () => ({
   getTotal: jest.fn(),
 });
 
+const mockTickerRepository = () => ({
+  fetchTickerList: jest.fn(),
+});
+
 describe('AssetService', () => {
   let assetService: AssetService;
   let assetRepository: any;
+  let tickerRepository: any;
   let getTotalService: any;
 
   // ユーザー
@@ -38,6 +43,10 @@ describe('AssetService', () => {
       ],
       providers: [
         {
+          provide: TickerRepository,
+          useFactory: mockTickerRepository,
+        },
+        {
           provide: AssetRepository,
           useFactory: mockAssetRepository,
         },
@@ -52,6 +61,7 @@ describe('AssetService', () => {
     assetService = module.get<AssetService>(AssetService);
     // モック
     assetRepository = module.get<AssetRepository>(AssetRepository);
+    tickerRepository = module.get<TickerRepository>(TickerRepository);
     getTotalService = module.get<GetTotalService>(GetTotalService);
   });
   describe('fetchAssetList', () => {
@@ -148,15 +158,8 @@ describe('AssetService', () => {
         };
         assetRepository.createAsset.mockResolvedValue(newAsset);
         getTotalService.getTotal.mockResolvedValue(628766.537);
-        // リクエストパラメータ
-        const createTodayAssetInput: CreateTodayAssetInput = {
-          asset: 173743.9,
-          user: USER,
-        };
         // テスト実行
-        const result = await assetService.createTodayAsset(
-          createTodayAssetInput,
-        );
+        const result = await assetService.createTodayAsset(USER);
         expect(result).toEqual(newAsset);
       });
       it('すでに登録されている資産総額情報が存在しない場合、初回登録し、登録した内容を取得する', async () => {
@@ -182,15 +185,8 @@ describe('AssetService', () => {
         };
         assetRepository.createAsset.mockResolvedValue(newAsset);
         getTotalService.getTotal.mockResolvedValue(628766.537);
-        // リクエストパラメータ
-        const createTodayAssetInput: CreateTodayAssetInput = {
-          asset: 200000,
-          user: USER,
-        };
         // テスト実行
-        const result = await assetService.createTodayAsset(
-          createTodayAssetInput,
-        );
+        const result = await assetService.createTodayAsset(USER);
         expect(result).toEqual(newAsset);
       });
     });
@@ -222,7 +218,7 @@ describe('AssetService', () => {
         // リクエストパラメータ
         const updateTodayAssetInput: UpdateTodayAssetInput = {
           id: 6,
-          asset: 200000,
+          user: USER,
           cashUSD: 100,
           cashJPY: 10000,
           cashBTC: 0.1,
@@ -244,7 +240,6 @@ describe('AssetService', () => {
       // リクエストパラメータ
       const updateCashInput: UpdateCashInput = {
         user: USER,
-        asset: 200000,
         cashUSD: 100,
         cashJPY: 10000,
         cashBTC: 0.1,

@@ -8,10 +8,6 @@ export class UpdateCashInput {
   @IsString()
   user: string;
 
-  @Field({ description: '株式総額' })
-  @Min(0)
-  asset: number;
-
   @Field({ description: '現金(ドル)' })
   @Min(0)
   cashUSD: number;

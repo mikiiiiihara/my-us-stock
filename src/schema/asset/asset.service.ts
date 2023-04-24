@@ -2,16 +2,17 @@ import { Injectable } from '@nestjs/common';
 import { AssetRepository } from '@/repositories/asset/asset.repository';
 import { CreateAssetDto } from 'src/repositories/asset/dto/create-asset.dto';
 import { UpdateAssetDto } from 'src/repositories/asset/dto/update-asset.dto';
-import { CreateTodayAssetInput } from './dto/input/create-today-asset.input';
 import { UpdateCashInput } from './dto/input/update-cash.input';
 import { UpdateTodayAssetInput } from './dto/input/update-today-asset.input';
 import { GetTotalService } from '@/common/get-total/get-total.service';
 import { Asset } from '@/common/types/asset/asset.model';
+import { TickerRepository } from '@/repositories/ticker/ticker.repository';
 
 @Injectable()
 export class AssetService {
   constructor(
     private readonly assetRepository: AssetRepository,
+    private readonly tickerRepository: TickerRepository,
     private readonly getTotalService: GetTotalService,
   ) {}
 
@@ -26,10 +27,7 @@ export class AssetService {
   }
 
   // 当日の資産総額を更新する(画面側で当日データのidを指定する)
-  async createTodayAsset(
-    createTodayAssetInput: CreateTodayAssetInput,
-  ): Promise<Asset> {
-    const { asset, user } = createTodayAssetInput;
+  async createTodayAsset(user: string): Promise<Asset> {
     // 過去の中の最新データを取得
     const existAssets: Asset[] = await this.assetRepository.fetchAssetList(
       user,
@@ -52,6 +50,8 @@ export class AssetService {
         }
       }
     }
+    // ユーザーに紐付く保有株式情報を取得
+    const asset = await this.fetchCurrentAsset(user);
     // 直近の資産データの現金額を登録
     const cashUSD = latestAsset == null ? 0 : latestAsset.cashUSD;
     const cashJPY = latestAsset == null ? 0 : latestAsset.cashJPY;
@@ -92,7 +92,7 @@ export class AssetService {
     updateTodayAssetInput: UpdateTodayAssetInput,
   ): Promise<Asset> {
     const {
-      asset,
+      user,
       cashUSD,
       cashJPY,
       cashBTC,
@@ -101,6 +101,8 @@ export class AssetService {
       cashBAT,
       cashLTC,
     } = updateTodayAssetInput;
+    // ユーザーに紐付く保有株式情報を取得
+    const asset = await this.fetchCurrentAsset(user);
     const total = await this.getTotalService.getTotal(
       asset,
       cashUSD,
@@ -114,6 +116,7 @@ export class AssetService {
     // update
     const updateAssetDto: UpdateAssetDto = {
       ...updateTodayAssetInput,
+      asset,
       total,
     };
     return await this.assetRepository.updateAsset(updateAssetDto);
@@ -122,7 +125,6 @@ export class AssetService {
   async updateCash(updateCashInput: UpdateCashInput): Promise<Asset> {
     const {
       user,
-      asset,
       cashUSD,
       cashJPY,
       cashBTC,
@@ -134,6 +136,8 @@ export class AssetService {
 
     //本日分のデータが既に存在するか？
     const existAsset = await this.assetRepository.fetchTodayAsset(user);
+    // ユーザーに紐付く保有株式情報を取得
+    const asset = await this.fetchCurrentAsset(user);
     // 更新後の資産総額を計算
     const total = await this.getTotalService.getTotal(
       asset,
@@ -150,6 +154,7 @@ export class AssetService {
       // create
       const createAssetDto: CreateAssetDto = {
         ...updateCashInput,
+        asset,
         total: total,
       };
       return await this.assetRepository.createAsset(createAssetDto);
@@ -160,8 +165,13 @@ export class AssetService {
     const updateAssetDto: UpdateAssetDto = {
       ...updateCashInput,
       id: existAsset.id,
+      asset,
       total: total,
     };
     return await this.assetRepository.updateAsset(updateAssetDto);
+  }
+  private async fetchCurrentAsset(user: string): Promise<number> {
+    const tickers = await this.tickerRepository.fetchTickerList(user);
+    return await this.getTotalService.getCurrentTickerPriceSum(tickers);
   }
 }

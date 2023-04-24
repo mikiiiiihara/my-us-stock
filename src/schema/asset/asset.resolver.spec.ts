@@ -3,7 +3,6 @@ import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AssetResolver } from './asset.resolver';
 import { AssetService } from './asset.service';
-import { CreateTodayAssetInput } from './dto/input/create-today-asset.input';
 import { UpdateCashInput } from './dto/input/update-cash.input';
 import { UpdateTodayAssetInput } from './dto/input/update-today-asset.input';
 
@@ -97,15 +96,8 @@ describe('AssetResolver', () => {
           cashLTC: 1,
         };
         assetService.createTodayAsset.mockResolvedValue(mockAsset);
-        // リクエストパラメータ
-        const createTodayAssetInput: CreateTodayAssetInput = {
-          asset: 173743.9,
-          user: USER,
-        };
         // テスト実行
-        const result = await assetResolver.createTodayAsset(
-          createTodayAssetInput,
-        );
+        const result = await assetResolver.createTodayAsset(USER);
         expect(result).toEqual(mockAsset);
       });
     });
@@ -137,7 +129,7 @@ describe('AssetResolver', () => {
         // リクエストパラメータ
         const updateTodayAssetInput: UpdateTodayAssetInput = {
           id: 3,
-          asset: 200000,
+          user: USER,
           cashUSD: 100,
           cashJPY: 10000,
           cashBTC: 0.1,
@@ -181,7 +173,6 @@ describe('AssetResolver', () => {
         // リクエストパラメータ
         const updateCashInput: UpdateCashInput = {
           user: USER,
-          asset: 200000,
           cashUSD: 100,
           cashJPY: 10000,
           cashBTC: 0.1,
