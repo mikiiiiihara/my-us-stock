@@ -2,8 +2,11 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { UpdateStrategyInput } from './dto/input/update-strategy.input';
 import { Strategy } from './dto/types/strategy.type';
 import { StrategyService } from './strategy.service';
+import { UseGuards } from '@nestjs/common';
+import { AccessTokenGuard } from '@/auth/guards/access-token.guard';
 
 @Resolver(() => Strategy)
+@UseGuards(AccessTokenGuard)
 export class StrategyResolver {
   constructor(private readonly strategyService: StrategyService) {}
 

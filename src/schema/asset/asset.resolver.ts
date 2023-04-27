@@ -3,8 +3,11 @@ import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { AssetService } from './asset.service';
 import { UpdateCashInput } from './dto/input/update-cash.input';
 import { UpdateTodayAssetInput } from './dto/input/update-today-asset.input';
+import { AccessTokenGuard } from '@/auth/guards/access-token.guard';
+import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => Asset)
+@UseGuards(AccessTokenGuard)
 export class AssetResolver {
   constructor(private readonly assetService: AssetService) {}
 
