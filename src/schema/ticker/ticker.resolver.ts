@@ -7,7 +7,7 @@ import { AccessTokenGuard } from '@/auth/guards/access-token.guard';
 import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => Ticker)
-@UseGuards(AccessTokenGuard)
+// @UseGuards(AccessTokenGuard)
 export class TickerResolver {
   constructor(private readonly tickerService: TickerService) {}
 

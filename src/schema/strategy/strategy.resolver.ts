@@ -6,7 +6,7 @@ import { UseGuards } from '@nestjs/common';
 import { AccessTokenGuard } from '@/auth/guards/access-token.guard';
 
 @Resolver(() => Strategy)
-@UseGuards(AccessTokenGuard)
+// @UseGuards(AccessTokenGuard)
 export class StrategyResolver {
   constructor(private readonly strategyService: StrategyService) {}
 
