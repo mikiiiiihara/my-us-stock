@@ -7,7 +7,7 @@ import { AccessTokenGuard } from '@/auth/guards/access-token.guard';
 import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => Asset)
-@UseGuards(AccessTokenGuard)
+// @UseGuards(AccessTokenGuard)
 export class AssetResolver {
   constructor(private readonly assetService: AssetService) {}
 
