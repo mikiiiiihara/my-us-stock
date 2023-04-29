@@ -30,8 +30,9 @@ export class AuthController {
     res.cookie('refreshToken', refreshToken, { httpOnly: true });
     res.cookie('email', email);
 
-    const redirectUrl = this.configService.get<string>('REDIRECT_URL');
-    res.redirect(redirectUrl);
+    // const redirectUrl = this.configService.get<string>('REDIRECT_URL');
+    // res.redirect(redirectUrl);
+    res.redirect('https://my-us-stock-portfolio-wqqgxxymjq-an.a.run.app');
   }
 
   @Get('refresh')
