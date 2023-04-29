@@ -29,7 +29,7 @@ export class AuthController {
     res.cookie('accessToken', accessToken, { httpOnly: true });
     res.cookie('refreshToken', refreshToken, { httpOnly: true });
     res.cookie('email', email);
-
+    res.end();
     // const redirectUrl = this.configService.get<string>('REDIRECT_URL');
     // res.redirect(redirectUrl);
     // res.redirect('https://my-us-stock-portfolio-wqqgxxymjq-an.a.run.app');
