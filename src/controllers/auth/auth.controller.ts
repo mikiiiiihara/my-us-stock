@@ -32,7 +32,7 @@ export class AuthController {
 
     // const redirectUrl = this.configService.get<string>('REDIRECT_URL');
     // res.redirect(redirectUrl);
-    res.redirect('https://my-us-stock-portfolio-wqqgxxymjq-an.a.run.app');
+    // res.redirect('https://my-us-stock-portfolio-wqqgxxymjq-an.a.run.app');
   }
 
   @Get('refresh')
