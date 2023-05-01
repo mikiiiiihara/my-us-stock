@@ -21,17 +21,10 @@ export class AuthController {
 
   @Get('redirect')
   @UseGuards(AuthGuard('google'))
-  async redirect(@Request() req, @Res() res: Response) {
+  redirect(@Request() req, @Res() res: Response) {
     // const { accessToken, refreshToken, email } = await this.authService.login(
     //   req?.user,
     // );
-    console.log({
-      clientID: this.configService.get<string>('google.clientId'),
-      clientSecret: this.configService.get<string>('google.clientSecret'),
-      callbackURL: this.configService.get<string>('google.callbackUrl'),
-      scope: ['email', 'profile', 'openid'],
-      accessType: 'offline',
-    });
     return this.authService.login(req?.user);
     // // Set cookies
     // res.cookie('accessToken', accessToken, { httpOnly: true });
