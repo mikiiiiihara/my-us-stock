@@ -25,7 +25,7 @@ export class AuthController {
     // const { accessToken, refreshToken, email } = await this.authService.login(
     //   req?.user,
     // );
-    await this.authService.login(req?.user);
+    return this.authService.login(req?.user);
     // // Set cookies
     // res.cookie('accessToken', accessToken, { httpOnly: true });
     // res.cookie('refreshToken', refreshToken, { httpOnly: true });
