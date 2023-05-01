@@ -22,14 +22,15 @@ export class AuthController {
   @Get('redirect')
   @UseGuards(AuthGuard('google'))
   async redirect(@Request() req, @Res() res: Response) {
-    const { accessToken, refreshToken, email } = await this.authService.login(
-      req?.user,
-    );
-    // Set cookies
-    res.cookie('accessToken', accessToken, { httpOnly: true });
-    res.cookie('refreshToken', refreshToken, { httpOnly: true });
-    res.cookie('email', email);
-    res.end();
+    // const { accessToken, refreshToken, email } = await this.authService.login(
+    //   req?.user,
+    // );
+    await this.authService.login(req?.user);
+    // // Set cookies
+    // res.cookie('accessToken', accessToken, { httpOnly: true });
+    // res.cookie('refreshToken', refreshToken, { httpOnly: true });
+    // res.cookie('email', email);
+    // // res.end();
     // const redirectUrl = this.configService.get<string>('REDIRECT_URL');
     // res.redirect(redirectUrl);
     // res.redirect('https://my-us-stock-portfolio-wqqgxxymjq-an.a.run.app');
