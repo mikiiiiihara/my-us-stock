@@ -21,7 +21,8 @@ export class AuthController {
 
   @Get('redirect')
   @UseGuards(AuthGuard('google'))
-  redirect(@Request() req, @Res() res: Response) {
+  // redirect(@Request() req, @Res() res: Response) {
+  redirect(@Request() req) {
     // const { accessToken, refreshToken, email } = await this.authService.login(
     //   req?.user,
     // );
