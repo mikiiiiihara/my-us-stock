@@ -21,20 +21,27 @@ export class AuthController {
 
   @Get('redirect')
   @UseGuards(AuthGuard('google'))
-  // redirect(@Request() req, @Res() res: Response) {
-  redirect(@Request() req) {
-    // const { accessToken, refreshToken, email } = await this.authService.login(
-    //   req?.user,
-    // );
-    return this.authService.login(req?.user);
-    // // Set cookies
-    // res.cookie('accessToken', accessToken, { httpOnly: true });
-    // res.cookie('refreshToken', refreshToken, { httpOnly: true });
-    // res.cookie('email', email);
-    // // res.end();
-    // const redirectUrl = this.configService.get<string>('REDIRECT_URL');
-    // res.redirect(redirectUrl);
-    // res.redirect('https://my-us-stock-portfolio-wqqgxxymjq-an.a.run.app');
+  async redirect(@Request() req, @Res() res: Response) {
+    const result = await this.authService.login(req?.user);
+
+    // NestJSからNext.jsへリダイレクトするためのURLを設定
+    const nextRedirectUrl = this.configService.get<string>('REDIRECT_URL');
+
+    // NestJSからNext.jsへリダイレクトする前に、アクセストークンとリフレッシュトークンをCookieに保存
+    res.cookie('accessToken', result.accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+    });
+
+    res.cookie('refreshToken', result.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+    });
+
+    // NestJSからNext.jsへリダイレクト
+    res.redirect(nextRedirectUrl);
   }
 
   @Get('refresh')
