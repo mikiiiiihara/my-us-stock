@@ -28,9 +28,17 @@ export class AuthController {
     const nextRedirectUrl = this.configService.get<string>('REDIRECT_URL');
 
     // NestJSからNext.jsへリダイレクトする前に、アクセストークンとリフレッシュトークンをCookieに保存
-    res.cookie('accessToken', result.accessToken);
+    res.cookie('accessToken', result.accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+    });
 
-    res.cookie('refreshToken', result.refreshToken);
+    res.cookie('refreshToken', result.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+    });
 
     // NestJSからNext.jsへリダイレクト
     res.redirect(nextRedirectUrl);
