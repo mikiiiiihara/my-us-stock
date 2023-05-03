@@ -45,7 +45,6 @@ export class AuthController {
   }
 
   @Get('token')
-  @UseGuards(AuthGuard('google'))
   async getToken(@Req() req) {
     return {
       accessToken: req.user.accessToken,
