@@ -3,8 +3,6 @@ import { CreateTickerInput } from './dto/input/create-ticker.input';
 import { UpdateTickerInput } from './dto/input/update-ticker.input';
 import { Ticker } from './dto/types/ticker.type';
 import { TickerService } from './ticker.service';
-import { AccessTokenGuard } from '@/auth/guards/access-token.guard';
-import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => Ticker)
 // @UseGuards(AccessTokenGuard)
