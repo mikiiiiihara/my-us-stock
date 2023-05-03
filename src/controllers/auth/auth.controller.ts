@@ -44,6 +44,14 @@ export class AuthController {
     res.redirect(nextRedirectUrl);
   }
 
+  @Get('token')
+  @UseGuards(AuthGuard('google'))
+  async getToken(@Req() req) {
+    return {
+      accessToken: req.user.accessToken,
+    };
+  }
+
   @Get('refresh')
   @UseGuards(RefreshTokenGuard)
   async refreshTokens(@Request() req) {
