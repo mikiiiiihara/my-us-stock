@@ -47,7 +47,7 @@ export class AuthController {
   @Get('token')
   async getToken(@Req() req) {
     return {
-      accessToken: req.user.accessToken,
+      accessToken: req.user.accessToken ?? '',
     };
   }
 
