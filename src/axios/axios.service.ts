@@ -1,23 +1,37 @@
-import axios from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import { Injectable } from '@nestjs/common';
 import { MyLogger } from '@/logger/logger.service';
+import safeStringify from 'fast-safe-stringify';
 
 @Injectable()
 export class AxiosService {
   constructor(private logger: MyLogger) {}
   public async get<T>(url: string) {
     axios.interceptors.request.use((request) => {
-      this.logger.log(`Starting Request: ${JSON.stringify(request)}`);
+      this.logger.log(`AxiosRequest: ${safeStringify(request)}`);
       return request;
     });
 
-    axios.interceptors.response.use((response) => {
-      this.logger.log(`Response: ${JSON.stringify(response)}`);
-      return response;
-    });
-    this.logger.log(JSON.stringify(`request url: ${url}`));
-    const response = await axios.get<T>(url);
-    this.logger.log(`response: ${JSON.stringify(response)}`);
+    axios.interceptors.response.use(
+      (response: AxiosResponse) => {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { request, ...others } = response;
+        this.logger.log(`AxiosResponse: ${safeStringify(others)}`);
+        return response;
+      },
+      (error: AxiosError) => {
+        this.logger.error(`AxiosError: ${safeStringify(error.toJSON())}`);
+        return Promise.reject(error);
+      },
+    );
+    let response: AxiosResponse<T, any>;
+    try {
+      response = await axios.get<T>(url);
+    } catch (error) {
+      this.logger.error(safeStringify(error));
+      throw new Error('API取得に失敗しました。');
+    }
+    this.logger.log(`response: ${safeStringify(response)}`);
     return await response.data;
   }
 }
