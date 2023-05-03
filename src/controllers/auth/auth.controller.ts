@@ -26,18 +26,21 @@ export class AuthController {
 
     // NestJSからNext.jsへリダイレクトするためのURLを設定
     const nextRedirectUrl = this.configService.get<string>('REDIRECT_URL');
-
+    const domain =
+      process.env.NODE_ENV === 'production' ? nextRedirectUrl : 'localhost';
     // NestJSからNext.jsへリダイレクトする前に、アクセストークンとリフレッシュトークンをCookieに保存
     res.cookie('accessToken', result.accessToken, {
       httpOnly: true,
       secure: true,
       sameSite: 'none',
+      domain,
     });
 
     res.cookie('refreshToken', result.refreshToken, {
       httpOnly: true,
       secure: true,
       sameSite: 'none',
+      domain,
     });
 
     // NestJSからNext.jsへリダイレクト
