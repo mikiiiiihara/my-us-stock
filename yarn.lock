@@ -4676,7 +4676,7 @@ pretty-format@^28.0.0, pretty-format@^28.1.3:
     ansi-styles "^5.0.0"
     react-is "^18.0.0"
 
-prisma-nestjs-graphql@^18.0.0:
+prisma-nestjs-graphql@18.0.0:
   version "18.0.0"
   resolved "https://registry.yarnpkg.com/prisma-nestjs-graphql/-/prisma-nestjs-graphql-18.0.0.tgz#e8bd255daafcafa06a19dfb561ee90c48b93449e"
   integrity sha512-7c38NhBdXxSUflHTIIt6ndzeYZQrSIpAclrxsswpO9+gqKH68V/9fZqBBGQlAzHkU+Tn0Uwmw89M9vVbIrV2aA==
