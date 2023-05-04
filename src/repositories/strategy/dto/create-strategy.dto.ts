@@ -1,5 +1,5 @@
 export class CreateStrategyDto {
-  user: string;
+  userId: number;
 
   text: string;
 }

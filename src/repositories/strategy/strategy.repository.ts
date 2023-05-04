@@ -1,18 +1,18 @@
 import { PrismaService } from '@/prisma/prisma.service';
-import { Strategy } from '@/schema/strategy/dto/types/strategy.type';
 import { Injectable } from '@nestjs/common';
 import { format } from 'date-fns';
 import { CreateStrategyDto } from './dto/create-strategy.dto';
 import { UpdateStrategyDto } from './dto/update-strategy.dto';
+import { Strategy } from '@/@generated/prisma-nestjs-graphql/strategy/strategy.model';
 
 @Injectable()
 export class StrategyRepository {
   constructor(private prisma: PrismaService) {}
   //   // select
-  async fetchStrategy(user: string): Promise<Strategy> {
+  async fetchStrategy(userId: number): Promise<Strategy> {
     return await this.prisma.strategy.findFirst({
       where: {
-        user: user,
+        userId,
       },
     });
   }
@@ -21,12 +21,12 @@ export class StrategyRepository {
   async createStrategy(
     createStrategyDto: CreateStrategyDto,
   ): Promise<Strategy> {
-    const { text, user } = createStrategyDto;
+    const { text, userId } = createStrategyDto;
     // 作成・更新日時取得
     const nowDate = format(new Date(), 'yyyyMMdd');
     return await this.prisma.strategy.create({
       data: {
-        user,
+        userId,
         text,
         addDate: nowDate,
         updDate: nowDate,

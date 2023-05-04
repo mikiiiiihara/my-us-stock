@@ -2,17 +2,17 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { CreateTickerDto } from './dto/create-ticker.dto';
-import { Ticker } from './entity/tiker.entity';
 import { TickerRepository } from './ticker.repository';
 import { UpdateTickerDto } from './dto/update-ticker.dto';
 import { migrateResetTest } from '@/prisma/prisma.util';
+import { Ticker } from '@/@generated/prisma-nestjs-graphql/ticker/ticker.model';
 
 describe('TickerRepository', () => {
   let tickerRepository: TickerRepository;
   let prismaService: PrismaService;
 
   // ユーザー
-  const USER = 'test@test.com';
+  const USER_ID = 9;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -35,7 +35,7 @@ describe('TickerRepository', () => {
         ticker: 'AAPL',
         getPrice: 100,
         quantity: 6,
-        user: USER,
+        userId: USER_ID,
         dividend: 0.92,
         dividendTime: 4,
         dividendFirstTime: 2,
@@ -46,7 +46,7 @@ describe('TickerRepository', () => {
         ticker: 'HSBC',
         getPrice: 36.5,
         quantity: 10,
-        user: USER,
+        userId: USER_ID,
         dividend: 1.5,
         dividendTime: 4,
         dividendFirstTime: 2,
@@ -66,7 +66,7 @@ describe('TickerRepository', () => {
             ticker: 'AAPL',
             getPrice: 100,
             quantity: 6,
-            user: USER,
+            userId: USER_ID,
             dividend: 0.92,
             dividendTime: 4,
             dividendFirstTime: 2,
@@ -78,7 +78,7 @@ describe('TickerRepository', () => {
             ticker: 'HSBC',
             getPrice: 36.5,
             quantity: 10,
-            user: USER,
+            userId: USER_ID,
             dividend: 1.5,
             dividendTime: 4,
             dividendFirstTime: 2,
@@ -87,7 +87,7 @@ describe('TickerRepository', () => {
           },
         ];
         // テスト実行
-        const result = await tickerRepository.fetchTickerList(USER);
+        const result = await tickerRepository.fetchTickerList(USER_ID);
         expect(result).toEqual(expected);
       });
     });
@@ -102,7 +102,7 @@ describe('TickerRepository', () => {
           ticker: 'VT',
           getPrice: 90,
           quantity: 6,
-          user: USER,
+          userId: USER_ID,
           dividend: 2.68,
           dividendTime: 4,
           dividendFirstTime: 3,
@@ -114,7 +114,7 @@ describe('TickerRepository', () => {
           ticker: 'VT',
           getPrice: 90,
           quantity: 6,
-          user: USER,
+          userId: USER_ID,
           dividend: 2.68,
           dividendTime: 4,
           dividendFirstTime: 3,
@@ -142,7 +142,7 @@ describe('TickerRepository', () => {
           ticker: 'AAPL',
           getPrice: 100,
           quantity: 10,
-          user: USER,
+          userId: USER_ID,
           dividend: 0.92,
           dividendTime: 4,
           dividendFirstTime: 2,
@@ -170,7 +170,7 @@ describe('TickerRepository', () => {
           ticker: 'AAPL',
           getPrice: 100,
           quantity: 6,
-          user: USER,
+          userId: USER_ID,
           dividend: 0.92,
           dividendTime: 4,
           dividendFirstTime: 2,

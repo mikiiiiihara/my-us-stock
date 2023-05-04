@@ -2,16 +2,16 @@ import { PrismaService } from '@/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { CreateTickerDto } from './dto/create-ticker.dto';
 import { UpdateTickerDto } from './dto/update-ticker.dto';
-import { Ticker } from './entity/tiker.entity';
+import { Ticker } from '@/@generated/prisma-nestjs-graphql/ticker/ticker.model';
 
 @Injectable()
 export class TickerRepository {
   constructor(private prisma: PrismaService) {}
   // select
-  async fetchTickerList(user: string): Promise<Ticker[]> {
+  async fetchTickerList(userId: number): Promise<Ticker[]> {
     return await this.prisma.ticker.findMany({
       where: {
-        user: user,
+        userId,
       },
     });
   }
@@ -21,7 +21,7 @@ export class TickerRepository {
       ticker,
       getPrice,
       quantity,
-      user,
+      userId,
       dividend,
       dividendTime,
       dividendFirstTime,
@@ -33,7 +33,7 @@ export class TickerRepository {
         ticker,
         getPrice,
         quantity,
-        user,
+        userId,
         dividend,
         dividendTime,
         dividendFirstTime,

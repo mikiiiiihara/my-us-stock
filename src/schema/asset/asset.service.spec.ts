@@ -1,12 +1,12 @@
 import { GetTotalService } from '@/common/get-total/get-total.service';
-import { Asset } from '@/common/types/asset/asset.model';
 import { AssetRepository } from '@/repositories/asset/asset.repository';
 import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AssetService } from './asset.service';
-import { UpdateCashInput } from './dto/input/update-cash.input';
-import { UpdateTodayAssetInput } from './dto/input/update-today-asset.input';
 import { TickerRepository } from '@/repositories/ticker/ticker.repository';
+import { Asset } from '@/@generated/prisma-nestjs-graphql/asset/asset.model';
+import { UpdateTodayAssetDto } from './dto/update-today-asset.dto';
+import { UpdateCashDto } from './dto/update-cash.dto';
 
 const mockAssetRepository = () => ({
   fetchAssetList: jest.fn(),
@@ -29,7 +29,7 @@ describe('AssetService', () => {
   let getTotalService: any;
 
   // ユーザー
-  const USER = 'test@test.com';
+  const USER_ID = 9;
   // 取得日数
   const DAY = 7;
 
@@ -77,7 +77,7 @@ describe('AssetService', () => {
             date: '21',
             addDate: '20230321184922',
             updDate: '20230321184950',
-            user: USER,
+            userId: USER_ID,
             cashUSD: 100,
             cashJPY: 10000,
             cashBTC: 0.1,
@@ -89,7 +89,7 @@ describe('AssetService', () => {
         ];
         assetRepository.fetchAssetList.mockResolvedValue(mockAssetList);
         // テスト実行
-        const result = await assetService.fetchAssetList(USER, DAY);
+        const result = await assetService.fetchAssetList(USER_ID, DAY);
         expect(result).toEqual(mockAssetList);
       });
     });
@@ -108,7 +108,7 @@ describe('AssetService', () => {
             date: '20',
             addDate: '20230321184922',
             updDate: '20230321184950',
-            user: USER,
+            userId: USER_ID,
             cashUSD: 100,
             cashJPY: 10000,
             cashBTC: 0.1,
@@ -126,7 +126,7 @@ describe('AssetService', () => {
             date: '21',
             addDate: '20230321184922',
             updDate: '20230321184950',
-            user: USER,
+            userId: USER_ID,
             cashUSD: 100,
             cashJPY: 10000,
             cashBTC: 0.1,
@@ -146,7 +146,7 @@ describe('AssetService', () => {
           date: '21',
           addDate: '20230321184922',
           updDate: '20230321184950',
-          user: USER,
+          userId: USER_ID,
           cashUSD: 100,
           cashJPY: 10000,
           cashBTC: 0.1,
@@ -159,7 +159,7 @@ describe('AssetService', () => {
         getTotalService.getTotal.mockResolvedValue(628766.537);
         getTotalService.getCurrentTickerPriceSum.mockResolvedValue(200000);
         // テスト実行
-        const result = await assetService.createTodayAsset(USER);
+        const result = await assetService.createTodayAsset(USER_ID);
         expect(result).toEqual(newAsset);
       });
       it('すでに登録されている資産総額情報が存在しない場合、初回登録し、登録した内容を取得する', async () => {
@@ -174,7 +174,7 @@ describe('AssetService', () => {
           date: '21',
           addDate: '20230321184922',
           updDate: '20230321184950',
-          user: USER,
+          userId: USER_ID,
           cashUSD: 100,
           cashJPY: 10000,
           cashBTC: 0.1,
@@ -187,7 +187,7 @@ describe('AssetService', () => {
         getTotalService.getTotal.mockResolvedValue(628766.537);
         getTotalService.getCurrentTickerPriceSum.mockResolvedValue(200000);
         // テスト実行
-        const result = await assetService.createTodayAsset(USER);
+        const result = await assetService.createTodayAsset(USER_ID);
         expect(result).toEqual(newAsset);
       });
     });
@@ -205,7 +205,7 @@ describe('AssetService', () => {
           date: '21',
           addDate: '20230321184922',
           updDate: '20230321184950',
-          user: USER,
+          userId: USER_ID,
           cashUSD: 100,
           cashJPY: 10000,
           cashBTC: 0.1,
@@ -218,9 +218,9 @@ describe('AssetService', () => {
         getTotalService.getTotal.mockResolvedValue(628766.537);
         getTotalService.getCurrentTickerPriceSum.mockResolvedValue(200000);
         // リクエストパラメータ
-        const updateTodayAssetInput: UpdateTodayAssetInput = {
+        const updateTodayAssetDto: UpdateTodayAssetDto = {
           id: 6,
-          user: USER,
+          userId: USER_ID,
           cashUSD: 100,
           cashJPY: 10000,
           cashBTC: 0.1,
@@ -230,9 +230,7 @@ describe('AssetService', () => {
           cashLTC: 1,
         };
         // テスト実行
-        const result = await assetService.updateTodayAsset(
-          updateTodayAssetInput,
-        );
+        const result = await assetService.updateTodayAsset(updateTodayAssetDto);
         expect(result).toEqual(newAsset);
       });
     });
@@ -240,8 +238,8 @@ describe('AssetService', () => {
   describe('updateCash', () => {
     describe('正常系', () => {
       // リクエストパラメータ
-      const updateCashInput: UpdateCashInput = {
-        user: USER,
+      const updateCashDto: UpdateCashDto = {
+        userId: USER_ID,
         cashUSD: 100,
         cashJPY: 10000,
         cashBTC: 0.1,
@@ -261,7 +259,7 @@ describe('AssetService', () => {
           date: '21',
           addDate: '20230321184922',
           updDate: '20230321184950',
-          user: USER,
+          userId: USER_ID,
           cashUSD: 100,
           cashJPY: 10000,
           cashBTC: 0.1,
@@ -275,7 +273,7 @@ describe('AssetService', () => {
         getTotalService.getTotal.mockResolvedValue(628766.537);
         getTotalService.getCurrentTickerPriceSum.mockResolvedValue(200000);
         // テスト実行
-        const result = await assetService.updateCash(updateCashInput);
+        const result = await assetService.updateCash(updateCashDto);
         expect(result).toEqual(newAsset);
       });
       it('既存データが存在しない場合、保有現金情報を追加し、追加した内容を取得する', async () => {
@@ -289,7 +287,7 @@ describe('AssetService', () => {
           date: '21',
           addDate: '20230321184922',
           updDate: '20230321184950',
-          user: USER,
+          userId: USER_ID,
           cashUSD: 100,
           cashJPY: 10000,
           cashBTC: 0.1,
@@ -302,7 +300,7 @@ describe('AssetService', () => {
         assetRepository.createAsset.mockResolvedValue(newAsset);
         getTotalService.getTotal.mockResolvedValue(628766.537);
         // テスト実行
-        const result = await assetService.updateCash(updateCashInput);
+        const result = await assetService.updateCash(updateCashDto);
         expect(result).toEqual(newAsset);
       });
     });

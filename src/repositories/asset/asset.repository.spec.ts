@@ -5,15 +5,15 @@ import { AssetRepository } from './asset.repository';
 import { format } from 'date-fns';
 import { migrateResetTest } from '@/prisma/prisma.util';
 import { UpdateAssetDto } from './dto/update-asset.dto';
-import { Asset } from '@/common/types/asset/asset.model';
-import { AssetCreateInput } from '@/common/types/asset/asset-create-input';
+import { AssetCreateInput } from '@/@generated/prisma-nestjs-graphql/asset/asset-create.input';
+import { Asset } from '@/@generated/prisma-nestjs-graphql/asset/asset.model';
 
 describe('AssetRepository', () => {
   let assetRepository: AssetRepository;
   let prismaService: PrismaService;
 
   // ユーザー
-  const USER = 'test@test.com';
+  const USER_ID = 9;
   // 取得日数
   const DAY = 7;
 
@@ -42,7 +42,7 @@ describe('AssetRepository', () => {
         date: '22',
         addDate: '20230222233928',
         updDate: '20230222234031',
-        user: USER,
+        userId: USER_ID,
         cashUSD: 100,
         cashJPY: 10000,
         cashBTC: 0.1,
@@ -59,7 +59,7 @@ describe('AssetRepository', () => {
         date: '23',
         addDate: '20230223003003',
         updDate: '20230223003025',
-        user: USER,
+        userId: USER_ID,
         cashUSD: 100,
         cashJPY: 10000,
         cashBTC: 0.1,
@@ -85,7 +85,7 @@ describe('AssetRepository', () => {
             date: '23',
             addDate: '20230223003003',
             updDate: '20230223003025',
-            user: USER,
+            userId: USER_ID,
             cashUSD: 100,
             cashJPY: 10000,
             cashBTC: 0.1,
@@ -103,7 +103,7 @@ describe('AssetRepository', () => {
             date: '22',
             addDate: '20230222233928',
             updDate: '20230222234031',
-            user: USER,
+            userId: USER_ID,
             cashUSD: 100,
             cashJPY: 10000,
             cashBTC: 0.1,
@@ -114,7 +114,7 @@ describe('AssetRepository', () => {
           },
         ];
         // テスト実行
-        const result = await assetRepository.fetchAssetList(USER, DAY);
+        const result = await assetRepository.fetchAssetList(USER_ID, DAY);
         expect(result).toEqual(expected);
       });
     });
@@ -137,7 +137,7 @@ describe('AssetRepository', () => {
           date,
           addDate: nowDate,
           updDate: nowDate,
-          user: USER,
+          userId: USER_ID,
           cashUSD: 100,
           cashJPY: 10000,
           cashBTC: 0.1,
@@ -157,7 +157,7 @@ describe('AssetRepository', () => {
           date,
           addDate: nowDate,
           updDate: nowDate,
-          user: USER,
+          userId: USER_ID,
           cashUSD: 100,
           cashJPY: 10000,
           cashBTC: 0.1,
@@ -167,7 +167,7 @@ describe('AssetRepository', () => {
           cashLTC: 1,
         };
         // テスト実行
-        const result = await assetRepository.fetchTodayAsset(USER);
+        const result = await assetRepository.fetchTodayAsset(USER_ID);
         expect(result).toEqual(expected);
         // 登録したデータを削除する
         await prismaService.asset.delete({
@@ -199,7 +199,7 @@ describe('AssetRepository', () => {
           date,
           addDate: nowDate,
           updDate: nowDate,
-          user: USER,
+          userId: USER_ID,
           cashUSD: 100,
           cashJPY: 10000,
           cashBTC: 0.1,
@@ -217,7 +217,7 @@ describe('AssetRepository', () => {
           date,
           addDate: nowDate,
           updDate: nowDate,
-          user: USER,
+          userId: USER_ID,
           cashUSD: 100,
           cashJPY: 10000,
           cashBTC: 0.1,
@@ -253,7 +253,7 @@ describe('AssetRepository', () => {
           date: '22',
           addDate: '20230222233928',
           updDate: updDate,
-          user: USER,
+          userId: USER_ID,
           cashUSD: 100,
           cashJPY: 10000,
           cashBTC: 0.1,
@@ -292,7 +292,7 @@ describe('AssetRepository', () => {
           date: '22',
           addDate: '20230222233928',
           updDate,
-          user: USER,
+          userId: USER_ID,
           cashUSD: 500,
           cashJPY: 5000,
           cashBTC: 0.1,

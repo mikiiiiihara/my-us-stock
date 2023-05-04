@@ -3,17 +3,17 @@ import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { migrateResetTest } from '@/prisma/prisma.util';
 import { StrategyRepository } from './strategy.repository';
-import { Strategy } from '@/schema/strategy/dto/types/strategy.type';
 import { CreateStrategyDto } from './dto/create-strategy.dto';
 import { format } from 'date-fns';
 import { UpdateStrategyDto } from './dto/update-strategy.dto';
+import { Strategy } from '@/@generated/prisma-nestjs-graphql/strategy/strategy.model';
 
 describe('AssetRepository', () => {
   let strategyRepository: StrategyRepository;
   let prismaService: PrismaService;
 
   // ユーザー
-  const USER = 'test@test.com';
+  const USER_ID = 9;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -32,7 +32,7 @@ describe('AssetRepository', () => {
     await migrateResetTest();
     // DB登録
     const strategy = {
-      user: USER,
+      userId: USER_ID,
       text: 'テスト',
       addDate: '20220827',
       updDate: '20220827',
@@ -45,13 +45,13 @@ describe('AssetRepository', () => {
         // 期待値
         const expected: Strategy = {
           id: 1,
-          user: USER,
+          userId: USER_ID,
           text: 'テスト',
           addDate: '20220827',
           updDate: '20220827',
         };
         // テスト実行
-        const result = await strategyRepository.fetchStrategy(USER);
+        const result = await strategyRepository.fetchStrategy(USER_ID);
         expect(result).toEqual(expected);
       });
     });
@@ -64,14 +64,14 @@ describe('AssetRepository', () => {
         // 期待値
         const expected: Strategy = {
           id: 2,
-          user: 'test2@test.com',
+          userId: USER_ID,
           text: 'テスト2',
           addDate: nowDate,
           updDate: nowDate,
         };
         // リクエストパラメータ
         const createStrategyDto: CreateStrategyDto = {
-          user: 'test2@test.com',
+          userId: USER_ID,
           text: 'テスト2',
         };
         // テスト実行
@@ -96,7 +96,7 @@ describe('AssetRepository', () => {
         // 期待値
         const expected: Strategy = {
           id: 1,
-          user: USER,
+          userId: USER_ID,
           text: 'テスト2',
           addDate: '20220827',
           updDate: nowDate,

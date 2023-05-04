@@ -2,6 +2,20 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type User {
+  id: ID!
+
+  """@Validator.@IsEmail()"""
+  email: String!
+  name: String!
+}
+
+type LoginResponse {
+  accessToken: String!
+  refreshToken: String!
+  user: User!
+}
+
 type Asset {
   id: ID!
   asset: Float!
@@ -10,7 +24,6 @@ type Asset {
   date: String!
   addDate: String!
   updDate: String!
-  user: String!
   cashUSD: Float!
   cashJPY: Int!
   cashBTC: Float!
@@ -19,6 +32,7 @@ type Asset {
   cashBAT: Float!
   cashLTC: Float!
   total: Float!
+  userId: Int!
 }
 
 type MarketPrice {
@@ -37,18 +51,10 @@ type MarketPrice {
 
 type Strategy {
   id: ID!
-
-  """ユーザー名"""
-  user: String!
-
-  """文章"""
   text: String!
-
-  """作成日時"""
   addDate: String!
-
-  """更新日時"""
   updDate: String!
+  userId: Int!
 }
 
 type Ticker {
@@ -62,9 +68,6 @@ type Ticker {
 
   """保有株数"""
   quantity: Int!
-
-  """ユーザー名"""
-  user: String!
 
   """配当"""
   dividend: Float!
@@ -92,15 +95,20 @@ type Ticker {
 }
 
 type Query {
-  getAssets(user: String!, day: Int!): [Asset!]
+  user: User!
+  getAssets(day: Int!): [Asset!]
   getCurrentUsdJpy: Float!
   getMarketPrices(tickerList: [String]!): [MarketPrice!]!
-  getStrategy(user: String!): Strategy
-  getTickers(user: String!): [Ticker!]
+  getStrategy: Strategy
+  getTickers: [Ticker!]
 }
 
 type Mutation {
-  createTodayAsset(user: String!): Asset!
+  createUser(data: UserCreateInput!): User!
+  login(loginUserInput: LoginUserInput!): LoginResponse!
+  refreshToken: LoginResponse!
+  logout: Boolean!
+  createTodayAsset: Asset!
   updateTodayAsset(input: UpdateTodayAssetInput!): Asset!
   updateCash(input: UpdateCashInput!): Asset!
   updateStrategy(input: UpdateStrategyInput!): Strategy!
@@ -109,12 +117,20 @@ type Mutation {
   deleteTicker(input: UpdateTickerInput!): Ticker!
 }
 
+input UserCreateInput {
+  email: String!
+  name: String!
+  password: String!
+}
+
+input LoginUserInput {
+  email: String!
+  password: String!
+}
+
 input UpdateTodayAssetInput {
   """id"""
   id: Int!
-
-  """ユーザー名"""
-  user: String!
 
   """現金(ドル)"""
   cashUSD: Float!
@@ -139,9 +155,6 @@ input UpdateTodayAssetInput {
 }
 
 input UpdateCashInput {
-  """ユーザー名"""
-  user: String!
-
   """現金(ドル)"""
   cashUSD: Float!
 
@@ -165,9 +178,6 @@ input UpdateCashInput {
 }
 
 input UpdateStrategyInput {
-  """ユーザー名"""
-  user: String!
-
   """文章"""
   text: String!
 }
@@ -181,9 +191,6 @@ input CreateTickerInput {
 
   """保有株数"""
   quantity: Int!
-
-  """ユーザー名"""
-  user: String!
 
   """配当"""
   dividend: Float!

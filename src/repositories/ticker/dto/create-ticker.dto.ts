@@ -2,7 +2,7 @@ export class CreateTickerDto {
   ticker: string;
   getPrice: number;
   quantity: number;
-  user: string;
+  userId: number;
   dividend: number;
   dividendTime: number;
   dividendFirstTime: number;

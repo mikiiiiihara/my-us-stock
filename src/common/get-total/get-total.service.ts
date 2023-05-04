@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CurrencyRepository } from '@/repositories/currency/currency.repository';
 import { CryptoRepository } from '@/repositories/crypto/crypto.repository';
 import { CryptoTicker } from '@/repositories/crypto/constants';
-import { Ticker as TickerOfRepository } from '@/repositories/ticker/entity/tiker.entity';
+import { Ticker } from '@/@generated/prisma-nestjs-graphql/ticker/ticker.model';
 import { MarketPriceRepository } from '@/repositories/market-price/market-price.repository';
 
 @Injectable()
@@ -54,9 +54,7 @@ export class GetTotalService {
       cashLTCbyJPY;
     return Math.round(total * 10) / 10;
   }
-  async getCurrentTickerPriceSum(
-    tickerList: TickerOfRepository[],
-  ): Promise<number> {
+  async getCurrentTickerPriceSum(tickerList: Ticker[]): Promise<number> {
     // 保有株がなければ、0を返す
     if (tickerList.length === 0) return 0;
     const tickerNameList = tickerList.map((ticker) => ticker.ticker);

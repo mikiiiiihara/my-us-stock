@@ -1,14 +1,14 @@
 import { GetTotalService } from '@/common/get-total/get-total.service';
-import { Asset } from '@/common/types/asset/asset.model';
 import { AssetRepository } from '@/repositories/asset/asset.repository';
 import { CurrencyRepository } from '@/repositories/currency/currency.repository';
 import { MarketPriceDto } from '@/repositories/market-price/dto/market-price.dto';
 import { MarketPriceRepository } from '@/repositories/market-price/market-price.repository';
-import { Ticker as TickerOfRepository } from '@/repositories/ticker/entity/tiker.entity';
 import { TickerRepository } from '@/repositories/ticker/ticker.repository';
 import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AssetService } from './asset.service';
+import { Asset } from '@/@generated/prisma-nestjs-graphql/asset/asset.model';
+import { Ticker } from '@/@generated/prisma-nestjs-graphql/ticker/ticker.model';
 
 const mockAssetRepository = () => ({
   fetchAssetList: jest.fn(),
@@ -38,7 +38,7 @@ describe('AssetService', () => {
   let getTotalService: any;
 
   // ユーザー
-  const USER = 'test@test.com';
+  const USER_ID = 9;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -98,7 +98,7 @@ describe('AssetService', () => {
             date: '20',
             addDate: '20230321184922',
             updDate: '20230321184950',
-            user: USER,
+            userId: USER_ID,
             cashUSD: 100,
             cashJPY: 10000,
             cashBTC: 0.1,
@@ -116,7 +116,7 @@ describe('AssetService', () => {
             date: '21',
             addDate: '20230321184922',
             updDate: '20230321184950',
-            user: USER,
+            userId: USER_ID,
             cashUSD: 100,
             cashJPY: 10000,
             cashBTC: 0.1,
@@ -136,7 +136,7 @@ describe('AssetService', () => {
           date: '21',
           addDate: '20230321184922',
           updDate: '20230321184950',
-          user: USER,
+          userId: USER_ID,
           cashUSD: 100,
           cashJPY: 10000,
           cashBTC: 0.1,
@@ -148,13 +148,13 @@ describe('AssetService', () => {
         assetRepository.createAsset.mockResolvedValue(newAsset);
         getTotalService.getTotal.mockResolvedValue(628766.537);
         // 保有株式情報
-        const mockTickerList: Readonly<TickerOfRepository[]> = [
+        const mockTickerList: Readonly<Ticker[]> = [
           {
             id: 14,
             ticker: 'AAPL',
             getPrice: 100,
             quantity: 6,
-            user: 'test@test.com',
+            userId: USER_ID,
             dividend: 0.92,
             dividendTime: 4,
             dividendFirstTime: 2,
@@ -178,9 +178,9 @@ describe('AssetService', () => {
         // 現在のドル円
         currencyRepository.fetchCurrentUsdJpy.mockResolvedValue(133.69);
         // 期待値
-        const expected = `【${new Date()}】Created Todays Asset of ${USER}!`;
+        const expected = `【${new Date()}】Created Todays Asset of id:${USER_ID}!`;
         // テスト実行
-        const result = await assetService.createTodayAsset(USER);
+        const result = await assetService.createTodayAsset(USER_ID);
         expect(result).toEqual(expected);
       });
 
@@ -196,7 +196,7 @@ describe('AssetService', () => {
           date: '20',
           addDate: '20230321184922',
           updDate: '20230321184950',
-          user: USER,
+          userId: USER_ID,
           cashUSD: 100,
           cashJPY: 10000,
           cashBTC: 0.1,
@@ -209,7 +209,7 @@ describe('AssetService', () => {
         // 期待値
         const expected = 'Already created';
         // テスト実行
-        const result = await assetService.createTodayAsset(USER);
+        const result = await assetService.createTodayAsset(USER_ID);
         expect(result).toEqual(expected);
       });
     });

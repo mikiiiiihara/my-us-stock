@@ -1,9 +1,9 @@
 import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { UpdateStrategyInput } from './dto/input/update-strategy.input';
-import { Strategy } from './dto/types/strategy.type';
 import { StrategyResolver } from './strategy.resolver';
 import { StrategyService } from './strategy.service';
+import { Strategy } from '@/@generated/prisma-nestjs-graphql/strategy/strategy.model';
 
 const mockTickerService = () => ({
   fetchStrategy: jest.fn(),
@@ -14,7 +14,7 @@ describe('StrategyResolver', () => {
   let strategyService: any;
 
   // ユーザー
-  const USER = 'test@test.com';
+  const USER_ID = 9;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -43,14 +43,14 @@ describe('StrategyResolver', () => {
         // サービスのモック化
         const mockStrategy: Readonly<Strategy> = {
           id: 1,
-          user: USER,
+          userId: USER_ID,
           text: 'テスト',
           addDate: '20220827',
           updDate: '20220827',
         };
         strategyService.fetchStrategy.mockResolvedValue(mockStrategy);
         // テスト実行
-        const result = await strategyResolver.getStrategy(USER);
+        const result = await strategyResolver.getStrategy(USER_ID);
         expect(result).toEqual(mockStrategy);
       });
     });
@@ -61,7 +61,7 @@ describe('StrategyResolver', () => {
         // サービスのモック化
         const mockStrategy: Readonly<Strategy> = {
           id: 1,
-          user: USER,
+          userId: USER_ID,
           text: 'テスト',
           addDate: '20220827',
           updDate: '20220827',
@@ -70,11 +70,11 @@ describe('StrategyResolver', () => {
 
         // リクエストパラメータ
         const updateStrategyInput: UpdateStrategyInput = {
-          user: USER,
           text: 'テスト',
         };
         // テスト実行
         const result = await strategyResolver.updateStrategy(
+          USER_ID,
           updateStrategyInput,
         );
         expect(result).toEqual(mockStrategy);

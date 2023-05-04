@@ -1,21 +1,22 @@
 import { StrategyRepository } from '@/repositories/strategy/strategy.repository';
 import { Injectable } from '@nestjs/common';
-import { UpdateStrategyInput } from './dto/input/update-strategy.input';
-import { Strategy } from './dto/types/strategy.type';
+import { Strategy } from '@/@generated/prisma-nestjs-graphql/strategy/strategy.model';
+import { UpdateStrategyDto } from './dto/update-strategy.dto';
+
 @Injectable()
 export class StrategyService {
   constructor(private readonly strategyRepository: StrategyRepository) {}
 
-  async fetchStrategy(user: string): Promise<Strategy> {
-    return await this.strategyRepository.fetchStrategy(user);
+  async fetchStrategy(userId: number): Promise<Strategy> {
+    return await this.strategyRepository.fetchStrategy(userId);
   }
 
   // 保有株式情報を更新(既存データない場合、新規作成)
   async updateStrategy(
-    updateStrategyInput: UpdateStrategyInput,
+    updateStrategyDto: UpdateStrategyDto,
   ): Promise<Strategy> {
-    const { user, text } = updateStrategyInput;
-    const existStrategy = await this.strategyRepository.fetchStrategy(user);
+    const { userId, text } = updateStrategyDto;
+    const existStrategy = await this.strategyRepository.fetchStrategy(userId);
     if (existStrategy !== null) {
       // update
       return await this.strategyRepository.updateStrategy({
@@ -24,7 +25,7 @@ export class StrategyService {
       });
     } else {
       // create
-      return await this.strategyRepository.createStrategy({ user, text });
+      return await this.strategyRepository.createStrategy({ userId, text });
     }
   }
 }

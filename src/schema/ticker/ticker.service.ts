@@ -1,9 +1,9 @@
 import { MarketPriceRepository } from '@/repositories/market-price/market-price.repository';
 import { TickerRepository } from '@/repositories/ticker/ticker.repository';
 import { Injectable } from '@nestjs/common';
-import { CreateTickerInput } from './dto/input/create-ticker.input';
 import { UpdateTickerInput } from './dto/input/update-ticker.input';
 import { Ticker } from './dto/types/ticker.type';
+import { CreateTickerDto } from './dto/create-ticker.dto';
 
 @Injectable()
 export class TickerService {
@@ -12,9 +12,9 @@ export class TickerService {
     private readonly marketPriceRepository: MarketPriceRepository,
   ) {}
 
-  async fetchTickerList(user: string): Promise<Ticker[]> {
+  async fetchTickerList(userId: number): Promise<Ticker[]> {
     // ユーザーに紐付く保有株式情報を取得
-    const tickers = await this.tickerRepository.fetchTickerList(user);
+    const tickers = await this.tickerRepository.fetchTickerList(userId);
     if (tickers.length === 0) return [];
     // 現在のマーケットデータを取得する
     const tickerList = tickers.map((ticker) => ticker.ticker);
@@ -25,22 +25,21 @@ export class TickerService {
       const marketPrice = marketPriceList.find(
         (marketPrice) => marketPrice.ticker == ticker.ticker,
       );
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { userId, ...rest } = ticker;
       return {
-        ...ticker,
+        ...rest,
         ...marketPrice,
       };
     });
   }
-  async createTicker(createTickerInput: CreateTickerInput): Promise<Ticker> {
-    const newTicker = await this.tickerRepository.createTicker(
-      createTickerInput,
-    );
+  async createTicker(creatTickerDto: CreateTickerDto): Promise<Ticker> {
+    const newTicker = await this.tickerRepository.createTicker(creatTickerDto);
     const {
       id,
       ticker,
       getPrice,
       quantity,
-      user,
       dividend,
       dividendTime,
       dividendFirstTime,
@@ -56,7 +55,6 @@ export class TickerService {
       ticker,
       getPrice,
       quantity,
-      user,
       dividend,
       dividendTime,
       dividendFirstTime,
@@ -79,7 +77,6 @@ export class TickerService {
       ticker,
       getPrice,
       quantity,
-      user,
       dividend,
       dividendTime,
       dividendFirstTime,
@@ -91,7 +88,6 @@ export class TickerService {
       ticker,
       getPrice,
       quantity,
-      user,
       dividend,
       dividendTime,
       dividendFirstTime,
@@ -112,7 +108,6 @@ export class TickerService {
       ticker,
       getPrice,
       quantity,
-      user,
       dividend,
       dividendTime,
       dividendFirstTime,
@@ -124,7 +119,6 @@ export class TickerService {
       ticker,
       getPrice,
       quantity,
-      user,
       dividend,
       dividendTime,
       dividendFirstTime,

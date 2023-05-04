@@ -1,10 +1,10 @@
-import { Asset } from '@/common/types/asset/asset.model';
 import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AssetResolver } from './asset.resolver';
 import { AssetService } from './asset.service';
 import { UpdateCashInput } from './dto/input/update-cash.input';
 import { UpdateTodayAssetInput } from './dto/input/update-today-asset.input';
+import { Asset } from '@/@generated/prisma-nestjs-graphql/asset/asset.model';
 
 const mockAssetService = () => ({
   fetchAssetList: jest.fn(),
@@ -17,7 +17,7 @@ describe('AssetResolver', () => {
   let assetService: any;
 
   // ユーザー
-  const USER = 'test@test.com';
+  const USER_ID = 9;
   // 取得日数
   const DAY = 7;
 
@@ -56,7 +56,7 @@ describe('AssetResolver', () => {
             date: '21',
             addDate: '20230321184922',
             updDate: '20230321184950',
-            user: USER,
+            userId: USER_ID,
             cashUSD: 100,
             cashJPY: 10000,
             cashBTC: 0.1,
@@ -68,7 +68,7 @@ describe('AssetResolver', () => {
         ];
         assetService.fetchAssetList.mockResolvedValue(mockAssetList);
         // テスト実行
-        const result = await assetResolver.getAssets(USER, DAY);
+        const result = await assetResolver.getAssets(USER_ID, DAY);
         expect(result).toEqual(mockAssetList);
       });
     });
@@ -86,7 +86,7 @@ describe('AssetResolver', () => {
           date: '21',
           addDate: '20230321184922',
           updDate: '20230321184950',
-          user: USER,
+          userId: USER_ID,
           cashUSD: 100,
           cashJPY: 10000,
           cashBTC: 0.1,
@@ -97,7 +97,7 @@ describe('AssetResolver', () => {
         };
         assetService.createTodayAsset.mockResolvedValue(mockAsset);
         // テスト実行
-        const result = await assetResolver.createTodayAsset(USER);
+        const result = await assetResolver.createTodayAsset(USER_ID);
         expect(result).toEqual(mockAsset);
       });
     });
@@ -116,7 +116,7 @@ describe('AssetResolver', () => {
           date: '22',
           addDate: '20230222233928',
           updDate: '20230222234031',
-          user: USER,
+          userId: USER_ID,
           cashUSD: 100,
           cashJPY: 10000,
           cashBTC: 0,
@@ -129,7 +129,6 @@ describe('AssetResolver', () => {
         // リクエストパラメータ
         const updateTodayAssetInput: UpdateTodayAssetInput = {
           id: 3,
-          user: USER,
           cashUSD: 100,
           cashJPY: 10000,
           cashBTC: 0.1,
@@ -140,6 +139,7 @@ describe('AssetResolver', () => {
         };
         // テスト実行
         const result = await assetResolver.updateTodayAsset(
+          USER_ID,
           updateTodayAssetInput,
         );
         expect(result).toEqual(mockAsset);
@@ -160,7 +160,7 @@ describe('AssetResolver', () => {
           date: '21',
           addDate: '20230321184922',
           updDate: '20230321184950',
-          user: USER,
+          userId: USER_ID,
           cashUSD: 100,
           cashJPY: 10000,
           cashBTC: 0.1,
@@ -172,7 +172,6 @@ describe('AssetResolver', () => {
         assetService.updateCash.mockResolvedValue(mockAsset);
         // リクエストパラメータ
         const updateCashInput: UpdateCashInput = {
-          user: USER,
           cashUSD: 100,
           cashJPY: 10000,
           cashBTC: 0.1,
@@ -182,7 +181,7 @@ describe('AssetResolver', () => {
           cashLTC: 1,
         };
         // テスト実行
-        const result = await assetResolver.updateCash(updateCashInput);
+        const result = await assetResolver.updateCash(USER_ID, updateCashInput);
         expect(result).toEqual(mockAsset);
       });
     });

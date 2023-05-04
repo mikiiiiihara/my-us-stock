@@ -4,10 +4,10 @@ import { TickerService } from './ticker.service';
 import { TickerRepository } from '@/repositories/ticker/ticker.repository';
 import { MarketPriceRepository } from '@/repositories/market-price/market-price.repository';
 import { MarketPriceDto } from '@/repositories/market-price/dto/market-price.dto';
-import { Ticker as TickerOfRepository } from '@/repositories/ticker/entity/tiker.entity';
 import { Ticker } from './dto/types/ticker.type';
-import { CreateTickerInput } from './dto/input/create-ticker.input';
+import { Ticker as TickerOfRepository } from '@/@generated/prisma-nestjs-graphql/ticker/ticker.model';
 import { UpdateTickerInput } from './dto/input/update-ticker.input';
+import { CreateTickerDto } from './dto/create-ticker.dto';
 
 const mockTickerRepository = () => ({
   fetchTickerList: jest.fn(),
@@ -24,8 +24,8 @@ describe('TickerService', () => {
   let tickerRepository: any;
   let marketPriceRepository: any;
 
-  // ユーザー
-  const USER = 'test@test.com';
+  // ユーザーID
+  const USER_ID = 9;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -65,7 +65,7 @@ describe('TickerService', () => {
             ticker: 'AAPL',
             getPrice: 100,
             quantity: 6,
-            user: 'test@test.com',
+            userId: USER_ID,
             dividend: 0.92,
             dividendTime: 4,
             dividendFirstTime: 2,
@@ -100,11 +100,10 @@ describe('TickerService', () => {
             sector: 'IT',
             ticker: 'AAPL',
             usdjpy: 133.9,
-            user: 'test@test.com',
           },
         ];
         // テスト実行
-        const result = await tickerService.fetchTickerList(USER);
+        const result = await tickerService.fetchTickerList(USER_ID);
         expect(result).toEqual(expected);
       });
 
@@ -112,7 +111,7 @@ describe('TickerService', () => {
         // repositoryのモック化
         tickerRepository.fetchTickerList.mockResolvedValue([]);
         // テスト実行
-        const result = await tickerService.fetchTickerList(USER);
+        const result = await tickerService.fetchTickerList(USER_ID);
         expect(result).toEqual([]);
       });
     });
@@ -127,7 +126,7 @@ describe('TickerService', () => {
           ticker: 'AAPL',
           getPrice: 100,
           quantity: 6,
-          user: 'test@test.com',
+          userId: USER_ID,
           dividend: 0.92,
           dividendTime: 4,
           dividendFirstTime: 2,
@@ -160,14 +159,13 @@ describe('TickerService', () => {
           sector: 'IT',
           ticker: 'AAPL',
           usdjpy: 133.9,
-          user: 'test@test.com',
         };
         // リクエストパラメータ
-        const createTickerInput: Readonly<CreateTickerInput> = {
+        const createTickerDto: Readonly<CreateTickerDto> = {
           ticker: 'AAPL',
+          userId: USER_ID,
           getPrice: 100,
           quantity: 6,
-          user: USER,
           dividend: 0.92,
           dividendFirstTime: 2,
           dividendTime: 4,
@@ -178,7 +176,7 @@ describe('TickerService', () => {
           currentRate: -1.3879,
         };
         // テスト実行
-        const result = await tickerService.createTicker(createTickerInput);
+        const result = await tickerService.createTicker(createTickerDto);
         expect(result).toEqual(expected);
       });
     });
@@ -193,7 +191,7 @@ describe('TickerService', () => {
           ticker: 'AAPL',
           getPrice: 100,
           quantity: 6,
-          user: 'test@test.com',
+          userId: USER_ID,
           dividend: 0.92,
           dividendTime: 4,
           dividendFirstTime: 2,
@@ -215,7 +213,6 @@ describe('TickerService', () => {
           sector: 'IT',
           ticker: 'AAPL',
           usdjpy: 133.9,
-          user: 'test@test.com',
         };
         // リクエストパラメータ
         const updateTickerInput: Readonly<UpdateTickerInput> = {
@@ -244,7 +241,7 @@ describe('TickerService', () => {
           ticker: 'AAPL',
           getPrice: 100,
           quantity: 6,
-          user: 'test@test.com',
+          userId: USER_ID,
           dividend: 0.92,
           dividendTime: 4,
           dividendFirstTime: 2,
@@ -266,7 +263,6 @@ describe('TickerService', () => {
           sector: 'IT',
           ticker: 'AAPL',
           usdjpy: 133.9,
-          user: 'test@test.com',
         };
         // リクエストパラメータ
         const updateTickerInput: Readonly<UpdateTickerInput> = {

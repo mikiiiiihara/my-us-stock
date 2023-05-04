@@ -16,8 +16,8 @@ describe('TickerResolver', () => {
   let tickerResolver: TickerResolver;
   let tickerService: any;
 
-  // ユーザー
-  const USER = 'test@test.com';
+  // ユーザーID
+  const USER_ID = 9;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -50,7 +50,6 @@ describe('TickerResolver', () => {
             ticker: 'AAPL',
             getPrice: 100,
             quantity: 6,
-            user: 'test@test.com',
             dividend: 0.92,
             dividendTime: 4,
             dividendFirstTime: 2,
@@ -63,7 +62,7 @@ describe('TickerResolver', () => {
         ];
         tickerService.fetchTickerList.mockResolvedValue(mockTickerList);
         // テスト実行
-        const result = await tickerResolver.getTickers(USER);
+        const result = await tickerResolver.getTickers(USER_ID);
         expect(result).toEqual(mockTickerList);
       });
     });
@@ -78,7 +77,6 @@ describe('TickerResolver', () => {
           ticker: 'AAPL',
           getPrice: 100,
           quantity: 6,
-          user: 'test@test.com',
           dividend: 0.92,
           dividendTime: 4,
           dividendFirstTime: 2,
@@ -94,7 +92,6 @@ describe('TickerResolver', () => {
           ticker: 'AAPL',
           getPrice: 100,
           quantity: 6,
-          user: USER,
           dividend: 0.92,
           dividendFirstTime: 2,
           dividendTime: 4,
@@ -105,7 +102,10 @@ describe('TickerResolver', () => {
           currentRate: -1.3879,
         };
         // テスト実行
-        const result = await tickerResolver.createTicker(createTickerInput);
+        const result = await tickerResolver.createTicker(
+          USER_ID,
+          createTickerInput,
+        );
         expect(result).toEqual(mockTicker);
       });
     });
@@ -119,7 +119,6 @@ describe('TickerResolver', () => {
           ticker: 'AAPL',
           getPrice: 100,
           quantity: 6,
-          user: 'test@test.com',
           dividend: 0.92,
           dividendTime: 4,
           dividendFirstTime: 2,
@@ -157,7 +156,6 @@ describe('TickerResolver', () => {
           ticker: 'AAPL',
           getPrice: 100,
           quantity: 6,
-          user: 'test@test.com',
           dividend: 0.92,
           dividendTime: 4,
           dividendFirstTime: 2,

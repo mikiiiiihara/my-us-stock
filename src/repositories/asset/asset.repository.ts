@@ -1,18 +1,17 @@
-import { Asset } from '@/common/types/asset/asset.model';
-import { PrismaService } from '@/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 import { format } from 'date-fns';
 import { CreateAssetDto } from './dto/create-asset.dto';
 import { UpdateAssetDto } from './dto/update-asset.dto';
-
+import { PrismaService } from '@/prisma/prisma.service';
+import { Asset } from '@/@generated/prisma-nestjs-graphql/asset/asset.model';
 @Injectable()
 export class AssetRepository {
   constructor(private prisma: PrismaService) {}
   // select
-  async fetchAssetList(user: string, day?: number): Promise<Asset[]> {
+  async fetchAssetList(userId: number, day?: number): Promise<Asset[]> {
     return await this.prisma.asset.findMany({
       where: {
-        user: user,
+        userId,
       },
       // 指定した日数分の直近の値をとる
       take: day != null ? day : undefined,
@@ -21,14 +20,14 @@ export class AssetRepository {
       },
     });
   }
-  async fetchTodayAsset(user: string): Promise<Asset> {
+  async fetchTodayAsset(userId: number): Promise<Asset> {
     // 現在日時取得
     const year = format(new Date(), 'yyyy');
     const month = format(new Date(), 'MM');
     const date = format(new Date(), 'dd');
     return await this.prisma.asset.findFirst({
       where: {
-        user: user,
+        userId,
         year: year,
         month: month,
         date: date,

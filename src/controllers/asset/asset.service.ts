@@ -1,5 +1,5 @@
+import { Asset } from '@/@generated/prisma-nestjs-graphql/asset/asset.model';
 import { GetTotalService } from '@/common/get-total/get-total.service';
-import { Asset } from '@/common/types/asset/asset.model';
 import { AssetRepository } from '@/repositories/asset/asset.repository';
 import { CreateAssetDto } from '@/repositories/asset/dto/create-asset.dto';
 import { TickerRepository } from '@/repositories/ticker/ticker.repository';
@@ -12,13 +12,13 @@ export class AssetService {
     private readonly tickerRepository: TickerRepository,
     private readonly getTotalService: GetTotalService,
   ) {}
-  async createTodayAsset(user: string): Promise<string> {
+  async createTodayAsset(userId: number): Promise<string> {
     // 本日の資産が登録されていた場合、登録は行わず処理終了
-    const existAsset = await this.assetRepository.fetchTodayAsset(user);
+    const existAsset = await this.assetRepository.fetchTodayAsset(userId);
     if (existAsset != null) return 'Already created';
     // 過去の中の最新データを取得
     const existAssets: Asset[] = await this.assetRepository.fetchAssetList(
-      user,
+      userId,
     );
     // 日付比較用
     let latestAsset: Asset;
@@ -41,7 +41,7 @@ export class AssetService {
     // 直近の資産データの現金額を登録
     // TODO: 保有株式情報の最新情報を取得する処理を入れる
     // ユーザーに紐付く保有株式情報を取得
-    const tickers = await this.tickerRepository.fetchTickerList(user);
+    const tickers = await this.tickerRepository.fetchTickerList(userId);
     const currentTickerPriceSum =
       await this.getTotalService.getCurrentTickerPriceSum(tickers);
     const asset = currentTickerPriceSum;
@@ -65,7 +65,7 @@ export class AssetService {
     );
     const createAssetDto: CreateAssetDto = {
       asset,
-      user,
+      userId,
       cashUSD,
       cashJPY,
       total,
@@ -76,6 +76,6 @@ export class AssetService {
       cashLTC,
     };
     await this.assetRepository.createAsset(createAssetDto);
-    return `【${new Date()}】Created Todays Asset of ${user}!`;
+    return `【${new Date()}】Created Todays Asset of id:${userId}!`;
   }
 }

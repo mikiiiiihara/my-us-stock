@@ -14,9 +14,6 @@ export class Ticker {
   @Field(() => Int, { description: '保有株数' })
   quantity: number;
 
-  @Field({ description: 'ユーザー名' })
-  user: string;
-
   @Field({ description: '配当' })
   dividend: number;
 

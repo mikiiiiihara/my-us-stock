@@ -7,9 +7,6 @@ export class UpdateTodayAssetInput {
   @Min(0)
   id: number;
 
-  @Field({ description: 'ユーザー名' })
-  user: string;
-
   @Field({ description: '現金(ドル)' })
   @Min(0)
   cashUSD: number;

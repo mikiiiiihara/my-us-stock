@@ -19,11 +19,6 @@ export class CreateTickerInput {
   @Min(0)
   quantity: number;
 
-  @Field({ description: 'ユーザー名' })
-  @IsNotEmpty()
-  @IsString()
-  user: string;
-
   @Field({ description: '配当' })
   @Min(0)
   dividend: number;
