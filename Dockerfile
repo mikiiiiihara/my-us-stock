@@ -27,5 +27,5 @@ COPY prisma ./prisma
 RUN yarn install --production --prefer-offline --frozen-lockfile
 
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/prisma ./prisma
+COPY prisma ./prisma
 CMD ["yarn", "start:prod"]
