@@ -5,7 +5,9 @@ export class AssetController {
   constructor(private readonly assetService: AssetService) {}
 
   @Post()
-  async createTodayAsset(@Body('userId') userId: number): Promise<string> {
-    return await this.assetService.createTodayAsset(userId);
+  async createTodayAsset(@Body('userId') userId: string): Promise<string> {
+    console.log(userId);
+    console.log(typeof userId);
+    return await this.assetService.createTodayAsset(Number(userId));
   }
 }
