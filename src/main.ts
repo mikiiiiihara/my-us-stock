@@ -8,7 +8,8 @@ async function bootstrap() {
     logger: new MyLogger(),
   });
   app.enableCors({
-    origin: `${process.env.REDIRECT_URL}`,
+    // origin: `${process.env.REDIRECT_URL}`,
+    origin: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
