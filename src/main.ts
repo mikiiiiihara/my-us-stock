@@ -8,7 +8,8 @@ async function bootstrap() {
     logger: new MyLogger(),
   });
   app.enableCors({
-    origin: 'https://my-us-stock-front.vercel.app',
+    origin: `${process.env.REDIRECT_URL}`,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
   app.use(cookieParser());
