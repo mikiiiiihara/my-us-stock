@@ -24,8 +24,16 @@ export class AuthController {
       req?.user,
     );
     // Set cookies
-    res.cookie('accessToken', accessToken, { httpOnly: true });
-    res.cookie('refreshToken', refreshToken, { httpOnly: true });
+    res.cookie('accessToken', accessToken, {
+      httpOnly: true,
+      sameSite: 'none',
+      secure: process.env.NODE_ENV !== 'dev',
+    });
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      sameSite: 'none',
+      secure: process.env.NODE_ENV !== 'dev',
+    });
 
     const baseUrl = this.configService.get<string>('REDIRECT_URL');
     res.redirect(`${baseUrl}/home`);
@@ -45,8 +53,16 @@ export class AuthController {
       username,
       refreshToken,
     );
-    res.cookie('accessToken', accessToken, { httpOnly: true });
-    res.cookie('refreshToken', refreshToken, { httpOnly: true });
+    res.cookie('accessToken', accessToken, {
+      httpOnly: true,
+      sameSite: 'none',
+      secure: process.env.NODE_ENV !== 'dev',
+    });
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      sameSite: 'none',
+      secure: process.env.NODE_ENV !== 'dev',
+    });
     return { accessToken };
   }
 
