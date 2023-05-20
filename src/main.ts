@@ -7,7 +7,7 @@ async function bootstrap() {
     logger: new MyLogger(),
   });
   app.enableCors({
-    origin: process.env.REDIRECT_URL,
+    origin: 'https://my-us-stock-front.vercel.app',
     credentials: true,
   });
   const port = Number(process.env.PORT) || 4000; // Cloud Run の要件。環境変数PORTで起動するようにする。
