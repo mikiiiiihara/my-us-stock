@@ -27,8 +27,8 @@ export class AuthController {
     res.cookie('accessToken', accessToken, { httpOnly: true });
     res.cookie('refreshToken', refreshToken, { httpOnly: true });
 
-    const redirectUrl = this.configService.get<string>('REDIRECT_URL');
-    res.redirect(redirectUrl);
+    const baseUrl = this.configService.get<string>('REDIRECT_URL');
+    res.redirect(`${baseUrl}/home`);
   }
 
   @Get('refresh')
