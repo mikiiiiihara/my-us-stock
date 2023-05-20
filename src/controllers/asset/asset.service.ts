@@ -12,7 +12,7 @@ export class AssetService {
     private readonly tickerRepository: TickerRepository,
     private readonly getTotalService: GetTotalService,
   ) {}
-  async createTodayAsset(userId: number): Promise<string> {
+  async createTodayAsset(userId: string): Promise<string> {
     // 本日の資産が登録されていた場合、登録は行わず処理終了
     const existAsset = await this.assetRepository.fetchTodayAsset(userId);
     if (existAsset != null) return 'Already created';

@@ -1,5 +1,5 @@
 export type CreateTickerDto = {
-  userId: number;
+  userId: string;
   ticker: string;
   getPrice: number;
   quantity: number;

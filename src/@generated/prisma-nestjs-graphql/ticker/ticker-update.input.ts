@@ -31,6 +31,6 @@ export class TickerUpdateInput {
     @Field(() => FloatFieldUpdateOperationsInput, {nullable:true})
     usdjpy?: FloatFieldUpdateOperationsInput;
 
-    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
-    userId?: IntFieldUpdateOperationsInput;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    userId?: StringFieldUpdateOperationsInput;
 }

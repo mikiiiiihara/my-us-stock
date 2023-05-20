@@ -30,6 +30,6 @@ export class TickerCreateInput {
     @Field(() => Float, {nullable:false})
     usdjpy!: number;
 
-    @Field(() => Int, {nullable:false})
-    userId!: number;
+    @Field(() => String, {nullable:false})
+    userId!: string;
 }

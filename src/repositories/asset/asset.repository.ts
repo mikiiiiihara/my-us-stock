@@ -8,7 +8,7 @@ import { Asset } from '@/@generated/prisma-nestjs-graphql/asset/asset.model';
 export class AssetRepository {
   constructor(private prisma: PrismaService) {}
   // select
-  async fetchAssetList(userId: number, day?: number): Promise<Asset[]> {
+  async fetchAssetList(userId: string, day?: number): Promise<Asset[]> {
     return await this.prisma.asset.findMany({
       where: {
         userId,
@@ -20,7 +20,7 @@ export class AssetRepository {
       },
     });
   }
-  async fetchTodayAsset(userId: number): Promise<Asset> {
+  async fetchTodayAsset(userId: string): Promise<Asset> {
     // 現在日時取得
     const year = format(new Date(), 'yyyy');
     const month = format(new Date(), 'MM');

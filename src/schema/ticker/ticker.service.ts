@@ -12,7 +12,7 @@ export class TickerService {
     private readonly marketPriceRepository: MarketPriceRepository,
   ) {}
 
-  async fetchTickerList(userId: number): Promise<Ticker[]> {
+  async fetchTickerList(userId: string): Promise<Ticker[]> {
     // ユーザーに紐付く保有株式情報を取得
     const tickers = await this.tickerRepository.fetchTickerList(userId);
     if (tickers.length === 0) return [];

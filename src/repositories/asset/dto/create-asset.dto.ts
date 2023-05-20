@@ -1,7 +1,7 @@
 export class CreateAssetDto {
   total: number;
   asset: number;
-  userId: number;
+  userId: string;
   cashUSD: number;
   cashJPY: number;
   cashBTC: number;

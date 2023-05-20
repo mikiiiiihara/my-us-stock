@@ -1,5 +1,5 @@
 export type UpdateTodayAssetDto = {
-  userId: number;
+  userId: string;
   id: number;
   cashUSD: number;
   cashJPY: number;

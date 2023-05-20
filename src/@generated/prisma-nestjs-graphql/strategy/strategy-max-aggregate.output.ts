@@ -17,6 +17,6 @@ export class StrategyMaxAggregate {
     @Field(() => String, {nullable:true})
     updDate?: string;
 
-    @Field(() => Int, {nullable:true})
-    userId?: number;
+    @Field(() => String, {nullable:true})
+    userId?: string;
 }

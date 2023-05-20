@@ -17,7 +17,7 @@ describe('AssetResolver', () => {
   let assetService: any;
 
   // ユーザー
-  const USER_ID = 9;
+  const USER_ID = '9';
   // 取得日数
   const DAY = 7;
 

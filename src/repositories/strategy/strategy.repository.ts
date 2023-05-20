@@ -9,7 +9,7 @@ import { Strategy } from '@/@generated/prisma-nestjs-graphql/strategy/strategy.m
 export class StrategyRepository {
   constructor(private prisma: PrismaService) {}
   //   // select
-  async fetchStrategy(userId: number): Promise<Strategy> {
+  async fetchStrategy(userId: string): Promise<Strategy> {
     return await this.prisma.strategy.findFirst({
       where: {
         userId,

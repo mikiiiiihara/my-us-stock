@@ -7,7 +7,7 @@ import { UpdateStrategyDto } from './dto/update-strategy.dto';
 export class StrategyService {
   constructor(private readonly strategyRepository: StrategyRepository) {}
 
-  async fetchStrategy(userId: number): Promise<Strategy> {
+  async fetchStrategy(userId: string): Promise<Strategy> {
     return await this.strategyRepository.fetchStrategy(userId);
   }
 

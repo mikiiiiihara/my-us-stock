@@ -25,7 +25,4 @@ export class TickerAvgAggregate {
 
     @Field(() => Float, {nullable:true})
     usdjpy?: number;
-
-    @Field(() => Float, {nullable:true})
-    userId?: number;
 }

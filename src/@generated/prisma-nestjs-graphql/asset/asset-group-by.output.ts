@@ -56,8 +56,8 @@ export class AssetGroupBy {
     @Field(() => Float, {nullable:false})
     total!: number;
 
-    @Field(() => Int, {nullable:false})
-    userId!: number;
+    @Field(() => String, {nullable:false})
+    userId!: string;
 
     @Field(() => AssetCountAggregate, {nullable:true})
     _count?: AssetCountAggregate;

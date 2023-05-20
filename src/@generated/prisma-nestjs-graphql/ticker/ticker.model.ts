@@ -34,6 +34,6 @@ export class Ticker {
     @Field(() => Float, {nullable:false})
     usdjpy!: number;
 
-    @Field(() => Int, {nullable:false})
-    userId!: number;
+    @Field(() => String, {nullable:false})
+    userId!: string;
 }

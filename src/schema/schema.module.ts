@@ -4,6 +4,7 @@ import { CurrencyModule } from './currency/currency.module';
 import { MarketPriceModule } from './market-price/market-price.module';
 import { StrategyModule } from './strategy/strategy.module';
 import { TickerModule } from './ticker/ticker.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { TickerModule } from './ticker/ticker.module';
     MarketPriceModule,
     StrategyModule,
     TickerModule,
+    UserModule,
   ],
 })
 export class SchemaModule {}

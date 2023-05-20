@@ -38,8 +38,8 @@ export class TickerGroupBy {
     @Field(() => Float, {nullable:false})
     usdjpy!: number;
 
-    @Field(() => Int, {nullable:false})
-    userId!: number;
+    @Field(() => String, {nullable:false})
+    userId!: string;
 
     @Field(() => TickerCountAggregate, {nullable:true})
     _count?: TickerCountAggregate;

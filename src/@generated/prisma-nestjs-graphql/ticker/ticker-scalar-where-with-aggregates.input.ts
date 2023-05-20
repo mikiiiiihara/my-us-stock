@@ -43,6 +43,6 @@ export class TickerScalarWhereWithAggregatesInput {
     @Field(() => FloatWithAggregatesFilter, {nullable:true})
     usdjpy?: FloatWithAggregatesFilter;
 
-    @Field(() => IntWithAggregatesFilter, {nullable:true})
-    userId?: IntWithAggregatesFilter;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    userId?: StringWithAggregatesFilter;
 }

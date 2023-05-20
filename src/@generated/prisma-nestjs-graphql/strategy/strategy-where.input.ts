@@ -27,6 +27,6 @@ export class StrategyWhereInput {
     @Field(() => StringFilter, {nullable:true})
     updDate?: StringFilter;
 
-    @Field(() => IntFilter, {nullable:true})
-    userId?: IntFilter;
+    @Field(() => StringFilter, {nullable:true})
+    userId?: StringFilter;
 }

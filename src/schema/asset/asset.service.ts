@@ -16,7 +16,7 @@ export class AssetService {
     private readonly getTotalService: GetTotalService,
   ) {}
 
-  async fetchAssetList(userId: number, day: number): Promise<Asset[]> {
+  async fetchAssetList(userId: string, day: number): Promise<Asset[]> {
     // 画面では昇順で扱いたいため直す
     const assetList = await this.assetRepository.fetchAssetList(userId, day);
     return assetList.sort(function (a, b) {
@@ -27,7 +27,7 @@ export class AssetService {
   }
 
   // 当日の資産総額を更新する(画面側で当日データのidを指定する)
-  async createTodayAsset(userId: number): Promise<Asset> {
+  async createTodayAsset(userId: string): Promise<Asset> {
     // 過去の中の最新データを取得
     const existAssets: Asset[] = await this.assetRepository.fetchAssetList(
       userId,
@@ -170,7 +170,7 @@ export class AssetService {
     };
     return await this.assetRepository.updateAsset(updateAssetDto);
   }
-  private async fetchCurrentAsset(userId: number): Promise<number> {
+  private async fetchCurrentAsset(userId: string): Promise<number> {
     const tickers = await this.tickerRepository.fetchTickerList(userId);
     return await this.getTotalService.getCurrentTickerPriceSum(tickers);
   }

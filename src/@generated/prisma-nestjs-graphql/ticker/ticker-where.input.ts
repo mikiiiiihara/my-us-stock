@@ -43,6 +43,6 @@ export class TickerWhereInput {
     @Field(() => FloatFilter, {nullable:true})
     usdjpy?: FloatFilter;
 
-    @Field(() => IntFilter, {nullable:true})
-    userId?: IntFilter;
+    @Field(() => StringFilter, {nullable:true})
+    userId?: StringFilter;
 }

@@ -2,20 +2,6 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type User {
-  id: ID!
-
-  """@Validator.@IsEmail()"""
-  email: String!
-  name: String!
-}
-
-type LoginResponse {
-  accessToken: String!
-  refreshToken: String!
-  user: User!
-}
-
 type Asset {
   id: ID!
   asset: Float!
@@ -32,7 +18,7 @@ type Asset {
   cashBAT: Float!
   cashLTC: Float!
   total: Float!
-  userId: Int!
+  userId: String!
 }
 
 type MarketPrice {
@@ -54,7 +40,7 @@ type Strategy {
   text: String!
   addDate: String!
   updDate: String!
-  userId: Int!
+  userId: String!
 }
 
 type Ticker {
@@ -95,19 +81,15 @@ type Ticker {
 }
 
 type Query {
-  user: User!
   getAssets(day: Int!): [Asset!]
   getCurrentUsdJpy: Float!
   getMarketPrices(tickerList: [String]!): [MarketPrice!]!
   getStrategy: Strategy
   getTickers: [Ticker!]
+  getUserName: String!
 }
 
 type Mutation {
-  createUser(data: UserCreateInput!): User!
-  login(loginUserInput: LoginUserInput!): LoginResponse!
-  refreshToken: LoginResponse!
-  logout: Boolean!
   createTodayAsset: Asset!
   updateTodayAsset(input: UpdateTodayAssetInput!): Asset!
   updateCash(input: UpdateCashInput!): Asset!
@@ -115,17 +97,6 @@ type Mutation {
   createTicker(input: CreateTickerInput!): Ticker!
   updateTicker(input: UpdateTickerInput!): Ticker!
   deleteTicker(input: UpdateTickerInput!): Ticker!
-}
-
-input UserCreateInput {
-  email: String!
-  name: String!
-  password: String!
-}
-
-input LoginUserInput {
-  email: String!
-  password: String!
 }
 
 input UpdateTodayAssetInput {

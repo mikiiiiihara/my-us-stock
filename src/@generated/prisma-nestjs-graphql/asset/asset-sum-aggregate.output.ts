@@ -35,7 +35,4 @@ export class AssetSumAggregate {
 
     @Field(() => Float, {nullable:true})
     total?: number;
-
-    @Field(() => Int, {nullable:true})
-    userId?: number;
 }

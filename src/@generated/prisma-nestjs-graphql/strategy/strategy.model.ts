@@ -1,7 +1,6 @@
 import { Field } from '@nestjs/graphql';
 import { ObjectType } from '@nestjs/graphql';
 import { ID } from '@nestjs/graphql';
-import { Int } from '@nestjs/graphql';
 
 @ObjectType()
 export class Strategy {
@@ -18,6 +17,6 @@ export class Strategy {
     @Field(() => String, {nullable:false})
     updDate!: string;
 
-    @Field(() => Int, {nullable:false})
-    userId!: number;
+    @Field(() => String, {nullable:false})
+    userId!: string;
 }

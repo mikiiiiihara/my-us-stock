@@ -61,6 +61,6 @@ export class AssetScalarWhereWithAggregatesInput {
     @Field(() => FloatWithAggregatesFilter, {nullable:true})
     total?: FloatWithAggregatesFilter;
 
-    @Field(() => IntWithAggregatesFilter, {nullable:true})
-    userId?: IntWithAggregatesFilter;
+    @Field(() => StringWithAggregatesFilter, {nullable:true})
+    userId?: StringWithAggregatesFilter;
 }

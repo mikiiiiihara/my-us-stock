@@ -13,7 +13,7 @@ describe('AssetRepository', () => {
   let prismaService: PrismaService;
 
   // ユーザー
-  const USER_ID = 9;
+  const USER_ID = '9';
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({

@@ -33,6 +33,6 @@ export class TickerMinAggregate {
     @Field(() => Float, {nullable:true})
     usdjpy?: number;
 
-    @Field(() => Int, {nullable:true})
-    userId?: number;
+    @Field(() => String, {nullable:true})
+    userId?: string;
 }

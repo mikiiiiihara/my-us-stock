@@ -24,7 +24,4 @@ export class TickerSumAggregateInput {
 
     @Field(() => Boolean, {nullable:true})
     usdjpy?: true;
-
-    @Field(() => Boolean, {nullable:true})
-    userId?: true;
 }

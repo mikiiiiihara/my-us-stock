@@ -17,6 +17,6 @@ export class StrategyCreateManyInput {
     @Field(() => String, {nullable:false})
     updDate!: string;
 
-    @Field(() => Int, {nullable:false})
-    userId!: number;
+    @Field(() => String, {nullable:false})
+    userId!: string;
 }

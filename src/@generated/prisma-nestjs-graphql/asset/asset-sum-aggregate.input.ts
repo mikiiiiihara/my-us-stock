@@ -33,7 +33,4 @@ export class AssetSumAggregateInput {
 
     @Field(() => Boolean, {nullable:true})
     total?: true;
-
-    @Field(() => Boolean, {nullable:true})
-    userId?: true;
 }

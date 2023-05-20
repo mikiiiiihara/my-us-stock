@@ -34,7 +34,4 @@ export class AssetAvgAggregate {
 
     @Field(() => Float, {nullable:true})
     total?: number;
-
-    @Field(() => Float, {nullable:true})
-    userId?: number;
 }

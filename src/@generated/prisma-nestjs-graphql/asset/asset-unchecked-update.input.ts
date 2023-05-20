@@ -52,6 +52,6 @@ export class AssetUncheckedUpdateInput {
     @Field(() => FloatFieldUpdateOperationsInput, {nullable:true})
     total?: FloatFieldUpdateOperationsInput;
 
-    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
-    userId?: IntFieldUpdateOperationsInput;
+    @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
+    userId?: StringFieldUpdateOperationsInput;
 }

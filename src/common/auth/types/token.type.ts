@@ -1,4 +1,4 @@
-export type Tokens = {
+export type Token = {
   accessToken: string;
   refreshToken: string;
 };

@@ -25,7 +25,4 @@ export class TickerAvgOrderByAggregateInput {
 
     @Field(() => SortOrder, {nullable:true})
     usdjpy?: keyof typeof SortOrder;
-
-    @Field(() => SortOrder, {nullable:true})
-    userId?: keyof typeof SortOrder;
 }

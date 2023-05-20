@@ -51,6 +51,6 @@ export class AssetMaxAggregate {
     @Field(() => Float, {nullable:true})
     total?: number;
 
-    @Field(() => Int, {nullable:true})
-    userId?: number;
+    @Field(() => String, {nullable:true})
+    userId?: string;
 }

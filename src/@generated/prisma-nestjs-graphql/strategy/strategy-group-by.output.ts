@@ -22,8 +22,8 @@ export class StrategyGroupBy {
     @Field(() => String, {nullable:false})
     updDate!: string;
 
-    @Field(() => Int, {nullable:false})
-    userId!: number;
+    @Field(() => String, {nullable:false})
+    userId!: string;
 
     @Field(() => StrategyCountAggregate, {nullable:true})
     _count?: StrategyCountAggregate;

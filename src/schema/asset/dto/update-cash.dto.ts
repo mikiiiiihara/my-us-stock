@@ -1,5 +1,5 @@
 export type UpdateCashDto = {
-  userId: number;
+  userId: string;
   cashUSD: number;
   cashJPY: number;
   cashBTC: number;

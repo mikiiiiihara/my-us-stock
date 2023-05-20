@@ -8,7 +8,7 @@ import { Ticker } from '@/@generated/prisma-nestjs-graphql/ticker/ticker.model';
 export class TickerRepository {
   constructor(private prisma: PrismaService) {}
   // select
-  async fetchTickerList(userId: number): Promise<Ticker[]> {
+  async fetchTickerList(userId: string): Promise<Ticker[]> {
     return await this.prisma.ticker.findMany({
       where: {
         userId,

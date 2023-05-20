@@ -34,7 +34,4 @@ export class AssetAvgOrderByAggregateInput {
 
     @Field(() => SortOrder, {nullable:true})
     total?: keyof typeof SortOrder;
-
-    @Field(() => SortOrder, {nullable:true})
-    userId?: keyof typeof SortOrder;
 }

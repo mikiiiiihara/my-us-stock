@@ -4,22 +4,22 @@ import { UpdateTickerInput } from './dto/input/update-ticker.input';
 import { Ticker } from './dto/types/ticker.type';
 import { TickerService } from './ticker.service';
 import { UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from '@/common/auth/guards/jwt-auth.guard';
-import { CurrentUserId } from '@/common/auth/decorators/current-user-id.decorator';
 import { CreateTickerDto } from './dto/create-ticker.dto';
+import { CurrentUserId } from '@/common/auth/decorators/current-user-id.decorator';
+import { AccessTokenGuard } from '@/common/auth/guards/access-token.guard';
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(AccessTokenGuard)
 @Resolver(() => Ticker)
 export class TickerResolver {
   constructor(private readonly tickerService: TickerService) {}
 
   @Query(() => [Ticker], { nullable: true })
-  async getTickers(@CurrentUserId() userId: number) {
+  async getTickers(@CurrentUserId() userId: string) {
     return this.tickerService.fetchTickerList(userId);
   }
   @Mutation(() => Ticker)
   async createTicker(
-    @CurrentUserId() userId: number,
+    @CurrentUserId() userId: string,
     @Args('input') createTickerInput: CreateTickerInput,
   ) {
     const creatTickerDto: CreateTickerDto = {

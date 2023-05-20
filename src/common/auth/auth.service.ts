@@ -1,96 +1,71 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
-import { LoginResponse } from './dto/types/login-response.type';
-import { Tokens } from './dto/types/tokens.type';
-import { JwtPayload } from './dto/types/jwt-payload.type';
-import { User } from '@/@generated/prisma-nestjs-graphql/user/user.model';
-import { UsersService } from '../users/users.service';
+import { ConfigService } from '@nestjs/config';
+import { User } from './types/user.type';
+import { Token } from './types/token.type';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private usersService: UsersService,
     private jwtService: JwtService,
+    private configService: ConfigService,
   ) {}
 
-  async validateUser(email: string, password: string): Promise<User | null> {
-    const user = await this.usersService.findUnique({
-      where: { email: email },
-    });
-
-    if (user && bcrypt.compareSync(password, user.password)) {
-      return user;
-    }
-
-    return null;
-  }
-
-  async login(user: User): Promise<LoginResponse> {
-    const tokens = await this.getTokens(user);
-    await this.updateHashedRefreshToken(user, tokens.refreshToken);
-    return {
-      ...tokens,
-      user: user,
-    };
-  }
-
-  async refreshToken(
-    user: User,
-    authorization: string,
-  ): Promise<LoginResponse> {
-    const refreshToken = authorization.replace('Bearer', '').trim();
-
-    if (!bcrypt.compareSync(refreshToken, user.hashedRefreshToken)) {
-      throw new UnauthorizedException();
-    }
-
-    const tokens = await this.getTokens(user);
-    await this.updateHashedRefreshToken(user, tokens.refreshToken);
-
-    return {
-      ...tokens,
-      user: user,
-    };
-  }
-
-  async logout(user: User): Promise<boolean> {
-    await this.usersService.update({
-      where: { id: user.id },
-      data: { hashedRefreshToken: { set: null } },
-    });
-
-    return true;
-  }
-
-  async updateHashedRefreshToken(
-    user: User,
-    refreshToken: string,
-  ): Promise<void> {
-    const hashedRefreshToken = bcrypt.hashSync(refreshToken, 10);
-    await this.usersService.update({
-      where: { id: user.id },
-      data: { hashedRefreshToken: { set: hashedRefreshToken } },
-    });
-  }
-
-  async getTokens(user: User): Promise<Tokens> {
-    const payload: JwtPayload = { email: user.email, sub: user.id };
-
+  async getTokens(userId: string, username: string) {
     const [accessToken, refreshToken] = await Promise.all([
-      this.jwtService.signAsync(payload, {
-        secret: process.env.JWT_SECRET,
-        expiresIn: '15m',
-      }),
-      this.jwtService.signAsync(payload, {
-        secret: process.env.JWT_REFRESH_SECRET,
-        expiresIn: '7d',
-      }),
+      this.jwtService.signAsync(
+        {
+          sub: userId,
+          username,
+        },
+        {
+          secret: this.configService.get<string>('jwt.accessSecret'),
+          expiresIn: '15m',
+        },
+      ),
+      this.jwtService.signAsync(
+        {
+          sub: userId,
+          username,
+        },
+        {
+          secret: this.configService.get<string>('jwt.refreshSecret'),
+          expiresIn: '7d',
+        },
+      ),
     ]);
 
     return {
-      accessToken: accessToken,
-      refreshToken: refreshToken,
+      accessToken,
+      refreshToken,
+    };
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async refreshTokens(userId: string, username: string, refreshToken: string) {
+    // ちゃんとやりたい場合は、データベースに保存しておいたハッシュ化された refreshToken と
+    // ユーザーから渡された refreshToken をハッシュ化して比較して、一致しない場合は例外を投げる。
+    // ここはサンプルなので、 refreshTokens が呼ばれたら新しい accessToken を返す。
+    const tokens = await this.getTokens(userId, username);
+    return tokens;
+  }
+
+  async login(user: User | undefined): Promise<Token> {
+    if (user === undefined) {
+      throw new InternalServerErrorException(
+        `Googleからユーザー情報が渡されていませんね？ ${user}`,
+      );
+    }
+    console.log('Googleから渡されたユーザーの情報です。', user);
+
+    const { accessToken, refreshToken } = await this.getTokens(
+      user.id,
+      user.email,
+    );
+
+    return {
+      accessToken,
+      refreshToken,
     };
   }
 }
