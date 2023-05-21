@@ -62,7 +62,8 @@ export class AuthController {
       sameSite: process.env.NODE_ENV !== 'dev' ? 'none' : undefined,
       secure: process.env.NODE_ENV !== 'dev',
     });
-    return { accessToken };
+    const baseUrl = this.configService.get<string>('REDIRECT_URL');
+    res.redirect(`${baseUrl}/home`);
   }
 
   @Get('logout')

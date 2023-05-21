@@ -12,6 +12,8 @@ export class RefreshTokenStrategy extends PassportStrategy(
   constructor(private configService: ConfigService) {
     super({
       jwtFromRequest: (req) => {
+        console.log('cookie is...');
+        console.log(req.cookies);
         if (req && req.cookies) {
           return req.cookies['refreshToken'];
         }

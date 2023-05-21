@@ -6,8 +6,6 @@ export class AssetController {
 
   @Post()
   async createTodayAsset(@Body('userId') userId: string): Promise<string> {
-    console.log(userId);
-    console.log(typeof userId);
     return await this.assetService.createTodayAsset(userId);
   }
 }
