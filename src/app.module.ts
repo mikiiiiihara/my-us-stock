@@ -17,6 +17,11 @@ import { LoggerMiddleware } from './logger/logger.middleware';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      cors: {
+        origin: `${process.env.REDIRECT_URL}`,
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+        credentials: true,
+      },
     }),
     ConfigModule.forRoot({
       envFilePath: ['.env.development.local'],

@@ -26,7 +26,7 @@ export class AuthController {
     // Set cookies
     res.cookie('accessToken', accessToken, {
       httpOnly: true,
-      sameSite: 'none',
+      sameSite: process.env.NODE_ENV !== 'dev' ? 'none' : undefined,
       secure: process.env.NODE_ENV !== 'dev',
     });
     res.cookie('refreshToken', refreshToken, {
@@ -34,7 +34,6 @@ export class AuthController {
       sameSite: 'none',
       secure: process.env.NODE_ENV !== 'dev',
     });
-
     const baseUrl = this.configService.get<string>('REDIRECT_URL');
     res.redirect(`${baseUrl}/home`);
   }
@@ -55,12 +54,12 @@ export class AuthController {
     );
     res.cookie('accessToken', accessToken, {
       httpOnly: true,
-      sameSite: 'none',
+      sameSite: process.env.NODE_ENV !== 'dev' ? 'none' : undefined,
       secure: process.env.NODE_ENV !== 'dev',
     });
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
-      sameSite: 'none',
+      sameSite: process.env.NODE_ENV !== 'dev' ? 'none' : undefined,
       secure: process.env.NODE_ENV !== 'dev',
     });
     return { accessToken };

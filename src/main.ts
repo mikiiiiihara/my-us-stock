@@ -6,10 +6,10 @@ import * as cookieParser from 'cookie-parser';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     logger: new MyLogger(),
+    cors: true,
   });
   app.enableCors({
-    // origin: `${process.env.REDIRECT_URL}`,
-    origin: true,
+    origin: `${process.env.REDIRECT_URL}`,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
   });
