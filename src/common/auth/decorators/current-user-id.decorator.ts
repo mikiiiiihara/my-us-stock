@@ -8,7 +8,7 @@ export const CurrentUserId = createParamDecorator(
     const ctx = GqlExecutionContext.create(context);
     const request = ctx.getContext().req;
 
-    const token = request.headers.authorization.split(' ')[1];
+    const token = request.cookies.accessToken;
     const jwtService = new JwtService({ secret: process.env.JWT_SECRET }); // Replace with your JWT secret
     const decoded = jwtService.decode(token) as JwtPayload;
     return decoded.sub;
