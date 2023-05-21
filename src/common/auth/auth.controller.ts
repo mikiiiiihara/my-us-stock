@@ -63,7 +63,8 @@ export class AuthController {
       secure: process.env.NODE_ENV !== 'dev',
     });
     const baseUrl = this.configService.get<string>('REDIRECT_URL');
-    res.redirect(`${baseUrl}/home?redirected=true`);
+    // res.redirect(`${baseUrl}/home?redirected=true`);
+    res.redirect(`${baseUrl}/home`);
   }
 
   @Get('logout')
