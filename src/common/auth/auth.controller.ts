@@ -26,13 +26,13 @@ export class AuthController {
     // Set cookies
     res.cookie('accessToken', accessToken, {
       httpOnly: true,
-      // sameSite: process.env.NODE_ENV !== 'dev' ? 'none' : undefined,
-      // secure: process.env.NODE_ENV !== 'dev',
+      sameSite: process.env.NODE_ENV !== 'dev' ? 'none' : undefined,
+      secure: process.env.NODE_ENV !== 'dev',
     });
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
-      // sameSite: process.env.NODE_ENV !== 'dev' ? 'none' : undefined,
-      // secure: process.env.NODE_ENV !== 'dev',
+      sameSite: process.env.NODE_ENV !== 'dev' ? 'none' : undefined,
+      secure: process.env.NODE_ENV !== 'dev',
     });
     const baseUrl = this.configService.get<string>('REDIRECT_URL');
     res.redirect(`${baseUrl}/home`);
@@ -54,13 +54,13 @@ export class AuthController {
     );
     res.cookie('accessToken', accessToken, {
       httpOnly: true,
-      // sameSite: process.env.NODE_ENV !== 'dev' ? 'none' : undefined,
-      // secure: process.env.NODE_ENV !== 'dev',
+      sameSite: process.env.NODE_ENV !== 'dev' ? 'none' : undefined,
+      secure: process.env.NODE_ENV !== 'dev',
     });
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
-      // sameSite: process.env.NODE_ENV !== 'dev' ? 'none' : undefined,
-      // secure: process.env.NODE_ENV !== 'dev',
+      sameSite: process.env.NODE_ENV !== 'dev' ? 'none' : undefined,
+      secure: process.env.NODE_ENV !== 'dev',
     });
     return { accessToken };
   }
