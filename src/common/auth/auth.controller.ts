@@ -28,11 +28,13 @@ export class AuthController {
       httpOnly: true,
       sameSite: process.env.NODE_ENV !== 'dev' ? 'none' : undefined,
       secure: process.env.NODE_ENV !== 'dev',
+      domain: process.env.COOKIE_DOMAIN ?? 'localhost',
     });
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
-      sameSite: 'none',
+      sameSite: process.env.NODE_ENV !== 'dev' ? 'none' : undefined,
       secure: process.env.NODE_ENV !== 'dev',
+      domain: process.env.COOKIE_DOMAIN ?? 'localhost',
     });
     const baseUrl = this.configService.get<string>('REDIRECT_URL');
     res.redirect(`${baseUrl}/home`);
@@ -56,11 +58,13 @@ export class AuthController {
       httpOnly: true,
       sameSite: process.env.NODE_ENV !== 'dev' ? 'none' : undefined,
       secure: process.env.NODE_ENV !== 'dev',
+      domain: process.env.COOKIE_DOMAIN ?? 'localhost',
     });
     res.cookie('refreshToken', refreshToken, {
       httpOnly: true,
       sameSite: process.env.NODE_ENV !== 'dev' ? 'none' : undefined,
       secure: process.env.NODE_ENV !== 'dev',
+      domain: process.env.COOKIE_DOMAIN ?? 'localhost',
     });
     return { accessToken };
   }
