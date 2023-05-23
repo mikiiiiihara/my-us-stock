@@ -52,6 +52,12 @@ export class AuthController {
       username,
       refreshToken,
     );
+    const baseUrl = this.configService.get<string>('REDIRECT_URL');
+
+    // cors設定を付与
+    res.set('Access-Control-Allow-Origin', baseUrl);
+    res.set('Access-Control-Allow-Credentials', 'true');
+    // cookieをセット
     res.cookie('accessToken', accessToken, {
       httpOnly: true,
       sameSite: process.env.NODE_ENV !== 'dev' ? 'none' : undefined,
@@ -62,9 +68,8 @@ export class AuthController {
       sameSite: process.env.NODE_ENV !== 'dev' ? 'none' : undefined,
       secure: process.env.NODE_ENV !== 'dev',
     });
-    const baseUrl = this.configService.get<string>('REDIRECT_URL');
-    // res.redirect(`${baseUrl}/home?redirected=true`);
-    res.redirect(`${baseUrl}/home`);
+    // res.redirect(`${baseUrl}/home`);
+    res.json({ success: true, message: 'Tokens refreshed successfully.' });
   }
 
   @Get('logout')
