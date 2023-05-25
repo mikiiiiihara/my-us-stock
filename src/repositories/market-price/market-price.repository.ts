@@ -13,14 +13,15 @@ export class MarketPriceRepository {
 
   async fetchMarketPriceList(tickerList: string[]): Promise<MarketPriceDto[]> {
     const baseUrl = this.configService.get<string>('MARKET_PRICE_URL');
-    const url = `${baseUrl}?symbols=${tickerList.toString()}`;
+    const token = this.configService.get<string>('MARKET_PRICE_TOKEN');
+    const url = `${baseUrl}/v2/snapshot/locale/us/markets/stocks/tickers?tickers=${tickerList.toString()}&apiKey=${token}`;
     const response = await this.axiosService.get<MarketPrice>(url);
-    const result = response.quoteResponse.result;
+    const result = response.tickers;
     return result.map((item) => ({
-      ticker: item.symbol,
-      currentPrice: item.regularMarketPrice,
-      priceGets: item.regularMarketChange,
-      currentRate: item.regularMarketChangePercent,
+      ticker: item.ticker,
+      currentPrice: item.day.c,
+      priceGets: item.todaysChange,
+      currentRate: item.todaysChangePerc,
     }));
   }
 }
