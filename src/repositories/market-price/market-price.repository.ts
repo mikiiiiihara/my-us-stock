@@ -11,28 +11,16 @@ export class MarketPriceRepository {
     private readonly axiosService: AxiosService,
   ) {}
 
-  // 市場価格情報を取得(サービス層からは取得するすべてのティッカーを取得)
   async fetchMarketPriceList(tickerList: string[]): Promise<MarketPriceDto[]> {
-    return await Promise.all(
-      tickerList.map(async (ticker) => {
-        return await this.fetchMarketPrice(ticker);
-      }),
-    );
-  }
-
-  // 市場価格情報を取得(1つ)
-  private async fetchMarketPrice(ticker: string): Promise<MarketPriceDto> {
     const baseUrl = this.configService.get<string>('MARKET_PRICE_URL');
-    const marketPriceToken =
-      this.configService.get<string>('MARKET_PRICE_TOKEN');
-    const url = `${baseUrl}?symbol=${ticker}&token=${marketPriceToken}`;
+    const url = `${baseUrl}?symbols=${tickerList.toString()}`;
     const response = await this.axiosService.get<MarketPrice>(url);
-    const { c, d, dp } = response;
-    return {
-      ticker,
-      currentPrice: c,
-      priceGets: d,
-      currentRate: dp,
-    };
+    const result = response.quoteResponse.result;
+    return result.map((item) => ({
+      ticker: item.symbol,
+      currentPrice: item.regularMarketPrice,
+      priceGets: item.regularMarketChange,
+      currentRate: item.regularMarketChangePercent,
+    }));
   }
 }

@@ -1,19 +1,86 @@
+type Result = {
+  language: string;
+  region: string;
+  quoteType: string;
+  typeDisp: string;
+  quoteSourceName: string;
+  triggerable: boolean;
+  customPriceAlertConfidence: string;
+  currency: string;
+  marketState: string;
+  gmtOffSetMilliseconds: number;
+  market: string;
+  exchange: string;
+  shortName: string;
+  longName: string;
+  messageBoardId: string;
+  exchangeTimezoneName: string;
+  exchangeTimezoneShortName: string;
+  esgPopulated: boolean;
+  regularMarketChangePercent: number;
+  regularMarketPrice: number;
+  epsCurrentYear: number;
+  priceEpsCurrentYear: number;
+  sharesOutstanding: number;
+  bookValue: number;
+  fiftyDayAverage: number;
+  fiftyDayAverageChange: number;
+  fiftyDayAverageChangePercent: number;
+  twoHundredDayAverage: number;
+  twoHundredDayAverageChange: number;
+  twoHundredDayAverageChangePercent: number;
+  marketCap: number;
+  forwardPE: number;
+  priceToBook: number;
+  sourceInterval: number;
+  exchangeDataDelayedBy: number;
+  averageAnalystRating: string;
+  tradeable: boolean;
+  cryptoTradeable: boolean;
+  fullExchangeName: string;
+  financialCurrency: string;
+  regularMarketOpen: number;
+  averageDailyVolume3Month: number;
+  averageDailyVolume10Day: number;
+  fiftyTwoWeekLowChange: number;
+  fiftyTwoWeekLowChangePercent: number;
+  fiftyTwoWeekRange: string;
+  fiftyTwoWeekHighChange: number;
+  fiftyTwoWeekHighChangePercent: number;
+  fiftyTwoWeekLow: number;
+  fiftyTwoWeekHigh: number;
+  dividendDate: number;
+  earningsTimestamp: number;
+  earningsTimestampStart: number;
+  earningsTimestampEnd: number;
+  trailingAnnualDividendRate: number;
+  trailingPE: number;
+  trailingAnnualDividendYield: number;
+  epsTrailingTwelveMonths: number;
+  epsForward: number;
+  firstTradeDateMilliseconds: number;
+  priceHint: number;
+  postMarketChangePercent: number;
+  postMarketTime: number;
+  postMarketPrice: number;
+  postMarketChange: number;
+  regularMarketChange: number;
+  regularMarketTime: number;
+  regularMarketDayHigh: number;
+  regularMarketDayRange: string;
+  regularMarketDayLow: number;
+  regularMarketVolume: number;
+  regularMarketPreviousClose: number;
+  bid: number;
+  ask: number;
+  bidSize: number;
+  askSize: number;
+  displayName: string;
+  symbol: string;
+};
+
 export class MarketPrice {
-  /**
-   * 現在価格
-   */
-  c: number;
-  /**
-   * 変動価格
-   */
-  d: number;
-  /**
-   * 騰落率
-   */
-  dp: number;
-  h: number;
-  l: number;
-  o: number;
-  pc: number;
-  t: number;
+  quoteResponse: {
+    result: Result[];
+  };
 }
