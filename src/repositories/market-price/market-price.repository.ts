@@ -42,42 +42,57 @@ export class MarketPriceRepository {
     return {
       ticker,
       dividendTime: dividends[0] ? dividends[0].frequency : 0,
-      dividendFirstTime: dividends[0]
-        ? await this.calculateFirstPayMonth(
+      dividendMonth: dividends[0]
+        ? await this.calculateDividendMonth(
             dividends[0].frequency,
             dividends[0].pay_date,
           )
-        : 0,
-      dividend: dividends[0]
+        : [],
+      dividend: dividends[0] ? dividends[0].cash_amount : 0,
+      dividendTotal: dividends[0]
         ? dividends[0].cash_amount * dividends[0].frequency
         : 0,
     };
   }
 
   /**
-   * １年のうち、最初の配当支払い月を取得する
+   * 配当支払い月を取得する
    */
-  private async calculateFirstPayMonth(frequency: number, payDate: string) {
-    if (frequency === 12) return 1;
+  private async calculateDividendMonth(
+    frequency: number,
+    payDate: string,
+  ): Promise<number[]> {
+    if (frequency === 12) return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
     // 支払日から、月だけを抜き出す
     const month = format(new Date(payDate), 'MM');
     const monthNumber = Number(month);
+    // 初回配当付与月習得
+    let dividendFirstMonth: number;
     switch (monthNumber) {
       case 1:
       case 4:
       case 7:
       case 10:
-        return 1;
+        dividendFirstMonth = 1;
+        break;
       case 2:
       case 5:
       case 8:
       case 11:
-        return 2;
+        dividendFirstMonth = 2;
+        break;
       case 3:
       case 6:
       case 9:
       case 12:
-        return 3;
+        dividendFirstMonth = 3;
+        break;
     }
+    const interval = 12 / frequency;
+    const dividendMonth: number[] = [];
+    for (let i = dividendFirstMonth; i <= 12; i += interval) {
+      dividendMonth.push(i);
+    }
+    return dividendMonth;
   }
 }

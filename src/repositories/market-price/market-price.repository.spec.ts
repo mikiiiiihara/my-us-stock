@@ -300,8 +300,9 @@ describe('MarketPriceRepository', () => {
         const expected: DividendEntity = {
           ticker: 'TLT',
           dividendTime: 12,
-          dividend: 3.21594,
-          dividendFirstTime: 1,
+          dividend: 0.267995,
+          dividendTotal: 3.21594,
+          dividendMonth: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
         };
         // テスト実行
         const result = await marketPriceRepository.fetchDividend('TLT');
@@ -389,39 +390,6 @@ describe('MarketPriceRepository', () => {
               record_date: '2021-11-08',
               ticker: 'AAPL',
             },
-            {
-              cash_amount: 0.22,
-              currency: 'USD',
-              declaration_date: '2021-07-27',
-              dividend_type: 'CD',
-              ex_dividend_date: '2021-08-06',
-              frequency: 4,
-              pay_date: '2021-08-12',
-              record_date: '2021-08-09',
-              ticker: 'AAPL',
-            },
-            {
-              cash_amount: 0.22,
-              currency: 'USD',
-              declaration_date: '2021-04-28',
-              dividend_type: 'CD',
-              ex_dividend_date: '2021-05-07',
-              frequency: 4,
-              pay_date: '2021-05-13',
-              record_date: '2021-05-10',
-              ticker: 'AAPL',
-            },
-            {
-              cash_amount: 0.205,
-              currency: 'USD',
-              declaration_date: '2021-01-27',
-              dividend_type: 'CD',
-              ex_dividend_date: '2021-02-05',
-              frequency: 4,
-              pay_date: '2021-02-11',
-              record_date: '2021-02-08',
-              ticker: 'AAPL',
-            },
           ],
           status: 'OK',
           request_id: '0347e491fb06d5ef4b3f410a9c818f23',
@@ -432,8 +400,9 @@ describe('MarketPriceRepository', () => {
         const expected: DividendEntity = {
           ticker: 'AAPL',
           dividendTime: 4,
-          dividend: 0.96,
-          dividendFirstTime: 2,
+          dividend: 0.24,
+          dividendTotal: 0.96,
+          dividendMonth: [2, 5, 8, 11],
         };
         // テスト実行
         const result = await marketPriceRepository.fetchDividend('AAPL');
@@ -451,7 +420,8 @@ describe('MarketPriceRepository', () => {
         const expected: DividendEntity = {
           ticker: 'TSLA',
           dividendTime: 0,
-          dividendFirstTime: 0,
+          dividendTotal: 0,
+          dividendMonth: [],
           dividend: 0,
         };
         // テスト実行

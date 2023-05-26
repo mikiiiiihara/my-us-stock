@@ -80,6 +80,26 @@ type Ticker {
   currentRate: Float!
 }
 
+type Dividend {
+  """ティッカーシンボル"""
+  ticker: String!
+
+  """１回当たり配当"""
+  dividend: Float!
+
+  """年間配当"""
+  dividendTotal: Float!
+
+  """保有株式数"""
+  quantity: Float!
+
+  """１年当たり配当付与回数"""
+  dividendTime: Float!
+
+  """配当付与月"""
+  dividendMonth: [Int!]
+}
+
 type Query {
   getAssets(day: Int!): [Asset!]
   getCurrentUsdJpy: Float!
@@ -87,6 +107,7 @@ type Query {
   getStrategy: Strategy
   getTickers: [Ticker!]
   getUserName: String!
+  getDividendList: [Dividend!]!
 }
 
 type Mutation {
