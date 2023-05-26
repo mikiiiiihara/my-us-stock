@@ -88,6 +88,7 @@ describe('TickerService', () => {
             currentPrice: 148.5,
             currentRate: -1.3879,
             getPrice: 100,
+            dividend: 0.92,
             id: 14,
             priceGets: -2.09,
             quantity: 6,
@@ -140,6 +141,7 @@ describe('TickerService', () => {
         const expected: Readonly<Ticker> = {
           currentPrice: 148.5,
           currentRate: -1.3879,
+          dividend: 0.92,
           getPrice: 100,
           id: 14,
           priceGets: -2.09,
@@ -186,6 +188,7 @@ describe('TickerService', () => {
           currentPrice: 148.5,
           currentRate: -1.3879,
           getPrice: 100,
+          dividend: 0.92,
           id: 14,
           priceGets: -2.09,
           quantity: 6,
@@ -228,6 +231,7 @@ describe('TickerService', () => {
         const expected: Readonly<Ticker> = {
           currentPrice: 148.5,
           currentRate: -1.3879,
+          dividend: 0.92,
           getPrice: 100,
           id: 14,
           priceGets: -2.09,
