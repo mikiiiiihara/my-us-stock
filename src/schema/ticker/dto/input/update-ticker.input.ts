@@ -16,11 +16,6 @@ export class UpdateTickerInput {
   @Min(0)
   quantity?: number;
 
-  @Field({ description: '配当' })
-  @IsOptional()
-  @Min(0)
-  dividend?: number;
-
   @Field({ description: '購入時為替' })
   @IsOptional()
   @Min(0)

@@ -15,14 +15,5 @@ export class TickerSumOrderByAggregateInput {
     quantity?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
-    dividend?: keyof typeof SortOrder;
-
-    @Field(() => SortOrder, {nullable:true})
-    dividendTime?: keyof typeof SortOrder;
-
-    @Field(() => SortOrder, {nullable:true})
-    dividendFirstTime?: keyof typeof SortOrder;
-
-    @Field(() => SortOrder, {nullable:true})
     usdjpy?: keyof typeof SortOrder;
 }

@@ -25,7 +25,7 @@ export class MarketPriceRepository {
     const result = response.tickers;
     return result.map((item) => ({
       ticker: item.ticker,
-      currentPrice: item.day.c,
+      currentPrice: item.day.c !== 0 ? item.day.c : item.prevDay.c,
       priceGets: item.todaysChange,
       currentRate: item.todaysChangePerc,
     }));

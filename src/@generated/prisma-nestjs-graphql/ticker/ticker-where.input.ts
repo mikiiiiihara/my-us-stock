@@ -28,15 +28,6 @@ export class TickerWhereInput {
     @Field(() => IntFilter, {nullable:true})
     quantity?: IntFilter;
 
-    @Field(() => FloatFilter, {nullable:true})
-    dividend?: FloatFilter;
-
-    @Field(() => IntFilter, {nullable:true})
-    dividendTime?: IntFilter;
-
-    @Field(() => IntFilter, {nullable:true})
-    dividendFirstTime?: IntFilter;
-
     @Field(() => StringFilter, {nullable:true})
     sector?: StringFilter;
 

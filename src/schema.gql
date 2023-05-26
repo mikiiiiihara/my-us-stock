@@ -52,17 +52,11 @@ type Ticker {
   """取得価格"""
   getPrice: Float!
 
-  """保有株数"""
-  quantity: Int!
-
-  """配当"""
+  """１年当たり配当"""
   dividend: Float!
 
-  """配当付与回数"""
-  dividendTime: Int!
-
-  """初回配当付与月"""
-  dividendFirstTime: Int!
+  """保有株数"""
+  quantity: Int!
 
   """セクター"""
   sector: String!
@@ -184,15 +178,6 @@ input CreateTickerInput {
   """保有株数"""
   quantity: Int!
 
-  """配当"""
-  dividend: Float!
-
-  """配当付与回数"""
-  dividendTime: Int!
-
-  """初回配当付与月"""
-  dividendFirstTime: Int!
-
   """セクター"""
   sector: String!
 
@@ -217,9 +202,6 @@ input UpdateTickerInput {
 
   """保有株数"""
   quantity: Int
-
-  """配当"""
-  dividend: Float
 
   """購入時為替"""
   usdjpy: Float

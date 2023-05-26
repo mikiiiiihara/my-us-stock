@@ -28,15 +28,6 @@ export class TickerScalarWhereWithAggregatesInput {
     @Field(() => IntWithAggregatesFilter, {nullable:true})
     quantity?: IntWithAggregatesFilter;
 
-    @Field(() => FloatWithAggregatesFilter, {nullable:true})
-    dividend?: FloatWithAggregatesFilter;
-
-    @Field(() => IntWithAggregatesFilter, {nullable:true})
-    dividendTime?: IntWithAggregatesFilter;
-
-    @Field(() => IntWithAggregatesFilter, {nullable:true})
-    dividendFirstTime?: IntWithAggregatesFilter;
-
     @Field(() => StringWithAggregatesFilter, {nullable:true})
     sector?: StringWithAggregatesFilter;
 

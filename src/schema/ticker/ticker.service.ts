@@ -21,43 +21,42 @@ export class TickerService {
     const marketPriceList =
       await this.marketPriceRepository.fetchMarketPriceList(tickerList);
     // 保有株式情報に現在のマーケットデータを付与して返却する
-    return tickers.map((ticker) => {
-      const marketPrice = marketPriceList.find(
-        (marketPrice) => marketPrice.ticker == ticker.ticker,
-      );
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { userId, ...rest } = ticker;
-      return {
-        ...rest,
-        ...marketPrice,
-      };
-    });
+    return await Promise.all(
+      tickers.map(async (ticker) => {
+        // 該当銘柄の保有株式数を取得
+        const { dividendTotal } =
+          await this.marketPriceRepository.fetchDividend(ticker.ticker);
+        const marketPrice = marketPriceList.find(
+          (marketPrice) => marketPrice.ticker == ticker.ticker,
+        );
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { userId, ...rest } = ticker;
+        return {
+          ...rest,
+          ...marketPrice,
+          dividend: dividendTotal,
+        };
+      }),
+    );
   }
   async createTicker(creatTickerDto: CreateTickerDto): Promise<Ticker> {
     const newTicker = await this.tickerRepository.createTicker(creatTickerDto);
-    const {
-      id,
-      ticker,
-      getPrice,
-      quantity,
-      dividend,
-      dividendTime,
-      dividendFirstTime,
-      sector,
-      usdjpy,
-    } = newTicker;
+    const { id, ticker, getPrice, quantity, sector, usdjpy } = newTicker;
     // 現在のマーケットデータも同時に返却する
+    // 価格情報
     const marketPriceList =
       await this.marketPriceRepository.fetchMarketPriceList([ticker]);
     const { currentPrice, priceGets, currentRate } = marketPriceList[0];
+    // 配当情報
+    const { dividendTotal } = await this.marketPriceRepository.fetchDividend(
+      ticker,
+    );
     return {
       id,
       ticker,
+      dividend: dividendTotal,
       getPrice,
       quantity,
-      dividend,
-      dividendTime,
-      dividendFirstTime,
       sector,
       usdjpy,
       currentPrice,
@@ -73,24 +72,17 @@ export class TickerService {
     const newTicker = await this.tickerRepository.updateTicker(
       updateTickerInput,
     );
-    const {
+    const { ticker, getPrice, quantity, sector, usdjpy } = newTicker;
+    // 配当情報
+    const { dividendTotal } = await this.marketPriceRepository.fetchDividend(
       ticker,
-      getPrice,
-      quantity,
-      dividend,
-      dividendTime,
-      dividendFirstTime,
-      sector,
-      usdjpy,
-    } = newTicker;
+    );
     return {
       id,
       ticker,
+      dividend: dividendTotal,
       getPrice,
       quantity,
-      dividend,
-      dividendTime,
-      dividendFirstTime,
       sector,
       usdjpy,
       currentPrice,
@@ -104,24 +96,13 @@ export class TickerService {
     const { id, currentPrice, priceGets, currentRate } = updateTickerInput;
     //レコード削除
     const selectedTicker = await this.tickerRepository.deleteTicker(id);
-    const {
-      ticker,
-      getPrice,
-      quantity,
-      dividend,
-      dividendTime,
-      dividendFirstTime,
-      sector,
-      usdjpy,
-    } = selectedTicker;
+    const { ticker, getPrice, quantity, sector, usdjpy } = selectedTicker;
     return {
       id,
       ticker,
       getPrice,
       quantity,
-      dividend,
-      dividendTime,
-      dividendFirstTime,
+      dividend: 0,
       sector,
       usdjpy,
       currentPrice,

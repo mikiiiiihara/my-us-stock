@@ -17,26 +17,14 @@ export class TickerRepository {
   }
   // create
   async createTicker(createTickerDto: CreateTickerDto): Promise<Ticker> {
-    const {
-      ticker,
-      getPrice,
-      quantity,
-      userId,
-      dividend,
-      dividendTime,
-      dividendFirstTime,
-      sector,
-      usdjpy,
-    } = createTickerDto;
+    const { ticker, getPrice, quantity, userId, sector, usdjpy } =
+      createTickerDto;
     return await this.prisma.ticker.create({
       data: {
         ticker,
         getPrice,
         quantity,
         userId,
-        dividend,
-        dividendTime,
-        dividendFirstTime,
         sector,
         usdjpy,
       },
@@ -44,7 +32,7 @@ export class TickerRepository {
   }
   // update
   async updateTicker(updateTickerDto: UpdateTickerDto): Promise<Ticker> {
-    const { id, getPrice, quantity, dividend, usdjpy } = updateTickerDto;
+    const { id, getPrice, quantity, usdjpy } = updateTickerDto;
     return await this.prisma.ticker.update({
       where: {
         id: id,
@@ -52,7 +40,6 @@ export class TickerRepository {
       data: {
         getPrice: getPrice != null ? getPrice : undefined,
         quantity: quantity != null ? quantity : undefined,
-        dividend: dividend != null ? dividend : undefined,
         usdjpy: usdjpy != null ? usdjpy : undefined,
       },
     });

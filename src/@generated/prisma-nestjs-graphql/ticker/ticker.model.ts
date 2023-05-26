@@ -19,15 +19,6 @@ export class Ticker {
     @Field(() => Int, {nullable:false})
     quantity!: number;
 
-    @Field(() => Float, {nullable:false})
-    dividend!: number;
-
-    @Field(() => Int, {nullable:false})
-    dividendTime!: number;
-
-    @Field(() => Int, {nullable:false})
-    dividendFirstTime!: number;
-
     @Field(() => String, {nullable:false})
     sector!: string;
 

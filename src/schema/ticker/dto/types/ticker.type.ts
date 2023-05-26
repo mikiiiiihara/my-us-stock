@@ -11,17 +11,11 @@ export class Ticker {
   @Field({ description: '取得価格' })
   getPrice: number;
 
-  @Field(() => Int, { description: '保有株数' })
-  quantity: number;
-
-  @Field({ description: '配当' })
+  @Field({ description: '１年当たり配当' })
   dividend: number;
 
-  @Field(() => Int, { description: '配当付与回数' })
-  dividendTime: number;
-
-  @Field(() => Int, { description: '初回配当付与月' })
-  dividendFirstTime: number;
+  @Field(() => Int, { description: '保有株数' })
+  quantity: number;
 
   @Field({ description: 'セクター' })
   sector: string;

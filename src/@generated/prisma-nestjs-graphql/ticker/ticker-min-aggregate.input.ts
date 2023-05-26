@@ -17,15 +17,6 @@ export class TickerMinAggregateInput {
     quantity?: true;
 
     @Field(() => Boolean, {nullable:true})
-    dividend?: true;
-
-    @Field(() => Boolean, {nullable:true})
-    dividendTime?: true;
-
-    @Field(() => Boolean, {nullable:true})
-    dividendFirstTime?: true;
-
-    @Field(() => Boolean, {nullable:true})
     sector?: true;
 
     @Field(() => Boolean, {nullable:true})

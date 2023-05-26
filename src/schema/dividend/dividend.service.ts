@@ -23,7 +23,6 @@ export class DividendService {
         const quantity = tickers.find(
           (item) => item.ticker === ticker,
         ).quantity;
-        console.log(quantity);
         const dividend = await this.marketPriceRepository.fetchDividend(ticker);
         return {
           ...dividend,

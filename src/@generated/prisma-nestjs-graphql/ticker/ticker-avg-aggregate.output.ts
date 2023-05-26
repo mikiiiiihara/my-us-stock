@@ -15,14 +15,5 @@ export class TickerAvgAggregate {
     quantity?: number;
 
     @Field(() => Float, {nullable:true})
-    dividend?: number;
-
-    @Field(() => Float, {nullable:true})
-    dividendTime?: number;
-
-    @Field(() => Float, {nullable:true})
-    dividendFirstTime?: number;
-
-    @Field(() => Float, {nullable:true})
     usdjpy?: number;
 }

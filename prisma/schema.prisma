@@ -58,9 +58,6 @@ model Ticker {
   ticker            String
   getPrice          Float
   quantity          Int
-  dividend          Float
-  dividendTime      Int
-  dividendFirstTime Int
   sector            String
   usdjpy            Float
   userId String

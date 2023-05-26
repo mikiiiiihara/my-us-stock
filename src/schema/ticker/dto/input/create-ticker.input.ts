@@ -19,18 +19,6 @@ export class CreateTickerInput {
   @Min(0)
   quantity: number;
 
-  @Field({ description: '配当' })
-  @Min(0)
-  dividend: number;
-
-  @Field(() => Int, { description: '配当付与回数' })
-  @Min(0)
-  dividendTime: number;
-
-  @Field(() => Int, { description: '初回配当付与月' })
-  @Min(0)
-  dividendFirstTime: number;
-
   @Field({ description: 'セクター' })
   @IsNotEmpty()
   @IsString()

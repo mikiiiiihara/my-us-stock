@@ -18,15 +18,6 @@ export class TickerMaxAggregate {
     @Field(() => Int, {nullable:true})
     quantity?: number;
 
-    @Field(() => Float, {nullable:true})
-    dividend?: number;
-
-    @Field(() => Int, {nullable:true})
-    dividendTime?: number;
-
-    @Field(() => Int, {nullable:true})
-    dividendFirstTime?: number;
-
     @Field(() => String, {nullable:true})
     sector?: string;
 

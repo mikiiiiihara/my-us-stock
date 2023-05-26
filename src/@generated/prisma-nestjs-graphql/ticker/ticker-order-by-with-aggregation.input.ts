@@ -23,15 +23,6 @@ export class TickerOrderByWithAggregationInput {
     quantity?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})
-    dividend?: keyof typeof SortOrder;
-
-    @Field(() => SortOrder, {nullable:true})
-    dividendTime?: keyof typeof SortOrder;
-
-    @Field(() => SortOrder, {nullable:true})
-    dividendFirstTime?: keyof typeof SortOrder;
-
-    @Field(() => SortOrder, {nullable:true})
     sector?: keyof typeof SortOrder;
 
     @Field(() => SortOrder, {nullable:true})

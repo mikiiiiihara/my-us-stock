@@ -18,15 +18,6 @@ export class TickerCountAggregate {
     quantity!: number;
 
     @Field(() => Int, {nullable:false})
-    dividend!: number;
-
-    @Field(() => Int, {nullable:false})
-    dividendTime!: number;
-
-    @Field(() => Int, {nullable:false})
-    dividendFirstTime!: number;
-
-    @Field(() => Int, {nullable:false})
     sector!: number;
 
     @Field(() => Int, {nullable:false})

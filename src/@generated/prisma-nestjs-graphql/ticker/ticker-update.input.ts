@@ -16,15 +16,6 @@ export class TickerUpdateInput {
     @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
     quantity?: IntFieldUpdateOperationsInput;
 
-    @Field(() => FloatFieldUpdateOperationsInput, {nullable:true})
-    dividend?: FloatFieldUpdateOperationsInput;
-
-    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
-    dividendTime?: IntFieldUpdateOperationsInput;
-
-    @Field(() => IntFieldUpdateOperationsInput, {nullable:true})
-    dividendFirstTime?: IntFieldUpdateOperationsInput;
-
     @Field(() => StringFieldUpdateOperationsInput, {nullable:true})
     sector?: StringFieldUpdateOperationsInput;
 

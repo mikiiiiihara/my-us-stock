@@ -5,9 +5,6 @@ export enum TickerScalarFieldEnum {
     ticker = "ticker",
     getPrice = "getPrice",
     quantity = "quantity",
-    dividend = "dividend",
-    dividendTime = "dividendTime",
-    dividendFirstTime = "dividendFirstTime",
     sector = "sector",
     usdjpy = "usdjpy",
     userId = "userId"
