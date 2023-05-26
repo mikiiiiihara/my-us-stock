@@ -8,6 +8,7 @@ import { Ticker } from './dto/types/ticker.type';
 import { Ticker as TickerOfRepository } from '@/@generated/prisma-nestjs-graphql/ticker/ticker.model';
 import { UpdateTickerInput } from './dto/input/update-ticker.input';
 import { CreateTickerDto } from './dto/create-ticker.dto';
+import { DividendEntity } from '@/repositories/market-price/entity/dividend.entity';
 
 const mockTickerRepository = () => ({
   fetchTickerList: jest.fn(),
@@ -17,6 +18,7 @@ const mockTickerRepository = () => ({
 });
 const mockMarketPriceRepository = () => ({
   fetchMarketPriceList: jest.fn(),
+  fetchDividend: jest.fn(),
 });
 
 describe('TickerService', () => {
@@ -54,6 +56,14 @@ describe('TickerService', () => {
     marketPriceRepository = module.get<MarketPriceRepository>(
       MarketPriceRepository,
     );
+    const mockDividendEntity: Readonly<DividendEntity> = {
+      ticker: 'AAPL',
+      dividend: 0.23,
+      dividendTotal: 0.92,
+      dividendTime: 4,
+      dividendMonth: [2, 5, 8, 11],
+    };
+    marketPriceRepository.fetchDividend.mockResolvedValue(mockDividendEntity);
   });
   describe('fetchTickerList', () => {
     describe('正常系', () => {
@@ -231,7 +241,7 @@ describe('TickerService', () => {
         const expected: Readonly<Ticker> = {
           currentPrice: 148.5,
           currentRate: -1.3879,
-          dividend: 0.92,
+          dividend: 0,
           getPrice: 100,
           id: 14,
           priceGets: -2.09,
