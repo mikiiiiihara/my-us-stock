@@ -17,7 +17,7 @@ export class AssetResolver {
   @Query(() => [Asset], { nullable: true })
   async getAssets(
     @CurrentUserId() userId: string,
-    @Args('day', { type: () => Int }) day: number,
+    @Args('day', { type: () => Int, nullable: true }) day?: number,
   ) {
     return this.assetService.fetchAssetList(userId, day);
   }

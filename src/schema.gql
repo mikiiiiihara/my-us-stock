@@ -95,7 +95,7 @@ type Dividend {
 }
 
 type Query {
-  getAssets(day: Int!): [Asset!]
+  getAssets(day: Int): [Asset!]
   getCurrentUsdJpy: Float!
   getMarketPrices(tickerList: [String]!): [MarketPrice!]!
   getStrategy: Strategy

@@ -16,7 +16,7 @@ export class AssetService {
     private readonly getTotalService: GetTotalService,
   ) {}
 
-  async fetchAssetList(userId: string, day: number): Promise<Asset[]> {
+  async fetchAssetList(userId: string, day?: number): Promise<Asset[]> {
     // 画面では昇順で扱いたいため直す
     const assetList = await this.assetRepository.fetchAssetList(userId, day);
     return assetList.sort(function (a, b) {
