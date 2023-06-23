@@ -7,11 +7,6 @@ import safeStringify from 'fast-safe-stringify';
 export class AxiosService {
   constructor(private logger: MyLogger) {}
   public async get<T>(url: string) {
-    axios.interceptors.request.use((request) => {
-      this.logger.log(`AxiosRequest: ${safeStringify(request)}`);
-      return request;
-    });
-
     axios.interceptors.response.use(
       (response: AxiosResponse) => {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
