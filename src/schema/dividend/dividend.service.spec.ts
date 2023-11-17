@@ -72,6 +72,7 @@ describe('DividendService', () => {
           dividendTotal: 0.92,
           dividendTime: 4,
           dividendMonth: [2, 5, 8, 11],
+          dividendFixedMonth: [2, 5, 8, 11],
         };
         marketPriceRepository.fetchDividend.mockResolvedValue(
           mockDividendEntity,
@@ -84,6 +85,7 @@ describe('DividendService', () => {
             dividendTotal: 0.92,
             dividendTime: 4,
             dividendMonth: [2, 5, 8, 11],
+            dividendFixedMonth: [2, 5, 8, 11],
             quantity: 6,
           },
         ];

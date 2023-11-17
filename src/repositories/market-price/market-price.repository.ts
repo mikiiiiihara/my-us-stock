@@ -46,6 +46,12 @@ export class MarketPriceRepository {
             dividends[0].pay_date,
           )
         : [],
+      dividendFixedMonth: dividends[0]
+        ? await this.calculateDividendMonth(
+            dividends[0].frequency,
+            dividends[0].ex_dividend_date,
+          )
+        : [],
       dividend: dividends[0] ? dividends[0].cash_amount : 0,
       dividendTotal: dividends[0]
         ? dividends[0].cash_amount * dividends[0].frequency

@@ -19,4 +19,7 @@ export class Dividend {
 
   @Field(() => [Int], { description: '配当付与月', nullable: true })
   dividendMonth: number[];
+
+  @Field(() => [Int], { description: '配当権利確定月', nullable: true })
+  dividendFixedMonth: number[];
 }

@@ -243,6 +243,7 @@ describe('MarketPriceRepository', () => {
           dividend: 0.267995,
           dividendTotal: 3.21594,
           dividendMonth: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+          dividendFixedMonth: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
         };
         // テスト実行
         const result = await marketPriceRepository.fetchDividend('TLT');
@@ -343,6 +344,7 @@ describe('MarketPriceRepository', () => {
           dividend: 0.24,
           dividendTotal: 0.96,
           dividendMonth: [2, 5, 8, 11],
+          dividendFixedMonth: [2, 5, 8, 11],
         };
         // テスト実行
         const result = await marketPriceRepository.fetchDividend('AAPL');
@@ -362,6 +364,7 @@ describe('MarketPriceRepository', () => {
           dividendTime: 0,
           dividendTotal: 0,
           dividendMonth: [],
+          dividendFixedMonth: [],
           dividend: 0,
         };
         // テスト実行
