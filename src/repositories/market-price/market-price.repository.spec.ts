@@ -262,8 +262,8 @@ describe('MarketPriceRepository', () => {
         const expected: DividendEntity = {
           ticker: 'TLT',
           dividendTime: 12,
-          dividend: 0.27066666666666667,
-          dividendTotal: 3.248,
+          dividend: 0.271,
+          dividendTotal: 3.252,
           dividendMonth: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
           dividendFixedMonth: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
         };
@@ -328,8 +328,8 @@ describe('MarketPriceRepository', () => {
         const expected: DividendEntity = {
           ticker: 'AAPL',
           dividendTime: 4,
-          dividend: 0.2375,
-          dividendTotal: 0.95,
+          dividend: 0.238,
+          dividendTotal: 0.952,
           dividendMonth: [2, 5, 8, 11],
           dividendFixedMonth: [2, 5, 8, 11],
         };

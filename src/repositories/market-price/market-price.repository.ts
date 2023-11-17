@@ -50,7 +50,8 @@ export class MarketPriceRepository {
       (sum, dividend) => sum + dividend.dividend,
       0,
     );
-    const cashAmount = totalCashAmount / filteredDividends.length;
+    const cashAmount =
+      Math.round((totalCashAmount / filteredDividends.length) * 1000) / 1000;
     return {
       ticker,
       dividendTime: filteredDividends.length,
@@ -71,11 +72,10 @@ export class MarketPriceRepository {
       dividend: filteredDividends.length != 0 ? cashAmount : 0,
       dividendTotal:
         filteredDividends.length != 0
-          ? cashAmount * filteredDividends.length
+          ? Math.round(cashAmount * filteredDividends.length * 1000) / 1000
           : 0,
     };
   }
-
   /**
    * 配当支払い月を取得する
    */
