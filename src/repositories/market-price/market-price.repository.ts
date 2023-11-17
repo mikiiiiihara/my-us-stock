@@ -42,7 +42,9 @@ export class MarketPriceRepository {
 
     // 直近１年の配当記録を抽出
     const filteredDividends = res.historical.filter((dividend) => {
-      const payDate = new Date(dividend.paymentDate);
+      const payDate = new Date(
+        dividend.paymentDate.length > 1 ? dividend.paymentDate : dividend.date,
+      );
       return payDate >= oneYearAgo && payDate <= currentDate;
     });
 
