@@ -92,6 +92,9 @@ type Dividend {
 
   """配当付与月"""
   dividendMonth: [Int!]
+
+  """配当権利確定月"""
+  dividendFixedMonth: [Int!]
 }
 
 type Query {

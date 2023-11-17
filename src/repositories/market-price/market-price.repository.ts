@@ -17,7 +17,7 @@ export class MarketPriceRepository {
    * 現在の市場価格を取得
    */
   async fetchMarketPriceList(tickerList: string[]): Promise<MarketPriceDto[]> {
-    const baseUrl = this.configService.get<string>('MARKET_PRICE_TICKER_URL');
+    const baseUrl = this.configService.get<string>('MARKET_PRICE_URL');
     const token = this.configService.get<string>('MARKET_PRICE_TICKER_TOKEN');
     const url = `${baseUrl}/v3/quote-order/${tickerList.toString()}?apikey=${token}`;
     const response = await this.axiosService.get<MarketPrice[]>(url);
@@ -34,28 +34,45 @@ export class MarketPriceRepository {
   async fetchDividend(ticker: string): Promise<DividendEntity> {
     const baseUrl = this.configService.get<string>('MARKET_PRICE_URL');
     const token = this.configService.get<string>('MARKET_PRICE_TOKEN');
-    const url = `${baseUrl}/v3/reference/dividends?ticker=${ticker}&apiKey=${token}`;
-    const response = await this.axiosService.get<DividendResponse>(url);
-    const dividends = response.results;
+    const url = `${baseUrl}/v3/historical-price-full/stock_dividend/${ticker}?apikey=${token}`;
+    const res = await this.axiosService.get<DividendResponse>(url);
+    const oneYearAgo = new Date();
+    oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1); // 1年前の日付を設定
+    const currentDate = new Date(); // 現在の日付を取得
+
+    // 直近１年の配当記録を抽出
+    const filteredDividends = res.historical.filter((dividend) => {
+      const payDate = new Date(dividend.paymentDate);
+      return payDate >= oneYearAgo && payDate <= currentDate;
+    });
+
+    const totalCashAmount = filteredDividends.reduce(
+      (sum, dividend) => sum + dividend.dividend,
+      0,
+    );
+    const cashAmount = totalCashAmount / filteredDividends.length;
     return {
       ticker,
-      dividendTime: dividends[0] ? dividends[0].frequency : 0,
-      dividendMonth: dividends[0]
-        ? await this.calculateDividendMonth(
-            dividends[0].frequency,
-            dividends[0].pay_date,
-          )
-        : [],
-      dividendFixedMonth: dividends[0]
-        ? await this.calculateDividendMonth(
-            dividends[0].frequency,
-            dividends[0].ex_dividend_date,
-          )
-        : [],
-      dividend: dividends[0] ? dividends[0].cash_amount : 0,
-      dividendTotal: dividends[0]
-        ? dividends[0].cash_amount * dividends[0].frequency
-        : 0,
+      dividendTime: filteredDividends.length,
+      dividendMonth:
+        filteredDividends.length != 0
+          ? await this.calculateDividendMonth(
+              filteredDividends.length,
+              filteredDividends[0].paymentDate,
+            )
+          : [],
+      dividendFixedMonth:
+        filteredDividends.length != 0
+          ? await this.calculateDividendMonth(
+              filteredDividends.length,
+              filteredDividends[0].paymentDate,
+            )
+          : [],
+      dividend: filteredDividends.length != 0 ? cashAmount : 0,
+      dividendTotal:
+        filteredDividends.length != 0
+          ? cashAmount * filteredDividends.length
+          : 0,
     };
   }
 
