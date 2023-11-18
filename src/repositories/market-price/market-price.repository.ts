@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { MarketPriceDto } from './dto/market-price.dto';
 import { MarketPrice } from './entity/market-price.entity';
-import { DividendResponse } from './dto/dividend.response';
+import { DividendResponse, Historical } from './dto/dividend.response';
 import { DividendEntity } from './entity/dividend.entity';
 import { format } from 'date-fns';
 
@@ -28,56 +28,97 @@ export class MarketPriceRepository {
       currentRate: item.changesPercentage,
     }));
   }
+
   /**
    * 指定した銘柄の配当情報を取得する
    */
   async fetchDividend(ticker: string): Promise<DividendEntity> {
+    try {
+      const token = this.configService.get<string>('MARKET_PRICE_TOKEN');
+      const res = await this.fetchDividendApi(token, ticker);
+      return this.createDividendEntity(res);
+    } catch (error) {
+      if (error.response && error.response.status === 429) {
+        // 429エラーの場合、トークンを変更して再試行
+        const token = this.configService.get<string>('MARKET_PRICE_TOKEN_SUB');
+        const res = await this.fetchDividendApi(token, ticker);
+        return this.createDividendEntity(res);
+      } else {
+        // 他のエラーの場合はそのままエラーを投げる
+        throw error;
+      }
+    }
+  }
+
+  /**
+   * 配当情報をAPIから取得する。
+   * */
+  private async fetchDividendApi(
+    token: string,
+    ticker: string,
+  ): Promise<DividendResponse> {
     const baseUrl = this.configService.get<string>('MARKET_PRICE_URL');
-    const token = this.configService.get<string>('MARKET_PRICE_TOKEN');
     const url = `${baseUrl}/v3/historical-price-full/stock_dividend/${ticker}?apikey=${token}`;
-    const res = await this.axiosService.get<DividendResponse>(url);
+    return await this.axiosService.get<DividendResponse>(url);
+  }
+
+  /**
+   * 直近1年の配当記録をフィルタリング
+   * */
+  private async filterDividends(
+    dividends: Historical[],
+  ): Promise<Historical[]> {
     const oneYearAgo = new Date();
     oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1); // 1年前の日付を設定
     const currentDate = new Date(); // 現在の日付を取得
-
-    // 直近１年の配当記録を抽出
-    const filteredDividends = res.historical.filter((dividend) => {
+    return dividends.filter((dividend) => {
       const payDate = new Date(
         dividend.paymentDate.length > 1 ? dividend.paymentDate : dividend.date,
       );
       return payDate >= oneYearAgo && payDate <= currentDate;
     });
+  }
 
-    const totalCashAmount = filteredDividends.reduce(
+  /**
+   * DividendEntityレスポンスの構築
+   * */
+  private async createDividendEntity(
+    res: DividendResponse,
+  ): Promise<DividendEntity> {
+    const ticker = res.symbol;
+    // 直近１年の配当記録を抽出
+    const dividends = await this.filterDividends(res.historical);
+    const totalCashAmount = dividends.reduce(
       (sum, dividend) => sum + dividend.dividend,
       0,
     );
     const cashAmount =
-      Math.round((totalCashAmount / filteredDividends.length) * 1000) / 1000;
+      Math.round((totalCashAmount / dividends.length) * 1000) / 1000;
     return {
       ticker,
-      dividendTime: filteredDividends.length,
+      dividendTime: dividends.length,
       dividendMonth:
-        filteredDividends.length != 0
+        dividends.length != 0
           ? await this.calculateDividendMonth(
-              filteredDividends.length,
-              filteredDividends[0].paymentDate,
+              dividends.length,
+              dividends[0].paymentDate,
             )
           : [],
       dividendFixedMonth:
-        filteredDividends.length != 0
+        dividends.length != 0
           ? await this.calculateDividendMonth(
-              filteredDividends.length,
-              filteredDividends[0].paymentDate,
+              dividends.length,
+              dividends[0].paymentDate,
             )
           : [],
-      dividend: filteredDividends.length != 0 ? cashAmount : 0,
+      dividend: dividends.length != 0 ? cashAmount : 0,
       dividendTotal:
-        filteredDividends.length != 0
-          ? Math.round(cashAmount * filteredDividends.length * 1000) / 1000
+        dividends.length != 0
+          ? Math.round(cashAmount * dividends.length * 1000) / 1000
           : 0,
     };
   }
+
   /**
    * 配当支払い月を取得する
    */

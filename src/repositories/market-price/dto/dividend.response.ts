@@ -1,4 +1,4 @@
-type Historical = {
+export type Historical = {
   date: string; // 権利落月
   label: string;
   adjDividend: number;
