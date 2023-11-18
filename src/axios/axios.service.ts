@@ -6,27 +6,35 @@ import safeStringify from 'fast-safe-stringify';
 @Injectable()
 export class AxiosService {
   constructor(private logger: MyLogger) {}
-  public async get<T>(url: string) {
+
+  public async get<T>(url: string): Promise<T> {
     axios.interceptors.response.use(
       (response: AxiosResponse) => {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        // responseオブジェクトの詳細をログに記録
         const { request, ...others } = response;
         this.logger.log(`AxiosResponse: ${safeStringify(others)}`);
         return response;
       },
       (error: AxiosError) => {
+        // errorオブジェクトの詳細をログに記録
         this.logger.error(`AxiosError: ${safeStringify(error.toJSON())}`);
         return Promise.reject(error);
       },
     );
-    let response: AxiosResponse<T, any>;
+
     try {
-      response = await axios.get<T>(url);
+      const response = await axios.get<T>(url);
+      this.logger.log(`response: ${safeStringify(response)}`);
+      return response.data;
     } catch (error) {
-      this.logger.error(safeStringify(error));
-      throw new Error('API取得に失敗しました。');
+      this.logger.error(`API Request Failed: ${safeStringify(error)}`);
+      if (error.isAxiosError) {
+        // Axiosからのエラーをそのまま伝播させる
+        throw error;
+      } else {
+        // その他のエラーの場合、カスタムエラーメッセージを付与して伝播させる
+        throw new Error(`API取得に失敗しました: ${error.message}`);
+      }
     }
-    this.logger.log(`response: ${safeStringify(response)}`);
-    return await response.data;
   }
 }
