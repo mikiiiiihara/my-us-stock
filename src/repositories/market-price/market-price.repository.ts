@@ -20,16 +20,23 @@ export class MarketPriceRepository {
     const baseUrl = this.configService.get<string>('MARKET_PRICE_URL');
     const token = this.configService.get<string>('MARKET_PRICE_TICKER_TOKEN');
     const url = `${baseUrl}/v3/quote-order/${tickerList.toString()}?apikey=${token}`;
-    const response = await this.axiosService.get<MarketPrice[]>(url);
-    // 市場にデータが存在するかチェックする
-    if (response.length == 0)
-      throw Error('入力された銘柄のデータは存在しません。');
-    return response.map((item) => ({
-      ticker: item.symbol,
-      currentPrice: item.price,
-      priceGets: item.change,
-      currentRate: item.changesPercentage,
-    }));
+    try {
+      const response = await this.axiosService.get<MarketPrice[]>(url);
+      // 市場にデータが存在するかチェックする
+      if (response.length == 0)
+        throw Error('入力された銘柄のデータは存在しません。');
+      return response.map((item) => ({
+        ticker: item.symbol,
+        currentPrice: item.price,
+        priceGets: item.change,
+        currentRate: item.changesPercentage,
+      }));
+    } catch (error) {
+      console.error(error);
+      throw Error(
+        '市場価格取得に失敗しました。しばらく待ってからアクセスしてください。',
+      );
+    }
   }
 
   /**
@@ -41,6 +48,7 @@ export class MarketPriceRepository {
       const res = await this.fetchDividendApi(token, ticker);
       return this.createDividendEntity(res);
     } catch (error) {
+      console.error(error);
       if (error.response && error.response.status === 429) {
         // 429エラーの場合、トークンを変更して再試行
         const token = this.configService.get<string>('MARKET_PRICE_TOKEN_SUB');
@@ -48,7 +56,9 @@ export class MarketPriceRepository {
         return this.createDividendEntity(res);
       } else {
         // 他のエラーの場合はそのままエラーを投げる
-        throw error;
+        throw Error(
+          '配当情報取得に失敗しました。しばらく待ってからアクセスしてください。',
+        );
       }
     }
   }

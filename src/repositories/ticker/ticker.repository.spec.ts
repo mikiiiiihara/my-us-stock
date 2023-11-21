@@ -114,6 +114,43 @@ describe('TickerRepository', () => {
         });
       });
     });
+    describe('異常系', () => {
+      it('既に登録している銘柄を追加しようとした場合、エラー', async () => {
+        // 期待値
+        const expected: Ticker = {
+          id: 3,
+          ticker: 'VT',
+          getPrice: 90,
+          quantity: 6,
+          userId: USER_ID,
+          sector: 'index',
+          usdjpy: 133,
+        };
+        // リクエストパラメータ
+        const createTickerDto: CreateTickerDto = {
+          ticker: 'VT',
+          getPrice: 90,
+          quantity: 6,
+          userId: USER_ID,
+          sector: 'index',
+          usdjpy: 133,
+        };
+        // テスト実行
+        const result = await tickerRepository.createTicker(createTickerDto);
+        expect(result).toEqual(expected);
+
+        const test = () => tickerRepository.createTicker(createTickerDto);
+        await expect(test).rejects.toThrowError(
+          new Error('この銘柄は既に登録されています。'),
+        );
+        // 登録したデータを削除する
+        await prismaService.ticker.delete({
+          where: {
+            id: 3,
+          },
+        });
+      });
+    });
   });
   describe('updateTicker', () => {
     describe('正常系', () => {
