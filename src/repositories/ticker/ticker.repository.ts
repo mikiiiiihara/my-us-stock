@@ -19,6 +19,11 @@ export class TickerRepository {
   async createTicker(createTickerDto: CreateTickerDto): Promise<Ticker> {
     const { ticker, getPrice, quantity, userId, sector, usdjpy } =
       createTickerDto;
+    // 既にDBに登録されているかチェックする
+    const existTicker = await this.prisma.ticker.findFirst({
+      where: { ticker },
+    });
+    if (existTicker) throw new Error('この銘柄は既に登録されています。');
     return await this.prisma.ticker.create({
       data: {
         ticker,

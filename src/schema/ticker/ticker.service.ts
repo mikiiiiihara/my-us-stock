@@ -39,14 +39,14 @@ export class TickerService {
       }),
     );
   }
-  async createTicker(creatTickerDto: CreateTickerDto): Promise<Ticker> {
-    const newTicker = await this.tickerRepository.createTicker(creatTickerDto);
-    const { id, ticker, getPrice, quantity, sector, usdjpy } = newTicker;
-    // 現在のマーケットデータも同時に返却する
+  async createTicker(createTickerDto: CreateTickerDto): Promise<Ticker> {
+    const { ticker } = createTickerDto; // 現在のマーケットデータを取得
     // 価格情報
     const marketPriceList =
       await this.marketPriceRepository.fetchMarketPriceList([ticker]);
     const { currentPrice, priceGets, currentRate } = marketPriceList[0];
+    const newTicker = await this.tickerRepository.createTicker(createTickerDto);
+    const { id, getPrice, quantity, sector, usdjpy } = newTicker;
     // 配当情報
     const { dividendTotal } = await this.marketPriceRepository.fetchDividend(
       ticker,
@@ -91,7 +91,7 @@ export class TickerService {
     };
   }
 
-  // 保有株式情報を更新
+  // 保有株式情報を削除
   async deleteTicker(updateTickerInput: UpdateTickerInput): Promise<Ticker> {
     const { id, currentPrice, priceGets, currentRate } = updateTickerInput;
     //レコード削除

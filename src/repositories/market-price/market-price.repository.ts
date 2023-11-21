@@ -21,6 +21,9 @@ export class MarketPriceRepository {
     const token = this.configService.get<string>('MARKET_PRICE_TICKER_TOKEN');
     const url = `${baseUrl}/v3/quote-order/${tickerList.toString()}?apikey=${token}`;
     const response = await this.axiosService.get<MarketPrice[]>(url);
+    // 市場にデータが存在するかチェックする
+    if (response.length == 0)
+      throw Error('入力された銘柄のデータは存在しません。');
     return response.map((item) => ({
       ticker: item.symbol,
       currentPrice: item.price,
@@ -98,17 +101,17 @@ export class MarketPriceRepository {
       ticker,
       dividendTime: dividends.length,
       dividendMonth:
-        dividends.length != 0
+        dividends.length != 0 && dividends[0].paymentDate.length > 1
           ? await this.calculateDividendMonth(
               dividends.length,
               dividends[0].paymentDate,
             )
           : [],
       dividendFixedMonth:
-        dividends.length != 0
+        dividends.length != 0 && dividends[0].date.length > 1
           ? await this.calculateDividendMonth(
               dividends.length,
-              dividends[0].paymentDate,
+              dividends[0].date,
             )
           : [],
       dividend: dividends.length != 0 ? cashAmount : 0,

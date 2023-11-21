@@ -6,7 +6,9 @@ import { MarketPrice } from './dto/types/market-price.type';
 export class MarketPriceService {
   constructor(private readonly marketPriceRepository: MarketPriceRepository) {}
 
-  // 保有株式の現在の価格を取得する
+  /**
+   * 保有株式の現在の価格を取得する
+   * */
   async fetchMarketPriceList(tickerList: string[]): Promise<MarketPrice[]> {
     return await this.marketPriceRepository.fetchMarketPriceList(tickerList);
   }
