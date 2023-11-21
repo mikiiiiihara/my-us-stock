@@ -20,23 +20,24 @@ export class MarketPriceRepository {
     const baseUrl = this.configService.get<string>('MARKET_PRICE_URL');
     const token = this.configService.get<string>('MARKET_PRICE_TICKER_TOKEN');
     const url = `${baseUrl}/v3/quote-order/${tickerList.toString()}?apikey=${token}`;
+    let response;
     try {
-      const response = await this.axiosService.get<MarketPrice[]>(url);
-      // 市場にデータが存在するかチェックする
-      if (response.length == 0)
-        throw Error('入力された銘柄のデータは存在しません。');
-      return response.map((item) => ({
-        ticker: item.symbol,
-        currentPrice: item.price,
-        priceGets: item.change,
-        currentRate: item.changesPercentage,
-      }));
+      response = await this.axiosService.get<MarketPrice[]>(url);
     } catch (error) {
       console.error(error);
       throw Error(
         '市場価格取得に失敗しました。しばらく待ってからアクセスしてください。',
       );
     }
+    // 市場にデータが存在するかチェックする
+    if (response.length == 0)
+      throw Error('入力された銘柄のデータは存在しません。');
+    return response.map((item) => ({
+      ticker: item.symbol,
+      currentPrice: item.price,
+      priceGets: item.change,
+      currentRate: item.changesPercentage,
+    }));
   }
 
   /**
