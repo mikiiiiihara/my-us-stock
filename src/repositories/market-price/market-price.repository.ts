@@ -106,71 +106,62 @@ export class MarketPriceRepository {
       (sum, dividend) => sum + dividend.dividend,
       0,
     );
+    // 直近１年の配当総額を計算
+    const dividendTotal =
+      dividends.length != 0
+        ? Math.round(
+            dividends
+              .map((dividend) => dividend.dividend)
+              .reduce(function (a, x) {
+                return a + x;
+              }) * 1000,
+          ) / 1000
+        : 0;
     const cashAmount =
       Math.round((totalCashAmount / dividends.length) * 1000) / 1000;
     return {
       ticker,
       dividendTime: dividends.length,
+      //支払月
       dividendMonth:
-        dividends.length != 0 && dividends[0].paymentDate.length > 1
-          ? await this.calculateDividendMonth(
-              dividends.length,
-              dividends[0].paymentDate,
-            )
+        dividends.length != 0
+          ? await this.calculateDividendMonth(true, dividends)
           : [],
       dividendFixedMonth:
-        dividends.length != 0 && dividends[0].date.length > 1
-          ? await this.calculateDividendMonth(
-              dividends.length,
-              dividends[0].date,
-            )
+        dividends.length != 0
+          ? await this.calculateDividendMonth(false, dividends)
           : [],
       dividend: dividends.length != 0 ? cashAmount : 0,
-      dividendTotal:
-        dividends.length != 0
-          ? Math.round(cashAmount * dividends.length * 1000) / 1000
-          : 0,
+      dividendTotal,
     };
   }
 
   /**
-   * 配当支払い月を取得する
+   * 配当権利落月・支払い月を取得する
    */
   private async calculateDividendMonth(
-    frequency: number,
-    payDate: string,
+    isPayment: boolean,
+    dividends: Historical[],
   ): Promise<number[]> {
-    if (frequency === 12) return [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-    // 支払日から、月だけを抜き出す
-    const month = format(new Date(payDate), 'MM');
-    const monthNumber = Number(month);
-    // 初回配当付与月習得
-    let dividendFirstMonth: number;
-    switch (monthNumber) {
-      case 1:
-      case 4:
-      case 7:
-      case 10:
-        dividendFirstMonth = 1;
-        break;
-      case 2:
-      case 5:
-      case 8:
-      case 11:
-        dividendFirstMonth = 2;
-        break;
-      case 3:
-      case 6:
-      case 9:
-      case 12:
-        dividendFirstMonth = 3;
-        break;
-    }
-    const interval = 12 / frequency;
-    const dividendMonth: number[] = [];
-    for (let i = dividendFirstMonth; i <= 12; i += interval) {
-      dividendMonth.push(i);
-    }
-    return dividendMonth;
+    const filteredMonth = dividends
+      .map((dividend) => {
+        // paymentDateが空配列で返却されることがあるため、その場合はdate=paymentDateとして扱う
+        const paymentDate =
+          dividend.paymentDate.length > 1
+            ? dividend.paymentDate
+            : dividend.date;
+        const pickUpDate = isPayment ? paymentDate : dividend.date;
+        // 月だけを抜き出す
+        const month = format(new Date(pickUpDate), 'MM');
+        const monthNumber = Number(month);
+        return monthNumber;
+      })
+      .sort(function (a, b) {
+        // 昇順に並べる
+        return a - b;
+      });
+    return filteredMonth.filter(
+      (value, index) => filteredMonth.indexOf(value) === index,
+    );
   }
 }
