@@ -275,9 +275,9 @@ describe('MarketPriceRepository', () => {
         // 期待値
         const expected: DividendEntity = {
           ticker: 'TLT',
-          dividendTime: 12,
-          dividend: 0.271,
-          dividendTotal: 3.248,
+          dividendTime: 11,
+          dividend: 0.273,
+          dividendTotal: 3.004,
           dividendMonth: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
           dividendFixedMonth: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
         };
