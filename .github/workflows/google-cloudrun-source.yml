@@ -45,6 +45,12 @@ jobs:
         run: |
           echo "{\"version\": \"${{ github.run_number }}\", \"commit\": \"${{ github.sha }}\"}" > version.json
 
+      - name: Print working directory
+        run: pwd
+
+      - name: List files in the directory
+        run: ls -l
+
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v0.2.0
         with:
