@@ -10,7 +10,7 @@ export class AppService {
 
     // ファイルの存在を確認
     if (!fs.existsSync(versionFilePath)) {
-      return 'OK';
+      return 'Hello World!';
     }
 
     try {
@@ -18,7 +18,7 @@ export class AppService {
       return JSON.parse(versionInfo);
     } catch (error) {
       // ファイルの読み込み中にエラーが発生した場合
-      return 'OK';
+      return 'Hello World!';
     }
   }
 }
