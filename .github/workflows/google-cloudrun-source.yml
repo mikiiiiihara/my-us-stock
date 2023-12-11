@@ -41,6 +41,10 @@ jobs:
           DATABASE_URL: postgresql://root:admin@localhost:5434/stock?schema=public
         run: npm run test
 
+      - name: Create version file
+        run: |
+          echo "{\"version\": \"${{ github.run_number }}\", \"commit\": \"${{ github.sha }}\"}" > version.json
+
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v0.2.0
         with:
