@@ -10,11 +10,13 @@ export class AppService {
 
     // ファイルの存在を確認
     if (!fs.existsSync(versionFilePath)) {
+      console.log('fileないよん');
       return 'Hello World!';
     }
 
     try {
       const versionInfo = fs.readFileSync(versionFilePath, 'utf8');
+      console.log(JSON.parse(versionInfo));
       return JSON.parse(versionInfo);
     } catch (error) {
       // ファイルの読み込み中にエラーが発生した場合
