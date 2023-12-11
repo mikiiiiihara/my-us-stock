@@ -7,6 +7,7 @@ export class AppService {
   getHello(): string {
     // srcディレクトリ内のversion.jsonのパスを指定
     const versionFilePath = path.join(__dirname, 'version.json');
+    console.log('version.json path:', versionFilePath);
 
     if (!fs.existsSync(versionFilePath)) {
       console.log('version.json file not found');
