@@ -5,8 +5,8 @@ import * as fs from 'fs';
 @Injectable()
 export class AppService {
   getHello(): string {
-    // __dirnameを使用して現在のディレクトリのパスを取得し、version.jsonのパスを組み立てる
-    const versionFilePath = path.join(__dirname, 'version.json');
+    // ルートディレクトリからの相対パスでversion.jsonのパスを組み立てる
+    const versionFilePath = path.join(__dirname, '..', 'version.json');
 
     // ファイルの存在を確認
     if (!fs.existsSync(versionFilePath)) {
