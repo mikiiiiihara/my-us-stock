@@ -8,6 +8,8 @@ export class AppService {
     // ルートディレクトリからの相対パスでversion.jsonのパスを組み立てる
     const versionFilePath = path.join(__dirname, '..', 'version.json');
 
+    console.log('version.json path:', versionFilePath);
+
     // ファイルの存在を確認
     if (!fs.existsSync(versionFilePath)) {
       console.log('fileないよん');
