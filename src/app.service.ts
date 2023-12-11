@@ -6,7 +6,7 @@ import * as fs from 'fs';
 export class AppService {
   getHello(): string {
     // srcディレクトリ内のversion.jsonのパスを指定
-    const versionFilePath = path.join(__dirname, 'version.json');
+    const versionFilePath = path.join(__dirname, '../src', 'version.json');
     console.log('version.json path:', versionFilePath);
 
     if (!fs.existsSync(versionFilePath)) {
