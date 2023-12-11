@@ -43,7 +43,7 @@ jobs:
 
       - name: Create version file
         run: |
-          echo "{\"version\": \"${{ github.run_number }}\", \"commit\": \"${{ github.sha }}\"}" > version.json
+          echo "{\"commit\": \"${{ github.sha }}\"}" > version.json
 
       - name: Print working directory
         run: pwd
