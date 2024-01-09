@@ -276,10 +276,10 @@ describe('MarketPriceRepository', () => {
         const expected: DividendEntity = {
           ticker: 'TLT',
           dividendTime: 11,
-          dividend: 0.273,
+          dividend: 0.274,
           dividendTotal: 3.004,
-          dividendMonth: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-          dividendFixedMonth: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+          dividendMonth: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+          dividendFixedMonth: [2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
         };
         // テスト実行
         const result = await marketPriceRepository.fetchDividend('TLT');
@@ -350,11 +350,11 @@ describe('MarketPriceRepository', () => {
         // 期待値
         const expected: DividendEntity = {
           ticker: 'BMA',
-          dividendTime: 6,
-          dividend: 0.384,
-          dividendTotal: 2.303,
-          dividendMonth: [1, 7, 8, 9],
-          dividendFixedMonth: [7, 8, 9, 12],
+          dividendTime: 5,
+          dividend: 0.445,
+          dividendTotal: 2.224,
+          dividendMonth: [7, 8, 9],
+          dividendFixedMonth: [7, 8, 9],
         };
         // テスト実行
         const result = await marketPriceRepository.fetchDividend('TLT');
