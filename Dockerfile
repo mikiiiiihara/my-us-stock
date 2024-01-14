@@ -28,4 +28,8 @@ RUN yarn install --production --prefer-offline --frozen-lockfile
 
 COPY --from=builder /app/dist ./dist
 COPY prisma ./prisma
+
+# ファイルディスクリプタの上限を設定
+RUN ulimit -n 65536
+
 CMD ["yarn", "start:prod"]
